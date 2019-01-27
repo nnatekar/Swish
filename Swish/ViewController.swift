@@ -8,7 +8,7 @@
 
 import UIKit
 import ARKit
-//import Each
+import Each
 class ViewController: UIViewController, ARSCNViewDelegate {
     
 
@@ -17,7 +17,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var sceneView: ARSCNView!
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
-    //let timer = Each(0.05).seconds
+    let timer = Each(0.05).seconds
     var basketAdded: Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +29,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
-        // Do any additional setup after loading the view, typically from a nib.
     }
-    /*
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if self.basketAdded == true {
             timer.perform(closure: { () -> NextStep in
@@ -48,7 +47,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         self.power = 1
     }
-    */
+    
     func shootBall() {
         
         guard let pointOfView = self.sceneView.pointOfView else {return}
@@ -118,7 +117,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     deinit {
-        //self.timer.stop()
+        self.timer.stop()
     }
     
 }

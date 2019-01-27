@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61C2E032C22C73BE161A64F6 /* Pods_Swish.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */; };
 		CA273BAD21EC598B005BDE24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAC21EC598B005BDE24 /* AppDelegate.swift */; };
 		CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAE21EC598B005BDE24 /* ViewController.swift */; };
 		CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB021EC598B005BDE24 /* Main.storyboard */; };
@@ -34,6 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swish.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8306D5EA21388E31D6428686 /* Pods-Swish.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.debug.xcconfig"; sourceTree = "<group>"; };
+		A7CE148EB475BDDB44407694 /* Pods-Swish.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.release.xcconfig"; sourceTree = "<group>"; };
 		CA273BA921EC598B005BDE24 /* Swish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swish.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA273BAC21EC598B005BDE24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA273BAE21EC598B005BDE24 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -54,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61C2E032C22C73BE161A64F6 /* Pods_Swish.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +79,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		466BFCD0E4DD51A08791ECB6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8306D5EA21388E31D6428686 /* Pods-Swish.debug.xcconfig */,
+				A7CE148EB475BDDB44407694 /* Pods-Swish.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		57F6DD5EEA5E6437A98259E8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CA273BA021EC598B005BDE24 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +103,8 @@
 				CA273BC021EC598D005BDE24 /* SwishTests */,
 				CA273BCB21EC598D005BDE24 /* SwishUITests */,
 				CA273BAA21EC598B005BDE24 /* Products */,
+				466BFCD0E4DD51A08791ECB6 /* Pods */,
+				57F6DD5EEA5E6437A98259E8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,9 +156,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA273BD121EC598D005BDE24 /* Build configuration list for PBXNativeTarget "Swish" */;
 			buildPhases = (
+				2288FB95B8FD84A299457FDD /* [CP] Check Pods Manifest.lock */,
 				CA273BA521EC598B005BDE24 /* Sources */,
 				CA273BA621EC598B005BDE24 /* Frameworks */,
 				CA273BA721EC598B005BDE24 /* Resources */,
+				8472D3FE46F4219BA6023FC7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -250,6 +276,53 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2288FB95B8FD84A299457FDD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Swish-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8472D3FE46F4219BA6023FC7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Swish/Pods-Swish-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Each/Each.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Each.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Swish/Pods-Swish-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CA273BA521EC598B005BDE24 /* Sources */ = {
@@ -430,6 +503,7 @@
 		};
 		CA273BD221EC598D005BDE24 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8306D5EA21388E31D6428686 /* Pods-Swish.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -448,6 +522,7 @@
 		};
 		CA273BD321EC598D005BDE24 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A7CE148EB475BDDB44407694 /* Pods-Swish.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

@@ -1,0 +1,587 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CA273BAD21EC598B005BDE24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAC21EC598B005BDE24 /* AppDelegate.swift */; };
+		CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAE21EC598B005BDE24 /* ViewController.swift */; };
+		CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB021EC598B005BDE24 /* Main.storyboard */; };
+		CA273BB421EC598D005BDE24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB321EC598D005BDE24 /* Assets.xcassets */; };
+		CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */; };
+		CA273BC221EC598D005BDE24 /* SwishTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BC121EC598D005BDE24 /* SwishTests.swift */; };
+		CA273BCD21EC598D005BDE24 /* SwishUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BCC21EC598D005BDE24 /* SwishUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CA273BBE21EC598D005BDE24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA273BA121EC598B005BDE24 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA273BA821EC598B005BDE24;
+			remoteInfo = Hoops;
+		};
+		CA273BC921EC598D005BDE24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA273BA121EC598B005BDE24 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA273BA821EC598B005BDE24;
+			remoteInfo = Hoops;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CA273BA921EC598B005BDE24 /* Swish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swish.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA273BAC21EC598B005BDE24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CA273BAE21EC598B005BDE24 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CA273BB121EC598B005BDE24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CA273BB321EC598D005BDE24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA273BB621EC598D005BDE24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CA273BB821EC598D005BDE24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA273BBD21EC598D005BDE24 /* SwishTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwishTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA273BC121EC598D005BDE24 /* SwishTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwishTests.swift; sourceTree = "<group>"; };
+		CA273BC321EC598D005BDE24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA273BC821EC598D005BDE24 /* SwishUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwishUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA273BCC21EC598D005BDE24 /* SwishUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwishUITests.swift; sourceTree = "<group>"; };
+		CA273BCE21EC598D005BDE24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CA273BA621EC598B005BDE24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA273BBA21EC598D005BDE24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA273BC521EC598D005BDE24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CA273BA021EC598B005BDE24 = {
+			isa = PBXGroup;
+			children = (
+				CA273BAB21EC598B005BDE24 /* Swish */,
+				CA273BC021EC598D005BDE24 /* SwishTests */,
+				CA273BCB21EC598D005BDE24 /* SwishUITests */,
+				CA273BAA21EC598B005BDE24 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CA273BAA21EC598B005BDE24 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CA273BA921EC598B005BDE24 /* Swish.app */,
+				CA273BBD21EC598D005BDE24 /* SwishTests.xctest */,
+				CA273BC821EC598D005BDE24 /* SwishUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CA273BAB21EC598B005BDE24 /* Swish */ = {
+			isa = PBXGroup;
+			children = (
+				CA273BAC21EC598B005BDE24 /* AppDelegate.swift */,
+				CA273BAE21EC598B005BDE24 /* ViewController.swift */,
+				CA273BB021EC598B005BDE24 /* Main.storyboard */,
+				CA273BB321EC598D005BDE24 /* Assets.xcassets */,
+				CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */,
+				CA273BB821EC598D005BDE24 /* Info.plist */,
+			);
+			path = Swish;
+			sourceTree = "<group>";
+		};
+		CA273BC021EC598D005BDE24 /* SwishTests */ = {
+			isa = PBXGroup;
+			children = (
+				CA273BC121EC598D005BDE24 /* SwishTests.swift */,
+				CA273BC321EC598D005BDE24 /* Info.plist */,
+			);
+			path = SwishTests;
+			sourceTree = "<group>";
+		};
+		CA273BCB21EC598D005BDE24 /* SwishUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CA273BCC21EC598D005BDE24 /* SwishUITests.swift */,
+				CA273BCE21EC598D005BDE24 /* Info.plist */,
+			);
+			path = SwishUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CA273BA821EC598B005BDE24 /* Swish */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA273BD121EC598D005BDE24 /* Build configuration list for PBXNativeTarget "Swish" */;
+			buildPhases = (
+				CA273BA521EC598B005BDE24 /* Sources */,
+				CA273BA621EC598B005BDE24 /* Frameworks */,
+				CA273BA721EC598B005BDE24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swish;
+			productName = Hoops;
+			productReference = CA273BA921EC598B005BDE24 /* Swish.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CA273BBC21EC598D005BDE24 /* SwishTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA273BD421EC598D005BDE24 /* Build configuration list for PBXNativeTarget "SwishTests" */;
+			buildPhases = (
+				CA273BB921EC598D005BDE24 /* Sources */,
+				CA273BBA21EC598D005BDE24 /* Frameworks */,
+				CA273BBB21EC598D005BDE24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA273BBF21EC598D005BDE24 /* PBXTargetDependency */,
+			);
+			name = SwishTests;
+			productName = HoopsTests;
+			productReference = CA273BBD21EC598D005BDE24 /* SwishTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CA273BC721EC598D005BDE24 /* SwishUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA273BD721EC598D005BDE24 /* Build configuration list for PBXNativeTarget "SwishUITests" */;
+			buildPhases = (
+				CA273BC421EC598D005BDE24 /* Sources */,
+				CA273BC521EC598D005BDE24 /* Frameworks */,
+				CA273BC621EC598D005BDE24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA273BCA21EC598D005BDE24 /* PBXTargetDependency */,
+			);
+			name = SwishUITests;
+			productName = HoopsUITests;
+			productReference = CA273BC821EC598D005BDE24 /* SwishUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CA273BA121EC598B005BDE24 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Cazamere Comrie";
+				TargetAttributes = {
+					CA273BA821EC598B005BDE24 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					CA273BBC21EC598D005BDE24 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = CA273BA821EC598B005BDE24;
+					};
+					CA273BC721EC598D005BDE24 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = CA273BA821EC598B005BDE24;
+					};
+				};
+			};
+			buildConfigurationList = CA273BA421EC598B005BDE24 /* Build configuration list for PBXProject "Swish" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CA273BA021EC598B005BDE24;
+			productRefGroup = CA273BAA21EC598B005BDE24 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CA273BA821EC598B005BDE24 /* Swish */,
+				CA273BBC21EC598D005BDE24 /* SwishTests */,
+				CA273BC721EC598D005BDE24 /* SwishUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CA273BA721EC598B005BDE24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */,
+				CA273BB421EC598D005BDE24 /* Assets.xcassets in Resources */,
+				CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA273BBB21EC598D005BDE24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA273BC621EC598D005BDE24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CA273BA521EC598B005BDE24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */,
+				CA273BAD21EC598B005BDE24 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA273BB921EC598D005BDE24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA273BC221EC598D005BDE24 /* SwishTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA273BC421EC598D005BDE24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA273BCD21EC598D005BDE24 /* SwishUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CA273BBF21EC598D005BDE24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA273BA821EC598B005BDE24 /* Swish */;
+			targetProxy = CA273BBE21EC598D005BDE24 /* PBXContainerItemProxy */;
+		};
+		CA273BCA21EC598D005BDE24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA273BA821EC598B005BDE24 /* Swish */;
+			targetProxy = CA273BC921EC598D005BDE24 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CA273BB021EC598B005BDE24 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA273BB121EC598B005BDE24 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA273BB621EC598D005BDE24 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CA273BCF21EC598D005BDE24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CA273BD021EC598D005BDE24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CA273BD221EC598D005BDE24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7WP78UA9GF;
+				INFOPLIST_FILE = Swish/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = C.Swish;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CA273BD321EC598D005BDE24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7WP78UA9GF;
+				INFOPLIST_FILE = Swish/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = C.Swish;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		CA273BD521EC598D005BDE24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HoopsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = C.HoopsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swish.app/Swish";
+			};
+			name = Debug;
+		};
+		CA273BD621EC598D005BDE24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HoopsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = C.HoopsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swish.app/Swish";
+			};
+			name = Release;
+		};
+		CA273BD821EC598D005BDE24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HoopsUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = C.HoopsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Hoops;
+			};
+			name = Debug;
+		};
+		CA273BD921EC598D005BDE24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = HoopsUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = C.HoopsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Hoops;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CA273BA421EC598B005BDE24 /* Build configuration list for PBXProject "Swish" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA273BCF21EC598D005BDE24 /* Debug */,
+				CA273BD021EC598D005BDE24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA273BD121EC598D005BDE24 /* Build configuration list for PBXNativeTarget "Swish" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA273BD221EC598D005BDE24 /* Debug */,
+				CA273BD321EC598D005BDE24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA273BD421EC598D005BDE24 /* Build configuration list for PBXNativeTarget "SwishTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA273BD521EC598D005BDE24 /* Debug */,
+				CA273BD621EC598D005BDE24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA273BD721EC598D005BDE24 /* Build configuration list for PBXNativeTarget "SwishUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA273BD821EC598D005BDE24 /* Debug */,
+				CA273BD921EC598D005BDE24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CA273BA121EC598B005BDE24 /* Project object */;
+}

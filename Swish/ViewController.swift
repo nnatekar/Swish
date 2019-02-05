@@ -22,7 +22,10 @@ import ARKit
 import Each
 class ViewController: UIViewController, ARSCNViewDelegate {
     
-
+    @IBOutlet weak var timerLabel: UILabel!
+    var gameTimer = Timer()
+    var gameTime = Int()
+    
     @IBOutlet weak var planeDetected: UILabel!
     
     @IBOutlet weak var sceneView: ARSCNView!
@@ -31,6 +34,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
         self.configuration.planeDetection = .horizontal
@@ -40,6 +44,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
+        
+        // add timer
+        gameTime = 5 // CHANGE GAME TIME AS NEEDED
+        gameTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { timer in
+            self.timerLabel.text = "Time: \(self.gameTime)"
+            if(self.gameTime > 0){
+                self.gameTime -= 1
+            }
+            else{
+                self.gameTimer.invalidate()
+            }
+        })
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

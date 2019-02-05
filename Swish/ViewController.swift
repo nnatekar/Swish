@@ -19,6 +19,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var power: Float = 1
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
+    //var basketAdded: Bool {
+    //    return self.sceneView.scene.rootNode.childNode{nibName;: "ball" recursively: false} != nil
+    //}
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
@@ -57,7 +60,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
         let position = location + orientation
         let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
-        ball.geometry?.firstMaterial?.diffuse.contents = #imageLiteral(resourceName: "ball")
+        ball.geometry?.firstMaterial?.diffuse.contents = UIColor.blue 
         ball.position = position
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
         ball.physicsBody = body
@@ -80,8 +83,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
-            let basketScene = SCNScene(named: "Basketball.scnassets/Basketball.scn")
-            let basketNode = basketScene?.rootNode.childNode(withName: "Basket", recursively: false)
+            let basketScene = SCNScene(named: "Ball.scn")
+            let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
             let positionOfPlane = hitTestResult.worldTransform.columns.3
             let xPosition = positionOfPlane.x
             let yPosition = positionOfPlane.y
@@ -105,7 +108,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         DispatchQueue.main.async {
             self.planeDetected.isHidden = false
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.planeDetected.isHidden = true
         }
     }

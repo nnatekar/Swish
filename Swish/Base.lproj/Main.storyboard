@@ -13,29 +13,37 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Hoops" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Swish" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="17N-LB-BWE">
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="17N-LB-BWE">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </arscnView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yfl-qu-VBL">
-                                <rect key="frame" x="159" y="318" width="57" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yfl-qu-VBL">
+                                <rect key="frame" x="159" y="318.5" width="57" height="30"/>
                                 <state key="normal" title="SHOOT!"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Detected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z53-fx-q1e">
-                                <rect key="frame" x="166" y="51" width="71" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detected" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z53-fx-q1e">
+                                <rect key="frame" x="152" y="55" width="71" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="17N-LB-BWE" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="M87-cN-ScT"/>
+                            <constraint firstItem="Z53-fx-q1e" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="O8U-2B-m5g"/>
+                            <constraint firstItem="17N-LB-BWE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Xs0-dg-mIe"/>
+                            <constraint firstItem="Z53-fx-q1e" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="35" id="ZS1-xc-bPa"/>
+                            <constraint firstItem="17N-LB-BWE" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="m5e-5u-2gK"/>
+                            <constraint firstItem="Z53-fx-q1e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nF5-k1-q9n"/>
+                            <constraint firstItem="Yfl-qu-VBL" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="naV-gY-BGE"/>
+                            <constraint firstItem="Yfl-qu-VBL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vgB-kC-9e2"/>
+                            <constraint firstItem="17N-LB-BWE" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="yni-cb-j82"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>

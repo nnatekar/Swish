@@ -14,7 +14,6 @@ Basic notes:
  3. Both basketball and backboard look boring, need to find and add textures
  4. NEED TO ADD POINT SYSTEM! Just +2 whenever it goes in initially and then add distance for three pointers-accumulate points in the background and pop up +2 or +3 in top right-add two button to same place on Main.storyboard-simple if statement
  5. Add timer-just 30 seconds initially to get score and then display final score-then reset to 0-maybe need to add a timer button to the HUD just for now to test all the mechanics
- 6. Add simple login screen?
  
  */
 

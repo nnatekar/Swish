@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swish/ViewController.swift"
+            timestampString = "571791905.720775"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "ViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.sceneView.getter : weak Swift.Optional&lt;__C.ARSCNView&gt;"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571031001.488337"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.sceneView.setter : weak Swift.Optional&lt;__C.ARSCNView&gt;"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571031001.490216"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; Swish.ViewController"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571031001.491998"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "180">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Swish.ViewController&gt;"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571031001.493771"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "156">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swish/ViewController.swift"
+            timestampString = "571791905.749451"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
+            landmarkName = "renderer(_:didAdd:for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Swish/ViewController.swift"
+            timestampString = "571791905.749946"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "ViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.planeDetected.getter : weak Swift.Optional&lt;__C.UILabel&gt;"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571047398.78694"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.planeDetected.setter : weak Swift.Optional&lt;__C.UILabel&gt;"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571047398.788897"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; Swish.ViewController"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571047398.791064"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swish.ViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Swish.ViewController&gt;"
+                  moduleName = "Swish"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Cazamere/Swish/Swish/ViewController.swift"
+                  timestampString = "571047398.792891"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "26"
+                  endingLineNumber = "26"
+                  offsetFromSymbolStart = "56">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

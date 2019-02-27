@@ -34,7 +34,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
         self.configuration.planeDetection = .horizontal

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		61C2E032C22C73BE161A64F6 /* Pods_Swish.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */; };
+		7C37A3C422272A8D00042F32 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C322272A8D00042F32 /* MenuController.swift */; };
+		7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C522272C0E00042F32 /* OptionsController.swift */; };
+		7C37A3C8222734CC00042F32 /* MultipeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C7222734CC00042F32 /* MultipeerSession.swift */; };
 		CA273BAD21EC598B005BDE24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAC21EC598B005BDE24 /* AppDelegate.swift */; };
 		CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAE21EC598B005BDE24 /* ViewController.swift */; };
 		CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB021EC598B005BDE24 /* Main.storyboard */; };
@@ -38,6 +41,9 @@
 
 /* Begin PBXFileReference section */
 		656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swish.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C37A3C322272A8D00042F32 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		7C37A3C522272C0E00042F32 /* OptionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsController.swift; sourceTree = "<group>"; };
+		7C37A3C7222734CC00042F32 /* MultipeerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSession.swift; sourceTree = "<group>"; };
 		8306D5EA21388E31D6428686 /* Pods-Swish.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.debug.xcconfig"; sourceTree = "<group>"; };
 		A7CE148EB475BDDB44407694 /* Pods-Swish.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.release.xcconfig"; sourceTree = "<group>"; };
 		CA273BA921EC598B005BDE24 /* Swish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swish.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,7 +112,6 @@
 				CA273BAB21EC598B005BDE24 /* Swish */,
 				CA273BC021EC598D005BDE24 /* SwishTests */,
 				CA273BCB21EC598D005BDE24 /* SwishUITests */,
-				CA273BAA21EC598B005BDE24 /* Products */,
 				466BFCD0E4DD51A08791ECB6 /* Pods */,
 				57F6DD5EEA5E6437A98259E8 /* Frameworks */,
 			);
@@ -120,19 +125,24 @@
 				CA273BC821EC598D005BDE24 /* SwishUITests.xctest */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		CA273BAB21EC598B005BDE24 /* Swish */ = {
 			isa = PBXGroup;
 			children = (
+				7C37A3C322272A8D00042F32 /* MenuController.swift */,
 				CA273BAC21EC598B005BDE24 /* AppDelegate.swift */,
 				CA273BAE21EC598B005BDE24 /* ViewController.swift */,
 				CA273BB021EC598B005BDE24 /* Main.storyboard */,
+				CA273BAA21EC598B005BDE24 /* Products */,
 				CA273BB321EC598D005BDE24 /* Assets.xcassets */,
 				CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */,
 				CA273BB821EC598D005BDE24 /* Info.plist */,
 				CA5A147022091ECD003F5656 /* Ball.scn */,
 				CA5A14AE220922F2003F5656 /* Bball.scnassets */,
+				7C37A3C522272C0E00042F32 /* OptionsController.swift */,
+				7C37A3C7222734CC00042F32 /* MultipeerSession.swift */,
 			);
 			path = Swish;
 			sourceTree = "<group>";
@@ -338,6 +348,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */,
+				7C37A3C422272A8D00042F32 /* MenuController.swift in Sources */,
+				7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */,
+				7C37A3C8222734CC00042F32 /* MultipeerSession.swift in Sources */,
 				CA273BAD21EC598B005BDE24 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

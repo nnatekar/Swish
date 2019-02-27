@@ -23,8 +23,8 @@ import Each
 class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet weak var timerLabel: UILabel!
-    var gameTimer = Timer()
     var gameTime = Int()
+    var gameTimer = Timer()
     
     @IBOutlet weak var planeDetected: UILabel!
     
@@ -45,16 +45,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         tapGestureRecognizer.cancelsTouchesInView = false
         
         // add timer
-        gameTime = 5 // CHANGE GAME TIME AS NEEDED
-        gameTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { timer in
-            self.timerLabel.text = "Time: \(self.gameTime)"
-            if(self.gameTime > 0){
-                self.gameTime -= 1
-            }
-            else{
-                self.gameTimer.invalidate()
-            }
-        })
+        gameTime = 30 // CHANGE GAME TIME AS NEEDED
+        timerLabel.text = "Time: \(gameTime)"
+        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
+    }
+    
+    @objc func incrementTimer(){
+        gameTime -= 1
+        timerLabel.text = "Time: \(gameTime)"
+        
+        if(gameTime <= 0){
+            gameTimer.invalidate()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

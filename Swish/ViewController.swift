@@ -20,7 +20,7 @@ Basic notes:
 import UIKit
 import ARKit
 import Each
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     @IBOutlet weak var timerLabel: UILabel!
     var gameTime = Int()
@@ -35,11 +35,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var basketAdded: Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
-        self.configuration.planeDetection = .horizontal
-        self.sceneView.session.run(configuration)
-        self.sceneView.autoenablesDefaultLighting = true
-        self.sceneView.delegate = self
+        
+        // start view's AR session
+        sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
+        configuration.planeDetection = [.horizontal, .vertical]
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.session.run(configuration)
+        
+        // Set delegates for AR session and AR scene
+        sceneView.delegate = self
+        sceneView.session.delegate = self
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
@@ -57,6 +63,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if(gameTime <= 0){
             gameTimer.invalidate()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        // stop the AR session if leaving the view
+        sceneView.session.pause()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -128,7 +139,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    
+    // called from ARSCNViewDelegate
+    // SCNNode relating to a new anchor was added to the scene
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard anchor is ARPlaneAnchor else {return}
         DispatchQueue.main.async {

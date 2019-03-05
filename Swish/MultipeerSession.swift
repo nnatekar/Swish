@@ -19,8 +19,8 @@ class MultipeerSession: NSObject{
     
     private let dataHandler: (Data, MCPeerID) -> Void
     
-    init(peerID: String, receivedDataHandler: @escaping (Data, MCPeerID) -> Void){
-        self.peerID = MCPeerID(displayName: peerID)
+    init(peerID: MCPeerID, receivedDataHandler: @escaping (Data, MCPeerID) -> Void){
+        self.peerID = peerID
         dataHandler = receivedDataHandler
         
         super.init()
@@ -67,7 +67,7 @@ extension MultipeerSession: MCSessionDelegate{
     // MCSessionState.connected = user accepted invite and is connected to session
     // MCSessionState.notConnected = user declined invite/connection failed/disconnected
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        <#code#>
+        
     }
     
     // received Data object from a peer
@@ -78,12 +78,12 @@ extension MultipeerSession: MCSessionDelegate{
     // nearby peer opens bytestream connection to the local peer(user)
     // stream = local endpoint for bytestream
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        <#code#>
+        
     }
     
     // local peer(user) began receiving resource from nearby peer
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        <#code#>
+        
     }
     
     // local peer(user) finished receiving resource from nearby peer

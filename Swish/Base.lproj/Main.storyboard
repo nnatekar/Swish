@@ -58,9 +58,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RqI-ld-4Dt">
-                                <rect key="frame" x="151" y="753" width="114" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RqI-ld-4Dt">
+                                <rect key="frame" x="150" y="778" width="114" height="30"/>
                                 <state key="normal" title="Send World Map"/>
                                 <connections>
                                     <action selector="shareSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="saa-pw-OT0"/>
@@ -81,6 +80,8 @@
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="top" secondItem="17N-LB-BWE" secondAttribute="top" id="jlv-Og-xsL"/>
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="width" secondItem="17N-LB-BWE" secondAttribute="width" id="kbE-w7-D1q"/>
                             <constraint firstItem="Z53-fx-q1e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nF5-k1-q9n"/>
+                            <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" multiplier="1.75" id="wLT-wJ-fva"/>
+                            <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="wXE-Q3-EAO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="2Yb-hv-CTP" secondAttribute="bottom" constant="398" id="wnH-f8-WLs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -232,9 +233,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aaF-t7-sKH">
-                                <rect key="frame" x="178" y="503" width="58" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aaF-t7-sKH">
+                                <rect key="frame" x="178" y="98.5" width="58" height="30"/>
                                 <state key="normal" title="Start-oh"/>
                                 <connections>
                                     <action selector="startButtonClicked:" destination="6vp-N7-mdh" eventType="touchUpInside" id="k2t-FE-Nh9"/>
@@ -242,6 +242,10 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="aaF-t7-sKH" firstAttribute="centerY" secondItem="NKJ-cs-EFF" secondAttribute="centerY" multiplier="0.25" id="XkY-c9-FnP"/>
+                            <constraint firstItem="aaF-t7-sKH" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="kmh-79-Lbo"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="NKJ-cs-EFF"/>
                     </view>
                     <connections>
@@ -255,7 +259,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="button_background" width="224" height="70"/>
+        <image name="button_background" width="448" height="140"/>
         <image name="logo" width="533" height="230"/>
         <image name="menu_background" width="966" height="1277"/>
     </resources>

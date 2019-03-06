@@ -53,8 +53,7 @@ class MultipeerSession: NSObject{
     
     func sendToAllPeers(_ data: Data){
         do{
-            // unreliable sends data right away, so it's critical for games
-            try session.send(data, toPeers: session.connectedPeers, with: .unreliable)
+            try session.send(data, toPeers: session.connectedPeers, with: .reliable)
         } catch{
             print("Error: Could not send data to peers: \(error.localizedDescription)")
         }
@@ -67,7 +66,6 @@ extension MultipeerSession: MCSessionDelegate{
     // MCSessionState.connected = user accepted invite and is connected to session
     // MCSessionState.notConnected = user declined invite/connection failed/disconnected
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        
     }
     
     // received Data object from a peer

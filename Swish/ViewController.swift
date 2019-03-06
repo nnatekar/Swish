@@ -41,6 +41,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var power: Float = 1
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
+    
+    var receivingForce: SCNVector3?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -113,8 +116,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         body.restitution = 0.2
         ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true) // TODO: change from tap and hold to flick
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
+
+        let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
+        self.multipeerSession.sendToAllPeers(ballpower)
         
-        
+        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: ball, requiringSecureCoding: true)
+                else { fatalError("can't encode ball") }
+        self.multipeerSession.sendToAllPeers(data)
     } // create and shoot ball
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
@@ -159,7 +167,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     func dataHandler(_ data: Data, from peer: MCPeerID) {
-        
         do {
             if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
                 // Run the session with the received world map.
@@ -171,16 +178,41 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 // Remember who provided the map for showing UI feedback.
                 mapProvider = peer
             }
-            else
+            else{
                 if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
                     // Add anchor to the session, ARSCNView delegate adds visible content.
                     sceneView.session.add(anchor: anchor)
-                }
-                else {
+                } 
+                else{
                     print("unknown data recieved from \(peer)")
+                }
             }
         } catch {
             print("can't decode data recieved from \(peer)")
+        }
+        do{
+            // get the ball from other player and add it to scene
+            if let ball = try NSKeyedUnarchiver.unarchivedObject(ofClass: SCNNode.self, from: data){
+                let transform = sceneView.pointOfView!.transform
+                let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
+                ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true)
+                sceneView.scene.rootNode.addChildNode(ball)
+                print("Adding a new ball!")
+            }
+        }
+        catch{
+            print("Object isn't scenenode either")
+        }
+        
+        do{
+            // get the ball from other player and add it to scene
+            if let force : Float = data.withUnsafeBytes({ $0.pointee }){
+                power = force
+                print("got the force")
+            }
+        }
+        catch{
+            print("Object isn't scenenode either")
         }
     }
     
@@ -195,6 +227,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             self.planeDetected.isHidden = true
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears
+    
+    // called every frame
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
+    }
     
     // MARK: - ARSessionDelegate
     

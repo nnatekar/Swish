@@ -24,6 +24,7 @@ import ARKit
 import Each
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
     
+    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     var gameTimer = Timer()
     var gameTime = Int()
@@ -76,9 +77,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
             print(score)
             DispatchQueue.main.async {
-                contact.nodeA.removeFromParentNode()
-                contact.nodeB.removeFromParentNode()
-                //self.scoreLabel.text = String(self.score)
+            //    contact.nodeA.removeFromParentNode()
+            //    contact.nodeB.removeFromParentNode()
+             //   self.scoreLabel.text = String(self.score)
             }
         }
     }
@@ -96,6 +97,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if self.basketAdded == true {
             self.timer.stop()
             self.shootBall()
+            //print("shot")
         }
         self.power = 1
     } // called when you lift finger off-calls shootBall() to shoot the ball da doiiii
@@ -118,7 +120,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         body.restitution = 0.2
         ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true) // TODO: change from tap and hold to flick
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
-        ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
+        ball.physicsBody?.contactTestBitMask = CollisionCategory.detectionCategory.rawValue
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
         
         
@@ -133,11 +135,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
     
-    struct CollisionCategory: OptionSet {
-        let rawValue: Int
-        static let ballCategory  = CollisionCategory(rawValue: 1 << 0)
-        static let detectionCategory = CollisionCategory(rawValue: 1 << 1)
-    }
     
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
@@ -153,6 +150,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
             detectionNode?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
             detectionNode?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
+            //added
+            let detectionNode2 = basketScene?.rootNode.childNode(withName: "detection", recursively: false)
+            detectionNode2?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+            detectionNode2?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
             self.sceneView.scene.rootNode.addChildNode(basketNode!)
             self.sceneView.scene.rootNode.addChildNode(detectionNode!)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -189,6 +190,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.timer.stop()
     }
     
+}
+
+struct CollisionCategory: OptionSet {
+    let rawValue: Int
+    static let ballCategory  = CollisionCategory(rawValue: 1 << 0)
+    static let detectionCategory = CollisionCategory(rawValue: 1 << 1)
 }
 
 func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {

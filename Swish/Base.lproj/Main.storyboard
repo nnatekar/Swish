@@ -36,8 +36,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Points:" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoy-8h-SDy">
-                                        <rect key="frame" x="315" y="22" width="52" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Points:" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoy-8h-SDy">
+                                        <rect key="frame" x="267" y="27" width="52" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -72,6 +72,7 @@
                     <connections>
                         <outlet property="planeDetected" destination="Z53-fx-q1e" id="aDW-jm-zp8"/>
                         <outlet property="sceneView" destination="17N-LB-BWE" id="7Mg-3V-FhZ"/>
+                        <outlet property="scoreLabel" destination="NyA-UG-aK2" id="I1G-Rd-Itn"/>
                         <outlet property="timerLabel" destination="PSf-78-3bA" id="OH2-xU-aOL"/>
                     </connections>
                 </viewController>

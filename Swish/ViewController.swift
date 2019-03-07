@@ -20,26 +20,44 @@ Basic notes:
 import UIKit
 import ARKit
 import Each
-class ViewController: UIViewController, ARSCNViewDelegate {
+import MultipeerConnectivity
+class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     @IBOutlet weak var timerLabel: UILabel!
     var gameTime = Int()
     var gameTimer = Timer()
     
     @IBOutlet weak var planeDetected: UILabel!
+    @IBOutlet weak var multiPlayerStatus: UILabel!
+    
+    var selfHandle: MCPeerID?
+    var multipeerSession: MultipeerSession!
+    var mapProvider: MCPeerID?
+
+    var isMultiplayer: Bool = false
     
     @IBOutlet weak var sceneView: ARSCNView!
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
+    
+    var receivingForce: SCNVector3?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
-        self.configuration.planeDetection = .horizontal
-        self.sceneView.session.run(configuration)
-        self.sceneView.autoenablesDefaultLighting = true
-        self.sceneView.delegate = self
+        
+        // start view's AR session
+        sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
+        configuration.planeDetection = [.horizontal, .vertical]
+        sceneView.autoenablesDefaultLighting = true
+        sceneView.session.run(configuration)
+        
+        multipeerSession = MultipeerSession(peerID: selfHandle!, receivedDataHandler: dataHandler)
+        // Set delegates for AR session and AR scene
+        sceneView.delegate = self
+        sceneView.session.delegate = self
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
@@ -57,6 +75,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if(gameTime <= 0){
             gameTimer.invalidate()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        // stop the AR session if leaving the view
+        sceneView.session.pause()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -93,8 +116,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         body.restitution = 0.2
         ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true) // TODO: change from tap and hold to flick
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
+
+        let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
+        self.multipeerSession.sendToAllPeers(ballpower)
         
-        
+        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: ball, requiringSecureCoding: true)
+                else { fatalError("can't encode ball") }
+        self.multipeerSession.sendToAllPeers(data)
     } // create and shoot ball
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
@@ -128,7 +156,68 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func shareSession(_ button: UIButton) {
+        sceneView.session.getCurrentWorldMap { worldMap, error in
+            guard let map = worldMap
+                else { print("Error: \(error!.localizedDescription)"); return }
+            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                else { fatalError("can't encode map") }
+            self.multipeerSession.sendToAllPeers(data)
+        }
+    }
     
+    func dataHandler(_ data: Data, from peer: MCPeerID) {
+        do {
+            if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+                // Run the session with the received world map.
+                let configuration = ARWorldTrackingConfiguration()
+                configuration.planeDetection = .horizontal
+                configuration.initialWorldMap = worldMap
+                sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+                
+                // Remember who provided the map for showing UI feedback.
+                mapProvider = peer
+            }
+            else{
+                if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
+                    // Add anchor to the session, ARSCNView delegate adds visible content.
+                    sceneView.session.add(anchor: anchor)
+                } 
+                else{
+                    print("unknown data recieved from \(peer)")
+                }
+            }
+        } catch {
+            print("can't decode data recieved from \(peer)")
+        }
+        do{
+            // get the ball from other player and add it to scene
+            if let ball = try NSKeyedUnarchiver.unarchivedObject(ofClass: SCNNode.self, from: data){
+                let transform = sceneView.pointOfView!.transform
+                let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
+                ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true)
+                sceneView.scene.rootNode.addChildNode(ball)
+                print("Adding a new ball!")
+            }
+        }
+        catch{
+            print("Object isn't scenenode either")
+        }
+        
+        do{
+            // get the ball from other player and add it to scene
+            if let force : Float = data.withUnsafeBytes({ $0.pointee }){
+                power = force
+                print("got the force")
+            }
+        }
+        catch{
+            print("Object isn't scenenode either")
+        }
+    }
+    
+    // called from ARSCNViewDelegate
+    // SCNNode relating to a new anchor was added to the scene
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard anchor is ARPlaneAnchor else {return}
         DispatchQueue.main.async {
@@ -138,6 +227,78 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             self.planeDetected.isHidden = true
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears
+    
+    // called every frame
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        
+    }
+    
+    // MARK: - ARSessionDelegate
+    
+    // called when the state of the camera is changed
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+        updateMultiPlayerStatus(for: session.currentFrame!, trackingState: camera.trackingState)
+    }
+    
+    // called when AR session fails
+    func session(_ session: ARSession, didFailWithError error: Error) {
+        // Present an error message to the user.
+        multiPlayerStatus.text = "Session failed: \(error.localizedDescription)"
+        resetTracking()
+    }
+    
+    
+    //resets the AR session configuration in case of errors
+    func resetTracking() {
+        sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+    }
+    
+    // MARK: - AR session management
+    
+    private func updateMultiPlayerStatus(for frame: ARFrame, trackingState: ARCamera.TrackingState) {
+        // Update the UI to provide feedback on the state of the AR experience.
+        let message: String
+        
+        switch trackingState {
+        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
+            // No planes detected; provide instructions for this app's AR interactions.
+            message = "Move around to map the environment, or wait to join a shared session."
+            
+        case .normal where !multipeerSession.connectedPeers.isEmpty && mapProvider == nil:
+            let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
+            message = "Connected with \(peerNames)."
+            
+        case .notAvailable:
+            message = "Tracking unavailable."
+            
+        case .limited(.excessiveMotion):
+            message = "Tracking limited - Move the device more slowly."
+            
+        case .limited(.insufficientFeatures):
+            message = "Tracking limited - Point the device at an area with visible surface detail, or improve lighting conditions."
+            
+        case .limited(.initializing) where mapProvider != nil,
+             .limited(.relocalizing) where mapProvider != nil:
+            message = "Received map from \(mapProvider!.displayName)."
+            
+        case .limited(.relocalizing):
+            message = "Resuming session — move to where you were when the session was interrupted."
+            
+        case .limited(.initializing):
+            message = "Initializing AR session."
+            
+        default:
+            // No feedback needed when tracking is normal and planes are visible.
+            // (Nor when in unreachable limited-tracking states.)
+            message = ""
+            
+        }
+        
+        multiPlayerStatus.text = message
+        multiPlayerStatus.isHidden = message.isEmpty
+    }
+    
+    
     
     func removeEveryOtherBall() {
         self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in

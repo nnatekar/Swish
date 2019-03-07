@@ -37,6 +37,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
     var score: Int = 0
+    
+    // added
+    
+    
+    // var add1 = false
+    // var add2 = false
+    // var add = [add1, add2]
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -69,13 +77,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
-            
+            //add2 = true
             if (contact.nodeA.name! == "Basketball" || contact.nodeB.name! == "Basketball") {
                 score+=5
+                //add1 = true
             }else{
                 score+=1
             }
             print(score)
+            // added
+            // if (add2 == true && add1 = false) {score-=5}
             DispatchQueue.main.async {
             //    contact.nodeA.removeFromParentNode()
             //    contact.nodeB.removeFromParentNode()
@@ -154,6 +165,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let detectionNode2 = basketScene?.rootNode.childNode(withName: "detection", recursively: false)
             detectionNode2?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
             detectionNode2?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
+            
+            //
             self.sceneView.scene.rootNode.addChildNode(basketNode!)
             self.sceneView.scene.rootNode.addChildNode(detectionNode!)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {

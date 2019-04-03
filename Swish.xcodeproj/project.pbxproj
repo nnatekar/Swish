@@ -13,6 +13,7 @@
 		7C37A3C422272A8D00042F32 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C322272A8D00042F32 /* MenuController.swift */; };
 		7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C522272C0E00042F32 /* OptionsController.swift */; };
 		7C37A3C8222734CC00042F32 /* MultipeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C7222734CC00042F32 /* MultipeerSession.swift */; };
+		7C93D43A225486E9006F60B8 /* NetworkGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C93D439225486E9006F60B8 /* NetworkGame.swift */; };
 		CA273BAD21EC598B005BDE24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAC21EC598B005BDE24 /* AppDelegate.swift */; };
 		CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAE21EC598B005BDE24 /* ViewController.swift */; };
 		CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB021EC598B005BDE24 /* Main.storyboard */; };
@@ -48,6 +49,7 @@
 		7C37A3C322272A8D00042F32 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		7C37A3C522272C0E00042F32 /* OptionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsController.swift; sourceTree = "<group>"; };
 		7C37A3C7222734CC00042F32 /* MultipeerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSession.swift; sourceTree = "<group>"; };
+		7C93D439225486E9006F60B8 /* NetworkGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkGame.swift; sourceTree = "<group>"; };
 		8306D5EA21388E31D6428686 /* Pods-Swish.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.debug.xcconfig"; sourceTree = "<group>"; };
 		A7CE148EB475BDDB44407694 /* Pods-Swish.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.release.xcconfig"; sourceTree = "<group>"; };
 		CA273BA921EC598B005BDE24 /* Swish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swish.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				7C37A3C7222734CC00042F32 /* MultipeerSession.swift */,
+				7C93D439225486E9006F60B8 /* NetworkGame.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C93D43A225486E9006F60B8 /* NetworkGame.swift in Sources */,
 				CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */,
 				7C37A3C422272A8D00042F32 /* MenuController.swift in Sources */,
 				5207CAEA223125C300BB32F5 /* BoardAnchor.swift in Sources */,

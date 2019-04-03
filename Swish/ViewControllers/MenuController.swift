@@ -31,5 +31,12 @@ class MenuController : UIViewController {
         self.gameTypeStackView.isHidden = true
         self.multiplayerStackView.isHidden = false
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "hostGame"){
+            let vc = segue.destination as! OptionsController
+            vc.isHosting = true
+        }
+    }
 }
 

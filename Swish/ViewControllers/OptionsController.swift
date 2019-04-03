@@ -12,6 +12,7 @@ import MultipeerConnectivity
 
 class OptionsController: UIViewController {
     @IBOutlet weak var handleField: UITextField!
+    var isHosting: Bool = false
     override func viewDidLoad() {
         // temporary until we finish this view controller
         

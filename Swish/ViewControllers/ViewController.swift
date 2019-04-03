@@ -44,8 +44,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     var receivingForce: SCNVector3?
     
+    var gameBoard = GameBoard()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sceneView.scene.rootNode.addChildNode(gameBoard)
         
         // start view's AR session
         sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
@@ -143,6 +147,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             let yPosition = positionOfPlane.y
             let zPosition = positionOfPlane.z
             basketNode?.position = SCNVector3(xPosition,yPosition,zPosition)
+            let anchor = ARAnchor(transform: hitTestResult.worldTransform)
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
             self.sceneView.scene.rootNode.addChildNode(basketNode!)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -204,15 +209,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             print("Object isn't scenenode either")
         }
         
-        do{
-            // get the ball from other player and add it to scene
-            if let force : Float = data.withUnsafeBytes({ $0.pointee }){
-                power = force
-                print("got the force")
-            }
-        }
-        catch{
-            print("Object isn't scenenode either")
+        // get the ball from other player and add it to scene
+        if let force : Float = data.withUnsafeBytes({ $0.pointee }){
+            power = force
+            print("got the force")
         }
     }
     

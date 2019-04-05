@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B23B6CD22572AC3007CB41F /* ballTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = 0B23B6CC22572AC3007CB41F /* ballTexture.png */; };
+		0B23B6CF22572F4F007CB41F /* backboard.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0B23B6CE22572F4F007CB41F /* backboard.jpg */; };
 		61C2E032C22C73BE161A64F6 /* Pods_Swish.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */; };
 		7C37A3C422272A8D00042F32 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C322272A8D00042F32 /* MenuController.swift */; };
 		7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C522272C0E00042F32 /* OptionsController.swift */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B23B6CC22572AC3007CB41F /* ballTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ballTexture.png; path = ../../../Downloads/ballTexture.png; sourceTree = "<group>"; };
+		0B23B6CE22572F4F007CB41F /* backboard.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = backboard.jpg; path = ../../../Downloads/backboard.jpg; sourceTree = "<group>"; };
 		656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swish.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C37A3C322272A8D00042F32 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		7C37A3C522272C0E00042F32 /* OptionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsController.swift; sourceTree = "<group>"; };
@@ -131,6 +135,8 @@
 		CA273BAB21EC598B005BDE24 /* Swish */ = {
 			isa = PBXGroup;
 			children = (
+				0B23B6CE22572F4F007CB41F /* backboard.jpg */,
+				0B23B6CC22572AC3007CB41F /* ballTexture.png */,
 				7C37A3C322272A8D00042F32 /* MenuController.swift */,
 				CA273BAC21EC598B005BDE24 /* AppDelegate.swift */,
 				CA273BAE21EC598B005BDE24 /* ViewController.swift */,
@@ -274,7 +280,9 @@
 				CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */,
 				CA5A14AF220922F2003F5656 /* Bball.scnassets in Resources */,
 				CA5A147122091ECD003F5656 /* Ball.scn in Resources */,
+				0B23B6CD22572AC3007CB41F /* ballTexture.png in Resources */,
 				CA273BB421EC598D005BDE24 /* Assets.xcassets in Resources */,
+				0B23B6CF22572F4F007CB41F /* backboard.jpg in Resources */,
 				CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -528,13 +536,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UY28FN56TS;
+				DEVELOPMENT_TEAM = BD8J83556U;
 				INFOPLIST_FILE = Swish/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = C.Swish1;
+				PRODUCT_BUNDLE_IDENTIFIER = C.Swish123;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -547,13 +555,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UY28FN56TS;
+				DEVELOPMENT_TEAM = BD8J83556U;
 				INFOPLIST_FILE = Swish/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = C.Swish1;
+				PRODUCT_BUNDLE_IDENTIFIER = C.Swish123;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -58,15 +58,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.delegate = self
         sceneView.session.delegate = self
         
+        // taps will set basketball
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
+        
+        // pans will determine angle of basketball
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(sender:)))
+        panGestureRecognizer.maximumNumberOfTouches = 1
+        panGestureRecognizer.minimumNumberOfTouches = 1
+        self.sceneView.addGestureRecognizer(panGestureRecognizer)
         
         // add timer
         gameTime = 30 // CHANGE GAME TIME AS NEEDED
         timerLabel.text = "Time: \(gameTime)"
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
     }
+    
     
     @objc func incrementTimer(){
         gameTime -= 1
@@ -82,25 +90,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.session.pause()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.basketAdded == true {
-            timer.perform(closure: { () -> NextStep in
-                self.power = self.power + 1
-                return .continue
-            })
-        }
-    } // called when you touch phone-if ball is on scene view, will add power to shot by holding
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.basketAdded == true {
-            self.timer.stop()
-            self.shootBall()
-        }
-        self.power = 1
-    } // called when you lift finger off-calls shootBall() to shoot the ball da doiiii
-    
-    func shootBall() {
-        
+    func shootBall(velocity: CGPoint, translation: CGPoint) {
         guard let pointOfView = self.sceneView.pointOfView else {return}
         self.removeEveryOtherBall()
         let transform = pointOfView.transform
@@ -108,13 +98,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
         let position = location + orientation
         let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
-        ball.geometry?.firstMaterial?.diffuse.contents = UIColor.blue // TODO: find texture and add
+        ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
         ball.position = position
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
         ball.physicsBody = body
         ball.name = "Basketball"
         body.restitution = 0.2
-        ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true) // TODO: change from tap and hold to flick
+        let velocityY = abs(Float(velocity.y)) / -100
+        ball.physicsBody?.applyForce(SCNVector3(0,3,velocityY), asImpulse: true) // TODO: Determine force to be applied
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
 
         let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
@@ -124,6 +115,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 else { fatalError("can't encode ball") }
         self.multipeerSession.sendToAllPeers(data)
     } // create and shoot ball
+    
+    @objc func handlePan(sender: UIPanGestureRecognizer){
+        guard let sceneView = sender.view as? ARSCNView else {return}
+        
+        if basketAdded == true {
+            let velocity = sender.velocity(in: sceneView);
+            let translation = sender.translation(in: sceneView)
+            shootBall(velocity: velocity, translation : translation);
+        }
+    }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
         guard let sceneView = sender.view as? ARSCNView else {return}
@@ -136,8 +137,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
-            let basketScene = SCNScene(named: "Ball.scn") // TODO: create nicer backboard
+            let basketScene = SCNScene(named: "Ball.scn")
+            
+            // Set backboard texture
+            basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
+            
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
+           
             let positionOfPlane = hitTestResult.worldTransform.columns.3
             let xPosition = positionOfPlane.x
             let yPosition = positionOfPlane.y

@@ -24,6 +24,7 @@ class GamesTableController: UIViewController{
 
 extension GamesTableController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
         let game = Globals.instance.games[indexPath.row]
         // join the selected game

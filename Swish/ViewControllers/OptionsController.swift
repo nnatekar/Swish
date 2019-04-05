@@ -12,13 +12,9 @@ import MultipeerConnectivity
 
 class OptionsController: UIViewController {
     @IBOutlet weak var handleField: UITextField!
-    var isHosting: Bool = false
     @IBOutlet weak var gamesTableContainer: UIView!
     
     override func viewDidLoad() {
-        if(isHosting){
-            // need to create multipeer session and pass it to
-        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -8,15 +8,15 @@
 import MultipeerConnectivity
 
 struct NetworkGame: Hashable {
-    var host: MCPeerID
+    var session: MCSession
     private var locationId: Int
     
     var location: GameTableLocation {
         return GameTableLocation.location(with: locationId)
     }
     
-    init(host: MCPeerID, locationId: Int = 0) {
-        self.host = host
+    init(session: MCSession, locationId: Int = 0) {
+        self.session = session
         self.locationId = locationId
     }
 }

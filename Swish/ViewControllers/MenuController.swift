@@ -34,8 +34,7 @@ class MenuController : UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "hostGame"){
-            let vc = segue.destination as! OptionsController
-            vc.isHosting = true
+            Globals.instance.isHosting = true
         }
     }
 }

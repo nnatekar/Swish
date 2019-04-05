@@ -12,16 +12,18 @@ class MultipeerSession: NSObject{
     static let serviceType = "ar-multi-swish"
     
     private let peerID : MCPeerID!
-    private var session: MCSession!
+    let host: MCPeerID!
+    var session: MCSession!
     private var advert: MCAdvertiserAssistant!
-    private var browser: MCNearbyServiceBrowser!
+    var browser: MCNearbyServiceBrowser!
     private var browserView: MCBrowserViewController!
     
-    private let dataHandler: (Data, MCPeerID) -> Void
+    let dataHandler: (Data, MCPeerID) -> Void
     
-    init(peerID: MCPeerID, receivedDataHandler: @escaping (Data, MCPeerID) -> Void){
+    init(peerID: MCPeerID, host: MCPeerID){
         self.peerID = peerID
-        dataHandler = receivedDataHandler
+        //dataHandler = receivedDataHandler
+        self.host = host
         
         super.init()
         
@@ -102,6 +104,8 @@ extension MultipeerSession: MCAdvertiserAssistantDelegate{
 extension MultipeerSession: MCNearbyServiceBrowserDelegate{
     // nearby peer was found
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        let game = NetworkGame(host: peerID, locationId: 0)
+        Globals.instance.games.append(game)
         
         //invite the found peer to the session
         browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)

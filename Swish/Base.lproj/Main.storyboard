@@ -229,23 +229,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Handle " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FF4-u5-QVg">
-                                <rect key="frame" x="115" y="433" width="185" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Handle " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FF4-u5-QVg">
+                                <rect key="frame" x="153" y="433" width="108.5" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aaF-t7-sKH">
-                                <rect key="frame" x="178" y="98.5" width="58" height="30"/>
+                                <rect key="frame" x="178" y="-281.5" width="58" height="789.5"/>
                                 <state key="normal" title="Start-oh"/>
                                 <connections>
                                     <action selector="startButtonClicked:" destination="6vp-N7-mdh" eventType="touchUpInside" id="k2t-FE-Nh9"/>
                                 </connections>
                             </button>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RFm-Jh-2sp">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RFm-Jh-2sp">
                                 <rect key="frame" x="87" y="508" width="240" height="266"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="sYQ-D4-7sL" kind="embed" id="Ku9-MD-HDv"/>
                                 </connections>
@@ -253,12 +251,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="RFm-Jh-2sp" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="QHt-ZV-hJX"/>
+                            <constraint firstItem="RFm-Jh-2sp" firstAttribute="centerX" secondItem="FF4-u5-QVg" secondAttribute="centerX" id="UKB-qn-hLB"/>
                             <constraint firstItem="aaF-t7-sKH" firstAttribute="centerY" secondItem="NKJ-cs-EFF" secondAttribute="centerY" multiplier="0.25" id="XkY-c9-FnP"/>
+                            <constraint firstItem="RFm-Jh-2sp" firstAttribute="leading" secondItem="NKJ-cs-EFF" secondAttribute="leading" constant="87" id="YeW-g6-buG"/>
+                            <constraint firstItem="RFm-Jh-2sp" firstAttribute="top" secondItem="zGv-rT-oeG" secondAttribute="top" constant="508" id="ed1-SD-dLz"/>
+                            <constraint firstItem="NKJ-cs-EFF" firstAttribute="bottom" secondItem="RFm-Jh-2sp" secondAttribute="bottom" constant="88" id="g9j-Kv-fnc"/>
+                            <constraint firstItem="RFm-Jh-2sp" firstAttribute="top" secondItem="aaF-t7-sKH" secondAttribute="bottom" id="gsj-Au-0B7"/>
                             <constraint firstItem="aaF-t7-sKH" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="kmh-79-Lbo"/>
+                            <constraint firstItem="RFm-Jh-2sp" firstAttribute="top" secondItem="FF4-u5-QVg" secondAttribute="bottom" constant="45" id="pkt-0R-M3b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NKJ-cs-EFF"/>
                     </view>
                     <connections>
+                        <outlet property="gamesTableContainer" destination="RFm-Jh-2sp" id="deX-xF-XIe"/>
                         <outlet property="handleField" destination="FF4-u5-QVg" id="0bn-C5-ttb"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="toGame" id="yfg-Sg-069"/>
                     </connections>
@@ -267,10 +273,10 @@
             </objects>
             <point key="canvasLocation" x="-404.34782608695656" y="12.723214285714285"/>
         </scene>
-        <!--View Controller-->
+        <!--Games Table Controller-->
         <scene sceneID="CLM-X4-3Fy">
             <objects>
-                <viewController id="sYQ-D4-7sL" sceneMemberID="viewController">
+                <viewController id="sYQ-D4-7sL" customClass="GamesTableController" customModule="Swish" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="H4u-GI-HD7">
                         <rect key="frame" x="0.0" y="0.0" width="240" height="266"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -301,7 +307,11 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="BcC-M4-uWI"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="UFZ-QU-v79" id="Mg6-XG-qGs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T0O-nU-PEV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

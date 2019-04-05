@@ -5,17 +5,18 @@
 //  Created by Jugal Jain on 4/2/19.
 //  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
+import MultipeerConnectivity
 
 struct NetworkGame: Hashable {
-    var name: String
+    var host: MCPeerID
     private var locationId: Int
     
     var location: GameTableLocation {
         return GameTableLocation.location(with: locationId)
     }
     
-    init(name: String? = nil, locationId: Int = 0) {
-        self.name = name ?? ""
+    init(host: MCPeerID, locationId: Int = 0) {
+        self.host = host
         self.locationId = locationId
     }
 }

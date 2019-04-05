@@ -57,7 +57,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.autoenablesDefaultLighting = true
         sceneView.session.run(configuration)
         
-        multipeerSession = MultipeerSession(peerID: selfHandle!, receivedDataHandler: dataHandler)
+        multipeerSession.dataHandler = dataHandler
         // Set delegates for AR session and AR scene
         sceneView.delegate = self
         sceneView.session.delegate = self

@@ -9,16 +9,23 @@ import MultipeerConnectivity
 
 struct NetworkGame: Hashable {
     var session: MCSession
+    var host: MCPeerID
     private var locationId: Int
     
-    var location: GameTableLocation {
-        return GameTableLocation.location(with: locationId)
+//    var location: GameTableLocation {
+//        return GameTableLocation.location(with: locationId)
+//    }
+    
+    var connectedPeers: [MCPeerID] {
+        return session.connectedPeers
     }
     
-    init(session: MCSession, locationId: Int = 0) {
+    init(host: MCPeerID, session: MCSession, locationId: Int = 0) {
+        self.host = host
         self.session = session
         self.locationId = locationId
     }
+    
 }
 
 struct GameTableLocation: Equatable, Hashable {

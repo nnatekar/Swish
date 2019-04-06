@@ -8,6 +8,10 @@
 
 import MultipeerConnectivity
 
+protocol browserDelegate: class{
+    func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame])
+}
+
 class MultipeerSession: NSObject{
     private let maxPeers: Int = kMCSessionMaximumNumberOfPeers - 1
     static let serviceType = "ar-multi-swish"
@@ -16,9 +20,9 @@ class MultipeerSession: NSObject{
     var session: MCSession!
     private var advert: MCNearbyServiceAdvertiser!
     var browser: MCNearbyServiceBrowser!
-    private var browserView: MCBrowserViewController!
     
-    let dataHandler: (Data, MCPeerID) -> Void
+    var dataHandler: ((Data, MCPeerID) -> Void)?
+    weak var delegate: browserDelegate?
     
     init(selfPeerID: MCPeerID){
         self.peerID = selfPeerID
@@ -79,7 +83,7 @@ extension MultipeerSession: MCSessionDelegate{
     
     // received Data object from a peer
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        dataHandler(data, peerID)
+        dataHandler!(data, peerID)
     }
     
     // nearby peer opens bytestream connection to the local peer(user)
@@ -111,9 +115,10 @@ extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
 extension MultipeerSession: MCNearbyServiceBrowserDelegate{
     // nearby peer was found
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-        let game = NetworkGame(session: session, locationId: 0)
+        let game = NetworkGame(host: peerID, session: session, locationId: 0)
         Globals.instance.games.append(game)
         
+        self.delegate?.gameBrowser(browser, session, sawGames: Globals.instance.games)
         //invite the found peer to the session
         //browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
         

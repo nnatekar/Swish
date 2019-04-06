@@ -26,6 +26,8 @@ class OptionsController: UIViewController {
     }
     @IBAction func startButtonClicked(_ sender: Any) {
         if(!handleField.text!.isEmpty){
+            
+            Globals.instance.selfPeerID = MCPeerID(displayName: handleField.text!)
             self.performSegue(withIdentifier: "toGame", sender: Any?.self)
         }
         

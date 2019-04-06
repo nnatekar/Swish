@@ -11,6 +11,8 @@ import MultipeerConnectivity
 
 class GamesTableController: UIViewController{
     @IBOutlet weak var tableView: UITableView!
+    var browser: MCNearbyServiceBrowser?
+    var session: MCSession?
     
     override func viewDidLoad() {
         tableView.delegate = self
@@ -28,10 +30,7 @@ extension GamesTableController: UITableViewDelegate{
         tableView.deselectRow(at: indexPath, animated: true)
         let game = Globals.instance.games[indexPath.row]
         // join the selected game
-        // TODO: FIGURE OUT HOW TO CHANGE RECEIVEDDATAHANDLER
-        let session = MultipeerSession(peerID: Globals.instance.selfPeerID!, host: game.host)
-        session.browser.invitePeer(game.host, to: session.session, withContext: nil, timeout: 10)
-        guard let parent = parent as? OptionsController else { fatalError(" gamesTable unexpected parent") }
+        self.browser!.invitePeer(game.host, to: session!, withContext: nil, timeout: 10)
         // TODO: segue to viewcontroller, set the game session
     }
 }
@@ -42,8 +41,19 @@ extension GamesTableController: UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        let cell = tableView.dequeueReusableCell(withIdentifier: "gamesCell", for: indexPath)
+        let game = Globals.instance.games[indexPath.row]
+        cell.textLabel?.text = game.host.displayName
+        return cell
     }
-    
-    
+}
+
+extension GamesTableController: browserDelegate{
+    func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame]) {
+        self.browser = browser
+        self.session = session
+        Globals.instance.games = sawGames
+        
+        tableView.reloadData()
+    }
 }

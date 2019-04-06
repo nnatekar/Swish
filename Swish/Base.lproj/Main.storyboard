@@ -241,13 +241,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-<<<<<<< HEAD
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkv-1c-slm">
-                                <rect key="frame" x="183.5" y="433" width="47" height="30"/>
-                                <state key="normal" title="START"/>
-                                <connections>
-                                    <action selector="startClicked:" destination="6vp-N7-mdh" eventType="touchDown" id="U4l-Vn-2Or"/>
-=======
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Handle " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FF4-u5-QVg">
                                 <rect key="frame" x="115" y="433" width="185" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -275,8 +268,6 @@
                     <connections>
                         <outlet property="GameStart" destination="kkv-1c-slm" id="HRd-Mh-T9b"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="toGame" id="yfg-Sg-069"/>
-                        <outlet property="handleField" destination="FF4-u5-QVg" id="0bn-C5-ttb"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="toGame" id="yfg-Sg-069"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CbT-gj-QVR" userLabel="First Responder" sceneMemberID="firstResponder"/>

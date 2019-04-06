@@ -11,8 +11,14 @@ import UIKit
 
 class OptionsController: UIViewController {
     
+    
+    @IBOutlet weak var GameStart: UIButton!
     override func viewDidLoad() {
+        super.viewDidLoad()
         // temporary until we finish this view controller
-        self.performSegue(withIdentifier: "toGame", sender: Any?.self)
+    }
+    
+    @IBAction func startClicked(_ sender: Any) {
+        performSegue(withIdentifier: "toGame", sender: nil)
     }
 }

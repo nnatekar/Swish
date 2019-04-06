@@ -20,7 +20,6 @@
 		CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */; };
 		CA273BC221EC598D005BDE24 /* SwishTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BC121EC598D005BDE24 /* SwishTests.swift */; };
 		CA273BCD21EC598D005BDE24 /* SwishUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BCC21EC598D005BDE24 /* SwishUITests.swift */; };
-		CA5A147122091ECD003F5656 /* Ball.scn in Resources */ = {isa = PBXBuildFile; fileRef = CA5A147022091ECD003F5656 /* Ball.scn */; };
 		CA5A14AF220922F2003F5656 /* Bball.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = CA5A14AE220922F2003F5656 /* Bball.scnassets */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +62,6 @@
 		CA273BC821EC598D005BDE24 /* SwishUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwishUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA273BCC21EC598D005BDE24 /* SwishUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwishUITests.swift; sourceTree = "<group>"; };
 		CA273BCE21EC598D005BDE24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CA5A147022091ECD003F5656 /* Ball.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Ball.scn; sourceTree = "<group>"; };
 		CA5A14AE220922F2003F5656 /* Bball.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Bball.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,7 +143,6 @@
 				CA273BB321EC598D005BDE24 /* Assets.xcassets */,
 				CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */,
 				CA273BB821EC598D005BDE24 /* Info.plist */,
-				CA5A147022091ECD003F5656 /* Ball.scn */,
 				CA5A14AE220922F2003F5656 /* Bball.scnassets */,
 				7C37A3C522272C0E00042F32 /* OptionsController.swift */,
 				7C37A3C7222734CC00042F32 /* MultipeerSession.swift */,
@@ -279,8 +276,11 @@
 			files = (
 				CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */,
 				CA5A14AF220922F2003F5656 /* Bball.scnassets in Resources */,
+<<<<<<< HEAD
 				CA5A147122091ECD003F5656 /* Ball.scn in Resources */,
 				0B23B6CD22572AC3007CB41F /* ballTexture.png in Resources */,
+=======
+>>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
 				CA273BB421EC598D005BDE24 /* Assets.xcassets in Resources */,
 				0B23B6CF22572F4F007CB41F /* backboard.jpg in Resources */,
 				CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */,

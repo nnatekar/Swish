@@ -36,8 +36,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Points:" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoy-8h-SDy">
-                                        <rect key="frame" x="354" y="30.5" width="52" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Points:" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoy-8h-SDy">
+                                        <rect key="frame" x="267" y="27" width="52" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -53,10 +53,24 @@
                                     <constraint firstAttribute="trailing" secondItem="Zoy-8h-SDy" secondAttribute="trailing" constant="8" id="n7d-P8-CEv"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yb-hv-CTP" userLabel="MultiplayerStatus">
+                                <rect key="frame" x="183" y="442" width="48" height="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RqI-ld-4Dt">
+                                <rect key="frame" x="150" y="778" width="114" height="30"/>
+                                <state key="normal" title="Send World Map"/>
+                                <connections>
+                                    <action selector="shareSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="saa-pw-OT0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="height" secondItem="17N-LB-BWE" secondAttribute="height" multiplier="0.1" id="0o5-aY-9n1"/>
+                            <constraint firstItem="2Yb-hv-CTP" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="3Qw-0Y-Fg0"/>
+                            <constraint firstItem="2Yb-hv-CTP" firstAttribute="centerY" secondItem="17N-LB-BWE" secondAttribute="centerY" id="5QO-dW-oWh"/>
                             <constraint firstItem="17N-LB-BWE" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="C5G-01-kQb"/>
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="centerX" secondItem="17N-LB-BWE" secondAttribute="centerX" id="JS1-0n-Bhh"/>
                             <constraint firstItem="17N-LB-BWE" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" id="RMj-yy-BJc"/>
@@ -66,12 +80,17 @@
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="top" secondItem="17N-LB-BWE" secondAttribute="top" id="jlv-Og-xsL"/>
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="width" secondItem="17N-LB-BWE" secondAttribute="width" id="kbE-w7-D1q"/>
                             <constraint firstItem="Z53-fx-q1e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nF5-k1-q9n"/>
+                            <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" multiplier="1.75" id="wLT-wJ-fva"/>
+                            <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="wXE-Q3-EAO"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="2Yb-hv-CTP" secondAttribute="bottom" constant="398" id="wnH-f8-WLs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="multiPlayerStatus" destination="2Yb-hv-CTP" id="pCK-Yg-she"/>
                         <outlet property="planeDetected" destination="Z53-fx-q1e" id="aDW-jm-zp8"/>
                         <outlet property="sceneView" destination="17N-LB-BWE" id="7Mg-3V-FhZ"/>
+                        <outlet property="scoreLabel" destination="NyA-UG-aK2" id="I1G-Rd-Itn"/>
                         <outlet property="timerLabel" destination="PSf-78-3bA" id="OH2-xU-aOL"/>
                     </connections>
                 </viewController>
@@ -222,11 +241,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+<<<<<<< HEAD
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kkv-1c-slm">
                                 <rect key="frame" x="183.5" y="433" width="47" height="30"/>
                                 <state key="normal" title="START"/>
                                 <connections>
                                     <action selector="startClicked:" destination="6vp-N7-mdh" eventType="touchDown" id="U4l-Vn-2Or"/>
+=======
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Handle " textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FF4-u5-QVg">
+                                <rect key="frame" x="115" y="433" width="185" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aaF-t7-sKH">
+                                <rect key="frame" x="178" y="98.5" width="58" height="30"/>
+                                <state key="normal" title="Start-oh"/>
+                                <connections>
+                                    <action selector="startButtonClicked:" destination="6vp-N7-mdh" eventType="touchUpInside" id="k2t-FE-Nh9"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -234,17 +267,21 @@
                         <constraints>
                             <constraint firstItem="kkv-1c-slm" firstAttribute="centerY" secondItem="zGv-rT-oeG" secondAttribute="centerY" id="5rc-qi-7Hm"/>
                             <constraint firstItem="kkv-1c-slm" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="Yyk-yy-5Ft"/>
+                            <constraint firstItem="aaF-t7-sKH" firstAttribute="centerY" secondItem="NKJ-cs-EFF" secondAttribute="centerY" multiplier="0.25" id="XkY-c9-FnP"/>
+                            <constraint firstItem="aaF-t7-sKH" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="kmh-79-Lbo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NKJ-cs-EFF"/>
                     </view>
                     <connections>
                         <outlet property="GameStart" destination="kkv-1c-slm" id="HRd-Mh-T9b"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="toGame" id="yfg-Sg-069"/>
+                        <outlet property="handleField" destination="FF4-u5-QVg" id="0bn-C5-ttb"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="toGame" id="yfg-Sg-069"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CbT-gj-QVR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-403" y="13"/>
+            <point key="canvasLocation" x="-404.34782608695656" y="12.723214285714285"/>
         </scene>
     </scenes>
     <resources>

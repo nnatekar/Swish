@@ -266,12 +266,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let message: String
         
         switch trackingState {
-        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
+        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers!.isEmpty:
             // No planes detected; provide instructions for this app's AR interactions.
             message = "Move around to map the environment, or wait to join a shared session."
             
-        case .normal where !multipeerSession.connectedPeers.isEmpty && mapProvider == nil:
-            let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
+        case .normal where !multipeerSession.connectedPeers!.isEmpty && mapProvider == nil:
+            let peerNames = multipeerSession.connectedPeers!.map({ $0.displayName }).joined(separator: ", ")
             message = "Connected with \(peerNames)."
             
         case .notAvailable:

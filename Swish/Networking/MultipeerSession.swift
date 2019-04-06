@@ -27,7 +27,9 @@ class MultipeerSession: NSObject{
     init(selfPeerID: MCPeerID){
         self.peerID = selfPeerID
         super.init()
-        
+        // creates a new session to run multiplayer on
+        session = MCSession(peer: self.peerID)
+        session.delegate = self
         startBrowsing(peerID: self.peerID)
         // TODO: Assign game's view conroller as browserview's delegate
         //browserView.delegate = ViewController
@@ -36,8 +38,6 @@ class MultipeerSession: NSObject{
     init(hostPeerID: MCPeerID){
         self.peerID = hostPeerID
         super.init()
-        
-        // creates a new session to run multiplayer on
         session = MCSession(peer: self.peerID)
         session.delegate = self
         startAdvertising(peerID: self.peerID)
@@ -60,8 +60,8 @@ class MultipeerSession: NSObject{
     }
     
     // returns list of all connected peers when called
-    var connectedPeers: [MCPeerID] {
-        return session.connectedPeers
+    var connectedPeers: [MCPeerID]? {
+        return session?.connectedPeers
     }
     
     func sendToAllPeers(_ data: Data){

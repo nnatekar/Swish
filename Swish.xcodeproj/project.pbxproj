@@ -276,11 +276,7 @@
 			files = (
 				CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */,
 				CA5A14AF220922F2003F5656 /* Bball.scnassets in Resources */,
-<<<<<<< HEAD
-				CA5A147122091ECD003F5656 /* Ball.scn in Resources */,
 				0B23B6CD22572AC3007CB41F /* ballTexture.png in Resources */,
-=======
->>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
 				CA273BB421EC598D005BDE24 /* Assets.xcassets in Resources */,
 				0B23B6CF22572F4F007CB41F /* backboard.jpg in Resources */,
 				CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */,

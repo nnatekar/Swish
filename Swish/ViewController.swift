@@ -17,13 +17,9 @@ Basic notes:
 import UIKit
 import ARKit
 import Each
-<<<<<<< HEAD
 import MultipeerConnectivity
-class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
-=======
-class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
->>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
-    
+class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, ARSessionDelegate {
+
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     var gameTime = Int()
@@ -43,19 +39,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var power: Float = 1
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
-<<<<<<< HEAD
-    
     var receivingForce: SCNVector3?
-=======
     var score: Int = 0
-    
-    // added
-    
-    
-    // var add1 = false
-    // var add2 = false
-    // var add = [add1, add2]
->>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,12 +68,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.addGestureRecognizer(panGestureRecognizer)
         
         // add timer
-<<<<<<< HEAD
-        gameTime = 30 // CHANGE GAME TIME AS NEEDED
-        timerLabel.text = "Time: \(gameTime)"
-        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
-=======
+
         gameTime = 5 // CHANGE GAME TIME AS NEEDED
+        timerLabel.text = "Time: \(gameTime)"
         gameTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { timer in
             self.timerLabel.text = "Time: \(self.gameTime)"
             if(self.gameTime > 0){
@@ -140,24 +122,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
              //   self.scoreLabel.text = String(self.score)
             }
         }
->>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
     }
     
     
-<<<<<<< HEAD
     @objc func incrementTimer(){
         gameTime -= 1
         timerLabel.text = "Time: \(gameTime)"
         
         if(gameTime <= 0){
             gameTimer.invalidate()
-=======
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.basketAdded == true {
-            self.timer.stop()
-            self.shootBall()
-            //print("shot")
->>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
         }
     }
     
@@ -174,6 +147,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
         let position = location + orientation
         
+        // add the ball
         let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
         ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
         ball.position = position
@@ -181,36 +155,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody = body
         ball.name = "Basketball"
         body.restitution = 0.2
-<<<<<<< HEAD
         let velocityY = abs(Float(velocity.y)) / -100
-        ball.physicsBody?.applyForce(SCNVector3(0,3,velocityY), asImpulse: true) // TODO: Determine force to be applied
-        self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-
-        let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
-        self.multipeerSession.sendToAllPeers(ballpower)
-        
-        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: ball, requiringSecureCoding: true)
-                else { fatalError("can't encode ball") }
-        self.multipeerSession.sendToAllPeers(data)
-=======
-        ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true) // TODO: change from tap and hold to flick
+        ball.physicsBody?.applyForce(SCNVector3(0,8,-2), asImpulse: true) // TODO: Determine force to be applied
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
+        
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
+    
+        // collision detection
         let detection = SCNNode(geometry: SCNCylinder(radius: 0.2, height: 0.2))
         let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
         detection.physicsBody = body2
-       // let positionOfPlane = hitTestResult.worldTransform.columns.3
-        //let xPosition = positionOfPlane.x
-        //let yPosition = positionOfPlane.y
-        //let zPosition = positionOfPlane.z
-        detection.position = SCNVector3(0,0.8,-3)
+        // TODO: make texture of cylinder transparent
+        detection.position = SCNVector3(0,1.3,-3) // TODO: determine relative position of cylinder
         detection.name = "detection"
        // detection.isHidden = true
         detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
         detection.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
         self.sceneView.scene.rootNode.addChildNode(detection)
->>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
+            
+//        let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
+//        self.multipeerSession.sendToAllPeers(ballpower)
+        
+        // for multiplayer
+//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: ball, requiringSecureCoding: true)
+//            else { fatalError("can't encode ball") }
+//        self.multipeerSession.sendToAllPeers(data)
     } // create and shoot ball
     
     @objc func handlePan(sender: UIPanGestureRecognizer){
@@ -236,19 +206,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
-<<<<<<< HEAD
-            let basketScene = SCNScene(named: "Ball.scn")
+            let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
             
             // Set backboard texture
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
             
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
-           
-=======
-            let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn") // TODO: create nicer backboard
-            let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
-           // let detectionNode = basketScene?.rootNode.childNode(withName: "detection", recursively: false)
->>>>>>> 5dd5831e7154ba24c7d952d8e78beda80b81c24e
+
             let positionOfPlane = hitTestResult.worldTransform.columns.3
             let xPosition = positionOfPlane.x
             let yPosition = positionOfPlane.y

@@ -9,11 +9,8 @@
 /*
 Basic notes:
 
- 1. App is built for use in the "outside", meaning I have yet to initialize a hoop onto a vertical plane. So when hoop is created, it just hovers in the air. Need to add hoop stand and also functionality to place on a vertical wall.
- 2. Distance has not been factored into the design yet. Need to come up with simple way to determine 2 vs 3 pt (i.e. what is the distance cut off?).
- 3. Both basketball and backboard look boring, need to find and add textures
- 4. NEED TO ADD POINT SYSTEM! Just +2 whenever it goes in initially and then add distance for three pointers-accumulate points in the background and pop up +2 or +3 in top right-add two button to same place on Main.storyboard-simple if statement
- 5. Add timer-just 30 seconds initially to get score and then display final score-then reset to 0-maybe need to add a timer button to the HUD just for now to test all the mechanics
+ SWISH SHOULD BE A SPECIAL SHOT WHERE YOU DONT HIT THE RIM AND GET WAY MORE POINTS! LIKE DOUBLE?
+ Implement distance
  
  */
 
@@ -21,8 +18,9 @@ import UIKit
 import ARKit
 import Each
 import MultipeerConnectivity
-class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
-    
+class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, ARSessionDelegate {
+
+    @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var timerLabel: UILabel!
     var gameTime = Int()
     var gameTimer = Timer()
@@ -41,8 +39,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     var power: Float = 1
     let timer = Each(0.05).seconds
     var basketAdded: Bool = false
-    
     var receivingForce: SCNVector3?
+    var score: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,15 +56,74 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.delegate = self
         sceneView.session.delegate = self
         
+        // taps will set basketball
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
         
+        // pans will determine angle of basketball
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(sender:)))
+        panGestureRecognizer.maximumNumberOfTouches = 1
+        panGestureRecognizer.minimumNumberOfTouches = 1
+        self.sceneView.addGestureRecognizer(panGestureRecognizer)
+        
         // add timer
-        gameTime = 30 // CHANGE GAME TIME AS NEEDED
+
+        gameTime = 5 // CHANGE GAME TIME AS NEEDED
         timerLabel.text = "Time: \(gameTime)"
-        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { timer in
+            self.timerLabel.text = "Time: \(self.gameTime)"
+            if(self.gameTime > 0){
+                self.gameTime -= 1
+            }
+            else{
+                self.gameTimer.invalidate()
+            }
+        })
+        sceneView.scene.physicsWorld.contactDelegate = self
     }
+    
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        
+        print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
+        
+        if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
+            || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
+            //add2 = true
+            //if (contact.nodeA.name! == "detection" || contact.nodeB.name! == "detection") {
+            if (contact.nodeB.name! == "detection") {
+                /*
+                 if (contact.nodeA.name! != "torusDetection" || contact.nodeB.name! != "torusDetection") {
+                 score+=1
+                */
+                score+=1
+                //add1 = true
+            }else{
+              //  score+=1
+            }
+            /*
+             let anchorPosition = anchor.transforms.columns.3
+             let cameraPosition = camera.transform.columns.3
+             
+             // here’s a line connecting the two points, which might be useful for other things
+             let cameraToAnchor = cameraPosition - anchorPosition
+             // and here’s just the scalar distance
+             let distance = length(cameraToAnchor)
+             //maybe do temp score-so from top of function add everything to a tempScore variable-feed this into the distance caluclation above and once you've got the final score for a given shot, add this to score?
+            */
+            print(score)
+            // added
+            // if (add2 == true && add1 = false) {score-=5}
+            DispatchQueue.main.async {
+                contact.nodeA.removeFromParentNode()
+                //self.scoreLabel.text = String(self.score)
+                //contact.nodeB.removeFromParentNode()   // node B is the net
+                //self.addDetection()
+             //   self.scoreLabel.text = String(self.score)
+            }
+        }
+    }
+    
     
     @objc func incrementTimer(){
         gameTime -= 1
@@ -82,48 +139,59 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.session.pause()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.basketAdded == true {
-            timer.perform(closure: { () -> NextStep in
-                self.power = self.power + 1
-                return .continue
-            })
-        }
-    } // called when you touch phone-if ball is on scene view, will add power to shot by holding
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.basketAdded == true {
-            self.timer.stop()
-            self.shootBall()
-        }
-        self.power = 1
-    } // called when you lift finger off-calls shootBall() to shoot the ball da doiiii
-    
-    func shootBall() {
-        
+    func shootBall(velocity: CGPoint, translation: CGPoint) {
         guard let pointOfView = self.sceneView.pointOfView else {return}
         self.removeEveryOtherBall()
         let transform = pointOfView.transform
         let location = SCNVector3(transform.m41, transform.m42, transform.m43)
         let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
         let position = location + orientation
+        
+        // add the ball
         let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
-        ball.geometry?.firstMaterial?.diffuse.contents = UIColor.blue // TODO: find texture and add
+        ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
         ball.position = position
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
         ball.physicsBody = body
         ball.name = "Basketball"
         body.restitution = 0.2
-        ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true) // TODO: change from tap and hold to flick
-        self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-
-        let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
-        self.multipeerSession.sendToAllPeers(ballpower)
+        let velocityY = abs(Float(velocity.y)) / -100
+        ball.physicsBody?.applyForce(SCNVector3(0,8,-2), asImpulse: true) // TODO: Determine force to be applied
+        ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
+        ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
         
-        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: ball, requiringSecureCoding: true)
-                else { fatalError("can't encode ball") }
-        self.multipeerSession.sendToAllPeers(data)
+        self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
+    
+        // collision detection
+        let detection = SCNNode(geometry: SCNCylinder(radius: 0.2, height: 0.2))
+        let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
+        detection.physicsBody = body2
+        // TODO: make texture of cylinder transparent
+        detection.position = SCNVector3(0,1.3,-3) // TODO: determine relative position of cylinder
+        detection.name = "detection"
+       // detection.isHidden = true
+        detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+        detection.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
+        self.sceneView.scene.rootNode.addChildNode(detection)
+            
+//        let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
+//        self.multipeerSession.sendToAllPeers(ballpower)
+        
+        // for multiplayer
+//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: ball, requiringSecureCoding: true)
+//            else { fatalError("can't encode ball") }
+//        self.multipeerSession.sendToAllPeers(data)
     } // create and shoot ball
+    
+    @objc func handlePan(sender: UIPanGestureRecognizer){
+        guard let sceneView = sender.view as? ARSCNView else {return}
+        
+        if basketAdded == true {
+            let velocity = sender.velocity(in: sceneView);
+            let translation = sender.translation(in: sceneView)
+            shootBall(velocity: velocity, translation : translation);
+        }
+    }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
         guard let sceneView = sender.view as? ARSCNView else {return}
@@ -134,17 +202,36 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         }
     }
     
+    //func addDetection()
+    
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
-            let basketScene = SCNScene(named: "Ball.scn") // TODO: create nicer backboard
+            let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
+            
+            // Set backboard texture
+            basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
+            
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
+
             let positionOfPlane = hitTestResult.worldTransform.columns.3
             let xPosition = positionOfPlane.x
             let yPosition = positionOfPlane.y
             let zPosition = positionOfPlane.z
             basketNode?.position = SCNVector3(xPosition,yPosition,zPosition)
+            //changed
+            //detectionNode?.position = SCNVector3(xPosition,yPosition + 1.5,zPosition - 3)
+            //detectionNode?.position = SCNVector3(xPosition,yPosition + 1.4,zPosition - 3)
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
+            //detectionNode?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+            //detectionNode?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
+            //added
+            //let detectionNode2 = basketScene?.rootNode.childNode(withName: "detection", recursively: false)
+            //detectionNode2?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+            //detectionNode2?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
+            
+            //
             self.sceneView.scene.rootNode.addChildNode(basketNode!)
+            //self.sceneView.scene.rootNode.addChildNode(detectionNode!)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.basketAdded = true
             }
@@ -312,6 +399,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         self.timer.stop()
     }
     
+}
+
+struct CollisionCategory: OptionSet {
+    let rawValue: Int
+    static let ballCategory  = CollisionCategory(rawValue: 1 << 0)
+    static let detectionCategory = CollisionCategory(rawValue: 1 << 1)
 }
 
 func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {

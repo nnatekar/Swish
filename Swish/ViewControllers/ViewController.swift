@@ -53,7 +53,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         // start view's AR session
         sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
-        configuration.planeDetection = [.horizontal, .vertical]
+        configuration.planeDetection = .horizontal
         sceneView.autoenablesDefaultLighting = true
         sceneView.session.run(configuration)
         

@@ -17,6 +17,9 @@ class MenuController : UIViewController {
     @IBOutlet weak var handleField: UITextField!
     @IBOutlet weak var msg: UILabel!
     
+    @IBAction func doneTyping(_ sender: UITextField) {
+        sender.resignFirstResponder()
+    }
     
     override func viewDidLoad() {
         multiplayerStackView.isHidden = true

@@ -154,8 +154,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody = body
         ball.name = "Basketball"
         body.restitution = 0.2
-        let velocityY = abs(Float(velocity.y)) / -100
-        ball.physicsBody?.applyForce(SCNVector3(0,8,-2), asImpulse: true) // TODO: Determine force to be applied
+        let velocityY = abs(Float(velocity.y)) / 350
+        //let velocityX = abs(Float(velocity.x)) / 350
+        ball.physicsBody?.applyForce(SCNVector3(0 ,velocityY,-2), asImpulse: true) // TODO: Determine force to be applied
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
         
@@ -185,7 +186,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @objc func handlePan(sender: UIPanGestureRecognizer){
         guard let sceneView = sender.view as? ARSCNView else {return}
         
-        if basketAdded == true {
+        if basketAdded == true
+        {
             let velocity = sender.velocity(in: sceneView);
             let translation = sender.translation(in: sceneView)
             shootBall(velocity: velocity, translation : translation);

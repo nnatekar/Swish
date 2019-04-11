@@ -176,7 +176,10 @@
                                 <rect key="frame" x="114.5" y="766.5" width="185" height="29"/>
                                 <color key="textColor" red="0.71028983160000003" green="0.102247777" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <action selector="doneTyping:" destination="RyS-Hz-JQJ" eventType="primaryActionTriggered" id="4SZ-YR-mTI"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r2w-ai-BkD">
                                 <rect key="frame" x="22" y="42" width="48" height="38.5"/>
@@ -258,15 +261,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="kkv-1c-slm" firstAttribute="centerY" secondItem="zGv-rT-oeG" secondAttribute="centerY" id="5rc-qi-7Hm"/>
-                            <constraint firstItem="kkv-1c-slm" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="Yyk-yy-5Ft"/>
+                            <constraint firstAttribute="centerY" secondItem="zGv-rT-oeG" secondAttribute="centerY" id="5rc-qi-7Hm"/>
                             <constraint firstItem="aaF-t7-sKH" firstAttribute="centerY" secondItem="NKJ-cs-EFF" secondAttribute="centerY" multiplier="0.25" id="XkY-c9-FnP"/>
+                            <constraint firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="Yyk-yy-5Ft"/>
                             <constraint firstItem="aaF-t7-sKH" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="kmh-79-Lbo"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NKJ-cs-EFF"/>
                     </view>
                     <connections>
-                        <outlet property="GameStart" destination="kkv-1c-slm" id="HRd-Mh-T9b"/>
+                        <outlet property="GameStart" destination="aaF-t7-sKH" id="fTD-gz-ol8"/>
+                        <outlet property="handleField" destination="FF4-u5-QVg" id="Cig-Q6-7Ek"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="toGame" id="yfg-Sg-069"/>
                     </connections>
                 </viewController>

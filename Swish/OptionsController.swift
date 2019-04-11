@@ -31,4 +31,11 @@ class OptionsController: UIViewController {
             self.performSegue(withIdentifier: "toGame", sender: Any?.self)
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toGame"{
+            let vc = segue.destination as! ViewController
+            vc.selfHandle = MCPeerID(displayName: handleField.text!)
+        }
+    }
 }

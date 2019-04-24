@@ -12,14 +12,26 @@ import MultipeerConnectivity
 
 class MenuController : UIViewController {
     
-    @IBOutlet weak var handleField: UITextField!
     @IBOutlet weak var multiplayerStackView: UIStackView!
     @IBOutlet weak var gameTypeStackView: UIStackView!
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var handleField: UITextField!
+    @IBOutlet weak var msg: UILabel!
     
     override func viewDidLoad() {
         multiplayerStackView.isHidden = true
         backButton.isHidden = true
+    }
+    @IBAction func startClicked(_ sender: Any) {
+        if(!handleField.text!.isEmpty){
+            performSegue(withIdentifier: "toOptions", sender: nil)
+        }
+        else{
+            msg.isHidden = false
+            Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { (nil) in
+                self.msg.isHidden = true
+            }
+        }
     }
     
     @IBAction func doneTyping(_ sender: UITextField) {

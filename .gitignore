@@ -1,1 +1,5 @@
-Swish.xcworkspace/xcuserdata/*
+#ignore these files
+.DS_Store
+*xcuserdata*
+*.xcodeproj/xcuserdata/*
+*.xcworkspace/*

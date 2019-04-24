@@ -11,8 +11,8 @@
 		5205609F22557A9B00D4E233 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5205609E22557A9B00D4E233 /* Globals.swift */; };
 		5207CAE8223121B500BB32F5 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5207CAE7223121B500BB32F5 /* GameBoard.swift */; };
 		5207CAEA223125C300BB32F5 /* BoardAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5207CAE9223125C300BB32F5 /* BoardAnchor.swift */; };
+		52873B91227102AA00A8DE9D /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52873B90227102AA00A8DE9D /* MenuController.swift */; };
 		61C2E032C22C73BE161A64F6 /* Pods_Swish.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */; };
-		7C37A3C422272A8D00042F32 /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C322272A8D00042F32 /* MenuController.swift */; };
 		7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C522272C0E00042F32 /* OptionsController.swift */; };
 		7C37A3C8222734CC00042F32 /* MultipeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C7222734CC00042F32 /* MultipeerSession.swift */; };
 		7C93D43A225486E9006F60B8 /* NetworkGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C93D439225486E9006F60B8 /* NetworkGame.swift */; };
@@ -23,7 +23,6 @@
 		CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */; };
 		CA273BC221EC598D005BDE24 /* SwishTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BC121EC598D005BDE24 /* SwishTests.swift */; };
 		CA273BCD21EC598D005BDE24 /* SwishUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BCC21EC598D005BDE24 /* SwishUITests.swift */; };
-		CA5A147122091ECD003F5656 /* Ball.scn in Resources */ = {isa = PBXBuildFile; fileRef = CA5A147022091ECD003F5656 /* Ball.scn */; };
 		CA5A14AF220922F2003F5656 /* Bball.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = CA5A14AE220922F2003F5656 /* Bball.scnassets */; };
 /* End PBXBuildFile section */
 
@@ -49,8 +48,8 @@
 		5205609E22557A9B00D4E233 /* Globals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		5207CAE7223121B500BB32F5 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		5207CAE9223125C300BB32F5 /* BoardAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardAnchor.swift; sourceTree = "<group>"; };
+		52873B90227102AA00A8DE9D /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		656608E0C8FD6DAD935B3F44 /* Pods_Swish.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swish.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C37A3C322272A8D00042F32 /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
 		7C37A3C522272C0E00042F32 /* OptionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsController.swift; sourceTree = "<group>"; };
 		7C37A3C7222734CC00042F32 /* MultipeerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSession.swift; sourceTree = "<group>"; };
 		7C93D439225486E9006F60B8 /* NetworkGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkGame.swift; sourceTree = "<group>"; };
@@ -69,7 +68,6 @@
 		CA273BC821EC598D005BDE24 /* SwishUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwishUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA273BCC21EC598D005BDE24 /* SwishUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwishUITests.swift; sourceTree = "<group>"; };
 		CA273BCE21EC598D005BDE24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CA5A147022091ECD003F5656 /* Ball.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Ball.scn; sourceTree = "<group>"; };
 		CA5A14AE220922F2003F5656 /* Bball.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Bball.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,10 +109,10 @@
 		5207CAE52231217F00BB32F5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				52873B90227102AA00A8DE9D /* MenuController.swift */,
 				5205609C225575FE00D4E233 /* GamesTableController.swift */,
 				7C37A3C522272C0E00042F32 /* OptionsController.swift */,
 				CA273BAE21EC598B005BDE24 /* ViewController.swift */,
-				7C37A3C322272A8D00042F32 /* MenuController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -169,7 +167,6 @@
 				CA273BB321EC598D005BDE24 /* Assets.xcassets */,
 				CA273BB521EC598D005BDE24 /* LaunchScreen.storyboard */,
 				CA273BB821EC598D005BDE24 /* Info.plist */,
-				CA5A147022091ECD003F5656 /* Ball.scn */,
 				CA5A14AE220922F2003F5656 /* Bball.scnassets */,
 				5207CAE7223121B500BB32F5 /* GameBoard.swift */,
 				5207CAE9223125C300BB32F5 /* BoardAnchor.swift */,
@@ -304,7 +301,6 @@
 			files = (
 				CA273BB721EC598D005BDE24 /* LaunchScreen.storyboard in Resources */,
 				CA5A14AF220922F2003F5656 /* Bball.scnassets in Resources */,
-				CA5A147122091ECD003F5656 /* Ball.scn in Resources */,
 				CA273BB421EC598D005BDE24 /* Assets.xcassets in Resources */,
 				CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */,
 			);
@@ -378,9 +374,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52873B91227102AA00A8DE9D /* MenuController.swift in Sources */,
 				7C93D43A225486E9006F60B8 /* NetworkGame.swift in Sources */,
 				CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */,
-				7C37A3C422272A8D00042F32 /* MenuController.swift in Sources */,
 				5207CAEA223125C300BB32F5 /* BoardAnchor.swift in Sources */,
 				7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */,
 				5205609D225575FE00D4E233 /* GamesTableController.swift in Sources */,
@@ -564,13 +560,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 436TP5U9B5;
+				DEVELOPMENT_TEAM = UY28FN56TS;
 				INFOPLIST_FILE = Swish/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = C.Swish2;
+				PRODUCT_BUNDLE_IDENTIFIER = C.Swish1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -583,13 +579,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 436TP5U9B5;
+				DEVELOPMENT_TEAM = UY28FN56TS;
 				INFOPLIST_FILE = Swish/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = C.Swish2;
+				PRODUCT_BUNDLE_IDENTIFIER = C.Swish1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

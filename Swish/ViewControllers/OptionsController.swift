@@ -10,11 +10,13 @@ import Foundation
 import UIKit
 import MultipeerConnectivity
 
-class OptionsController: UIViewController {
+class OptionsController: UIViewController {    
+    @IBOutlet weak var GameStart: UIButton!
     @IBOutlet weak var handleField: UITextField!
     @IBOutlet weak var gamesTableContainer: UIView!
     override func viewDidLoad() {
-        
+        super.viewDidLoad()
+        // temporary until we finish this view controller
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -25,6 +27,7 @@ class OptionsController: UIViewController {
             vc.multipeerSession = Globals.instance.session
         }
     }
+    
     @IBAction func startButtonClicked(_ sender: Any) {
         self.performSegue(withIdentifier: "toGame", sender: Any?.self)
     }

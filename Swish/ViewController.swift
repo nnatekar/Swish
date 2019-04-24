@@ -68,9 +68,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.addGestureRecognizer(panGestureRecognizer)
         
         // add timer
-
         gameTime = 5 // CHANGE GAME TIME AS NEEDED
         timerLabel.text = "Time: \(gameTime)"
+        
         gameTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { timer in
             self.timerLabel.text = "Time: \(self.gameTime)"
             if(self.gameTime > 0){
@@ -84,7 +84,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
     
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        
         print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
         
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
@@ -155,8 +154,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody = body
         ball.name = "Basketball"
         body.restitution = 0.2
-        let velocityY = abs(Float(velocity.y)) / -100
-        ball.physicsBody?.applyForce(SCNVector3(0,8,-2), asImpulse: true) // TODO: Determine force to be applied
+        
+        let xForce = translation.x > 0 ? min(1, Float(translation.x)/100) : max(-1, Float(translation.x)/100)
+        let yForce = min(8.25, Float(translation.y) / -100 * 8)
+        let zForce = max(-2, Float(velocity.y) / 200)
+        ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
         
@@ -166,21 +168,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let detection = SCNNode(geometry: SCNCylinder(radius: 0.2, height: 0.2))
         let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
         detection.physicsBody = body2
+        detection.opacity = 0.0
+        
         // TODO: make texture of cylinder transparent
-        detection.position = SCNVector3(0,1.3,-3) // TODO: determine relative position of cylinder
+//        let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
+//        let detectionPos = basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.position
+//        let detectionX = Float(detectionPos?.x ?? 0)
+//        let detectionY = Float(detectionPos?.y ?? 1.7)
+//        let detectionZ = Float(detectionPos?.z ?? -3)
+    
+        detection.position = SCNVector3(0, 1.7, -3) // TODO: determine relative position of cylinder
         detection.name = "detection"
        // detection.isHidden = true
         detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
         detection.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
         self.sceneView.scene.rootNode.addChildNode(detection)
-            
-//        let ballpower = Data(buffer: UnsafeBufferPointer(start: &power, count: 1))
-//        self.multipeerSession.sendToAllPeers(ballpower)
-        
-        // for multiplayer
-//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: ball, requiringSecureCoding: true)
-//            else { fatalError("can't encode ball") }
-//        self.multipeerSession.sendToAllPeers(data)
     } // create and shoot ball
     
     @objc func handlePan(sender: UIPanGestureRecognizer){

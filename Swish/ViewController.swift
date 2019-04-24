@@ -11,7 +11,7 @@ Basic notes:
 
  SWISH SHOULD BE A SPECIAL SHOT WHERE YOU DONT HIT THE RIM AND GET WAY MORE POINTS! LIKE DOUBLE?
  Implement distance
- 
+
  */
 
 import UIKit
@@ -24,16 +24,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBOutlet weak var timerLabel: UILabel!
     var gameTime = Int()
     var gameTimer = Timer()
-    
+
     @IBOutlet weak var planeDetected: UILabel!
     @IBOutlet weak var multiPlayerStatus: UILabel!
-    
+
     var selfHandle: MCPeerID?
     var multipeerSession: MultipeerSession!
     var mapProvider: MCPeerID?
 
     var isMultiplayer: Bool = false
-    
+
     @IBOutlet weak var sceneView: ARSCNView!
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
@@ -41,36 +41,35 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var basketAdded: Bool = false
     var receivingForce: SCNVector3?
     var score: Int = 0
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // start view's AR session
         sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
         configuration.planeDetection = [.horizontal, .vertical]
         sceneView.autoenablesDefaultLighting = true
         sceneView.session.run(configuration)
-        
+
         multipeerSession = MultipeerSession(peerID: selfHandle!, receivedDataHandler: dataHandler)
         // Set delegates for AR session and AR scene
         sceneView.delegate = self
         sceneView.session.delegate = self
-        
+
         // taps will set basketball
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
-        
+
         // pans will determine angle of basketball
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan(sender:)))
         panGestureRecognizer.maximumNumberOfTouches = 1
         panGestureRecognizer.minimumNumberOfTouches = 1
         self.sceneView.addGestureRecognizer(panGestureRecognizer)
-        
+
         // add timer
         gameTime = 5 // CHANGE GAME TIME AS NEEDED
         timerLabel.text = "Time: \(gameTime)"
-        
+
         gameTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { timer in
             self.timerLabel.text = "Time: \(self.gameTime)"
             if(self.gameTime > 0){
@@ -82,10 +81,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         })
         sceneView.scene.physicsWorld.contactDelegate = self
     }
-    
+
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
-        
+
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             //add2 = true
@@ -103,7 +102,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             /*
              let anchorPosition = anchor.transforms.columns.3
              let cameraPosition = camera.transform.columns.3
-             
+
              // here’s a line connecting the two points, which might be useful for other things
              let cameraToAnchor = cameraPosition - anchorPosition
              // and here’s just the scalar distance
@@ -122,22 +121,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
         }
     }
-    
-    
+
+
     @objc func incrementTimer(){
         gameTime -= 1
         timerLabel.text = "Time: \(gameTime)"
-        
+
         if(gameTime <= 0){
             gameTimer.invalidate()
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         // stop the AR session if leaving the view
         sceneView.session.pause()
     }
-    
+
     func shootBall(velocity: CGPoint, translation: CGPoint) {
         guard let pointOfView = self.sceneView.pointOfView else {return}
         self.removeEveryOtherBall()
@@ -145,7 +144,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let location = SCNVector3(transform.m41, transform.m42, transform.m43)
         let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
         let position = location + orientation
-        
+
         // add the ball
         let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
         ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
@@ -154,47 +153,47 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody = body
         ball.name = "Basketball"
         body.restitution = 0.2
-        
+
         let xForce = translation.x > 0 ? min(1, Float(translation.x)/100) : max(-1, Float(translation.x)/100)
-        let yForce = min(8.25, Float(translation.y) / -100 * 8)
-        let zForce = max(-2, Float(velocity.y) / 200)
+        let yForce = min(10, Float(translation.y) / -100 * 8)
+        let zForce = max(-3, Float(velocity.y) / 300)
         ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
-        
+
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-    
+
         // collision detection
         let detection = SCNNode(geometry: SCNCylinder(radius: 0.2, height: 0.2))
         let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
         detection.physicsBody = body2
         detection.opacity = 0.0
-        
-        // TODO: make texture of cylinder transparent
+
 //        let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
 //        let detectionPos = basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.position
 //        let detectionX = Float(detectionPos?.x ?? 0)
 //        let detectionY = Float(detectionPos?.y ?? 1.7)
 //        let detectionZ = Float(detectionPos?.z ?? -3)
-    
-        detection.position = SCNVector3(0, 1.7, -3) // TODO: determine relative position of cylinder
+
+        detection.position = SCNVector3(0, 1.9, -3) // TODO: determine relative position of cylinder
         detection.name = "detection"
        // detection.isHidden = true
         detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
         detection.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
         self.sceneView.scene.rootNode.addChildNode(detection)
     } // create and shoot ball
-    
+
     @objc func handlePan(sender: UIPanGestureRecognizer){
         guard let sceneView = sender.view as? ARSCNView else {return}
-        
-        if basketAdded == true {
+
+        if basketAdded == true
+        {
             let velocity = sender.velocity(in: sceneView);
             let translation = sender.translation(in: sceneView)
             shootBall(velocity: velocity, translation : translation);
         }
     }
-    
+
     @objc func handleTap(sender: UITapGestureRecognizer) {
         guard let sceneView = sender.view as? ARSCNView else {return}
         let touchLocation = sender.location(in: sceneView)
@@ -203,16 +202,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.addBasket(hitTestResult: hitTestResult.first!)
         }
     }
-    
+
     //func addDetection()
-    
+
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
             let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
-            
+
             // Set backboard texture
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
-            
+
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
 
             let positionOfPlane = hitTestResult.worldTransform.columns.3
@@ -230,7 +229,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             //let detectionNode2 = basketScene?.rootNode.childNode(withName: "detection", recursively: false)
             //detectionNode2?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
             //detectionNode2?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
-            
+
             //
             self.sceneView.scene.rootNode.addChildNode(basketNode!)
             //self.sceneView.scene.rootNode.addChildNode(detectionNode!)
@@ -239,12 +238,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
         }
     } // adds backboard and hoop to the scene view
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func shareSession(_ button: UIButton) {
         sceneView.session.getCurrentWorldMap { worldMap, error in
             guard let map = worldMap
@@ -254,7 +253,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.multipeerSession.sendToAllPeers(data)
         }
     }
-    
+
     func dataHandler(_ data: Data, from peer: MCPeerID) {
         do {
             if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
@@ -263,7 +262,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 configuration.planeDetection = .horizontal
                 configuration.initialWorldMap = worldMap
                 sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-                
+
                 // Remember who provided the map for showing UI feedback.
                 mapProvider = peer
             }
@@ -271,7 +270,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
                     // Add anchor to the session, ARSCNView delegate adds visible content.
                     sceneView.session.add(anchor: anchor)
-                } 
+                }
                 else{
                     print("unknown data recieved from \(peer)")
                 }
@@ -292,7 +291,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         catch{
             print("Object isn't scenenode either")
         }
-        
+
         do{
             // get the ball from other player and add it to scene
             if let force : Float = data.withUnsafeBytes({ $0.pointee }){
@@ -304,7 +303,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             print("Object isn't scenenode either")
         }
     }
-    
+
     // called from ARSCNViewDelegate
     // SCNNode relating to a new anchor was added to the scene
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
@@ -316,79 +315,79 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.planeDetected.isHidden = true
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears
-    
+
     // called every frame
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        
+
     }
-    
+
     // MARK: - ARSessionDelegate
-    
+
     // called when the state of the camera is changed
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         updateMultiPlayerStatus(for: session.currentFrame!, trackingState: camera.trackingState)
     }
-    
+
     // called when AR session fails
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user.
         multiPlayerStatus.text = "Session failed: \(error.localizedDescription)"
         resetTracking()
     }
-    
-    
+
+
     //resets the AR session configuration in case of errors
     func resetTracking() {
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
-    
+
     // MARK: - AR session management
-    
+
     private func updateMultiPlayerStatus(for frame: ARFrame, trackingState: ARCamera.TrackingState) {
         // Update the UI to provide feedback on the state of the AR experience.
         let message: String
-        
+
         switch trackingState {
         case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
             // No planes detected; provide instructions for this app's AR interactions.
             message = "Move around to map the environment, or wait to join a shared session."
-            
+
         case .normal where !multipeerSession.connectedPeers.isEmpty && mapProvider == nil:
             let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
             message = "Connected with \(peerNames)."
-            
+
         case .notAvailable:
             message = "Tracking unavailable."
-            
+
         case .limited(.excessiveMotion):
             message = "Tracking limited - Move the device more slowly."
-            
+
         case .limited(.insufficientFeatures):
             message = "Tracking limited - Point the device at an area with visible surface detail, or improve lighting conditions."
-            
+
         case .limited(.initializing) where mapProvider != nil,
              .limited(.relocalizing) where mapProvider != nil:
             message = "Received map from \(mapProvider!.displayName)."
-            
+
         case .limited(.relocalizing):
             message = "Resuming session — move to where you were when the session was interrupted."
-            
+
         case .limited(.initializing):
             message = "Initializing AR session."
-            
+
         default:
             // No feedback needed when tracking is normal and planes are visible.
             // (Nor when in unreachable limited-tracking states.)
             message = ""
-            
+
         }
-        
+
         multiPlayerStatus.text = message
         multiPlayerStatus.isHidden = message.isEmpty
     }
-    
-    
-    
+
+
+
     func removeEveryOtherBall() {
         self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
             if node.name == "Basketball" {
@@ -396,11 +395,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
         }
     } // remove the balls yooo
-    
+
     deinit {
         self.timer.stop()
     }
-    
+
 }
 
 struct CollisionCategory: OptionSet {
@@ -410,7 +409,6 @@ struct CollisionCategory: OptionSet {
 }
 
 func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-    
+
     return SCNVector3Make(left.x + right.x, left.y + right.y, left.z + right.z)
 } // useful operator to add 3D vectors
-

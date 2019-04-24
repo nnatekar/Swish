@@ -21,12 +21,12 @@ class GamesTableController: UIViewController{
         tableView.delegate = self
         tableView.dataSource = self
         if(Globals.instance.isHosting){
-            multSession = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
+            Globals.instance.session = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
         }
         else{
-            multSession = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
+            Globals.instance.session = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
         }
-        
+        multSession = Globals.instance.session
         multSession?.delegate = self
     }
     
@@ -61,7 +61,6 @@ extension GamesTableController: UITableViewDataSource{
 
 extension GamesTableController: browserDelegate{
     func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame]) {
-        print("smd")
         self.browser = browser
         Globals.instance.games = sawGames
         

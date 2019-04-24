@@ -57,12 +57,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.autoenablesDefaultLighting = true
         sceneView.session.run(configuration)
         
-        if(Globals.instance.isHosting){
-            multipeerSession = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
-        }
-        else{
-            multipeerSession = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
-        }
+//        if(Globals.instance.isHosting){
+//            multipeerSession = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
+//        }
+//        else{
+//            multipeerSession = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
+//        }
         multipeerSession.dataHandler = dataHandler
         // Set delegates for AR session and AR scene
         sceneView.delegate = self

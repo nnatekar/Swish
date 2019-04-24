@@ -8,47 +8,60 @@
 
 import MultipeerConnectivity
 
+protocol browserDelegate: class{
+    func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame])
+}
+
 class MultipeerSession: NSObject{
+    private let maxPeers: Int = kMCSessionMaximumNumberOfPeers - 1
     static let serviceType = "ar-multi-swish"
     
     private let peerID : MCPeerID!
-    private var session: MCSession!
-    private var advert: MCAdvertiserAssistant!
-    private var browser: MCNearbyServiceBrowser!
-    private var browserView: MCBrowserViewController!
+    var session: MCSession!
+    private var advert: MCNearbyServiceAdvertiser!
+    var browser: MCNearbyServiceBrowser!
     
-    private let dataHandler: (Data, MCPeerID) -> Void
+    var dataHandler: ((Data, MCPeerID) -> Void)?
+    weak var delegate: browserDelegate?
     
-    init(peerID: MCPeerID, receivedDataHandler: @escaping (Data, MCPeerID) -> Void){
-        self.peerID = peerID
-        dataHandler = receivedDataHandler
-        
+    init(selfPeerID: MCPeerID){
+        self.peerID = selfPeerID
         super.init()
-        
         // creates a new session to run multiplayer on
         session = MCSession(peer: self.peerID)
         session.delegate = self
-        
-        // lets nearby users know you are looking for a session
-        advert = MCAdvertiserAssistant(serviceType: MultipeerSession.serviceType, discoveryInfo: nil, session: session)
-        advert.delegate = self
-        advert.start()
-        
-        // searches for nearby users willing to join your session & sends invitations
-        browser = MCNearbyServiceBrowser(peer: self.peerID, serviceType: MultipeerSession.serviceType)
-        browser.delegate = self
-        browser.startBrowsingForPeers()
-        
-        // need to segue or present the view when required
-        browserView = MCBrowserViewController(browser: browser, session: session)
-        
+        startBrowsing(peerID: self.peerID)
         // TODO: Assign game's view conroller as browserview's delegate
         //browserView.delegate = ViewController
     }
     
+    init(hostPeerID: MCPeerID){
+        self.peerID = hostPeerID
+        super.init()
+        session = MCSession(peer: self.peerID)
+        session.delegate = self
+        startAdvertising(peerID: self.peerID)
+    }
+    
+    // player will start looking for hosts
+    func startAdvertising(peerID: MCPeerID){
+        // lets nearby users know you are looking for a session
+        advert = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: MultipeerSession.serviceType)
+        advert.delegate = self
+        advert.startAdvertisingPeer()
+    }
+    
+    // host will start looking for others to join session
+    func startBrowsing(peerID: MCPeerID){
+        // searches for nearby users willing to join your session & sends invitations
+        browser = MCNearbyServiceBrowser(peer: peerID, serviceType: MultipeerSession.serviceType)
+        browser.delegate = self
+        browser.startBrowsingForPeers()
+    }
+    
     // returns list of all connected peers when called
-    var connectedPeers: [MCPeerID] {
-        return session.connectedPeers
+    var connectedPeers: [MCPeerID]? {
+        return session?.connectedPeers
     }
     
     func sendToAllPeers(_ data: Data){
@@ -70,7 +83,7 @@ extension MultipeerSession: MCSessionDelegate{
     
     // received Data object from a peer
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-        dataHandler(data, peerID)
+        dataHandler!(data, peerID)
     }
     
     // nearby peer opens bytestream connection to the local peer(user)
@@ -91,20 +104,23 @@ extension MultipeerSession: MCSessionDelegate{
     
 }
 
-extension MultipeerSession: MCAdvertiserAssistantDelegate{
-    
-    // called after user received and interacted with invitation to a session
-    func advertiserAssistantDidDismissInvitation(_ advertiserAssistant: MCAdvertiserAssistant) {
-        
+extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
+    // called when invitation to join session is received from peer
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        // AUTOMATICALLY SETTING TO ACCEPT INVITE FOR NOW
+        invitationHandler(true, session)
     }
 }
 
 extension MultipeerSession: MCNearbyServiceBrowserDelegate{
     // nearby peer was found
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+        let game = NetworkGame(host: peerID, session: session, locationId: 0)
+        Globals.instance.games.append(game)
         
+        self.delegate?.gameBrowser(browser, session, sawGames: Globals.instance.games)
         //invite the found peer to the session
-        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
+        //browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
         
     }
     

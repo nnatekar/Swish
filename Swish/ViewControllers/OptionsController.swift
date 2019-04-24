@@ -13,29 +13,22 @@ import MultipeerConnectivity
 class OptionsController: UIViewController {    
     @IBOutlet weak var GameStart: UIButton!
     @IBOutlet weak var handleField: UITextField!
+    @IBOutlet weak var gamesTableContainer: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // temporary until we finish this view controller
     }
     
-    // override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    //     if segue.identifier == "toGame"{
-    //         let vc = segue.destination as! ViewController
-    //         vc.isMultiplayer = true
-    //         vc.selfHandle = MCPeerID(displayName: handleField.text!)
-    //     }
-    // }
-
-    @IBAction func startButtonClicked(_ sender: Any) {
-        if(!handleField.text!.isEmpty){
-            self.performSegue(withIdentifier: "toGame", sender: Any?.self)
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toGame"{
             let vc = segue.destination as! ViewController
-            vc.selfHandle = MCPeerID(displayName: handleField.text!)
+            vc.isMultiplayer = true
+            vc.selfHandle = Globals.instance.selfPeerID
+            vc.multipeerSession = Globals.instance.session
         }
+    }
+    
+    @IBAction func startButtonClicked(_ sender: Any) {
+        self.performSegue(withIdentifier: "toGame", sender: Any?.self)
     }
 }

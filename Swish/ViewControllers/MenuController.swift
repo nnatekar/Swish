@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MultipeerConnectivity
 
 class MenuController : UIViewController {
     
@@ -16,10 +17,6 @@ class MenuController : UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var handleField: UITextField!
     @IBOutlet weak var msg: UILabel!
-    
-    @IBAction func doneTyping(_ sender: UITextField) {
-        sender.resignFirstResponder()
-    }
     
     override func viewDidLoad() {
         multiplayerStackView.isHidden = true
@@ -37,6 +34,10 @@ class MenuController : UIViewController {
         }
     }
     
+    @IBAction func doneTyping(_ sender: UITextField) {
+        sender.resignFirstResponder()
+    }
+    
     @IBAction func backButtonClicked(_ sender: Any) {
         self.gameTypeStackView.isHidden = false
         self.multiplayerStackView.isHidden = true
@@ -49,6 +50,12 @@ class MenuController : UIViewController {
         self.multiplayerStackView.isHidden = false
     }
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "hostGame"){
+            Globals.instance.isHosting = true
+        }
+        
+        Globals.instance.selfPeerID = MCPeerID(displayName: handleField.text!)
+    }
 }
 

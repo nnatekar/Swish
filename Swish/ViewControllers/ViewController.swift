@@ -46,11 +46,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
         // start view's AR session
         sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
-        configuration.planeDetection = [.horizontal, .vertical]
+        configuration.planeDetection = .horizontal
         sceneView.autoenablesDefaultLighting = true
         sceneView.session.run(configuration)
+        
+//        if(Globals.instance.isHosting){
+//            multipeerSession = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
+//        }
+//        else{
+//            multipeerSession = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
+//        }
+        multipeerSession.dataHandler = dataHandler
 
-        multipeerSession = MultipeerSession(peerID: selfHandle!, receivedDataHandler: dataHandler)
         // Set delegates for AR session and AR scene
         sceneView.delegate = self
         sceneView.session.delegate = self
@@ -70,15 +77,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         gameTime = 5 // CHANGE GAME TIME AS NEEDED
         timerLabel.text = "Time: \(gameTime)"
 
-        gameTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { timer in
-            self.timerLabel.text = "Time: \(self.gameTime)"
-            if(self.gameTime > 0){
-                self.gameTime -= 1
-            }
-            else{
-                self.gameTimer.invalidate()
-            }
-        })
+        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
+        
         sceneView.scene.physicsWorld.contactDelegate = self
     }
 
@@ -348,12 +348,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let message: String
 
         switch trackingState {
-        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
+        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers!.isEmpty:
             // No planes detected; provide instructions for this app's AR interactions.
             message = "Move around to map the environment, or wait to join a shared session."
 
-        case .normal where !multipeerSession.connectedPeers.isEmpty && mapProvider == nil:
-            let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
+        case .normal where !multipeerSession.connectedPeers!.isEmpty && mapProvider == nil:
+            let peerNames = multipeerSession.connectedPeers!.map({ $0.displayName }).joined(separator: ", ")
             message = "Connected with \(peerNames)."
 
         case .notAvailable:

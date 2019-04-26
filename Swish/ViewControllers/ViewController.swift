@@ -35,6 +35,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var isMultiplayer: Bool = false
 
     @IBOutlet weak var sceneView: ARSCNView!
+    var basketScene: SCNScene?
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
     let timer = Each(0.05).seconds
@@ -80,6 +81,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
         
         sceneView.scene.physicsWorld.contactDelegate = self
+        
+        basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
+        // Set backboard texture
+        basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
     }
 
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
@@ -169,12 +174,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         detection.physicsBody = body2
         detection.opacity = 0.0
 
-//        let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
-//        let detectionPos = basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.position
-//        let detectionX = Float(detectionPos?.x ?? 0)
-//        let detectionY = Float(detectionPos?.y ?? 1.7)
-//        let detectionZ = Float(detectionPos?.z ?? -3)
-
         detection.position = SCNVector3(0, 1.9, -3) // TODO: determine relative position of cylinder
         detection.name = "detection"
        // detection.isHidden = true
@@ -207,11 +206,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
-            let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
-
-            // Set backboard texture
-            basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
-
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
 
             let positionOfPlane = hitTestResult.worldTransform.columns.3
@@ -219,25 +213,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let yPosition = positionOfPlane.y
             let zPosition = positionOfPlane.z
             basketNode?.position = SCNVector3(xPosition,yPosition,zPosition)
-            //changed
-            //detectionNode?.position = SCNVector3(xPosition,yPosition + 1.5,zPosition - 3)
-            //detectionNode?.position = SCNVector3(xPosition,yPosition + 1.4,zPosition - 3)
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
-            //detectionNode?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
-            //detectionNode?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
-            //added
-            //let detectionNode2 = basketScene?.rootNode.childNode(withName: "detection", recursively: false)
-            //detectionNode2?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
-            //detectionNode2?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
-
+            let anchor = ARAnchor(name: "basketAnchor", transform: hitTestResult.worldTransform)
+            sceneView.session.add(anchor: anchor)
+            
             //
-            self.sceneView.scene.rootNode.addChildNode(basketNode!)
+            //self.sceneView.scene.rootNode.addChildNode(basketNode!)
             //self.sceneView.scene.rootNode.addChildNode(detectionNode!)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.basketAdded = true
             }
         }
     } // adds backboard and hoop to the scene view
+    
+    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        if(anchor.name == "basketAnchor"){
+            let basketNode = basketScene!.rootNode.childNode(withName: "ball", recursively: false)
+            let positionOfPlane = anchor.transform.columns.3
+            basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
+            basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
+            return basketNode
+        }
+        else{
+            return nil
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -261,7 +261,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 let configuration = ARWorldTrackingConfiguration()
                 configuration.planeDetection = .horizontal
                 configuration.initialWorldMap = worldMap
+                for anchor in worldMap.anchors{
+                    if (anchor.name == "basketAnchor"){
+                        sceneView.session.add(anchor: worldMap.anchors[1])
+                    }
+                }
                 sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+                
 
                 // Remember who provided the map for showing UI feedback.
                 mapProvider = peer
@@ -307,14 +313,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // called from ARSCNViewDelegate
     // SCNNode relating to a new anchor was added to the scene
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard anchor is ARPlaneAnchor else {return}
-        DispatchQueue.main.async {
-            self.planeDetected.isHidden = false
+        if(anchor is ARPlaneAnchor){
+            DispatchQueue.main.async {
+                self.planeDetected.isHidden = false
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.planeDetected.isHidden = true
+            }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.planeDetected.isHidden = true
+        else if(anchor.name == "basketAnchor"){
+            print("We have anchored the basket")
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears
+    
+    
 
     // called every frame
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {

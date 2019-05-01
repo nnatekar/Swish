@@ -9,9 +9,23 @@
 import Foundation
 
 // singleton cache
-class Cache: NSCache<AnyObject, AnyObject> {
+class Cache: NSCache<AnyObject, AnyObject> , NSDiscardableContent {
     static let shared = NSCache<AnyObject, AnyObject>();
     private override init() {
         super.init()
+    }
+    
+    func beginContentAccess() -> Bool {
+        return true
+    }
+    
+    func endContentAccess() {
+    }
+    
+    func discardContentIfPossible() {
+    }
+    
+    func isContentDiscarded() -> Bool {
+        return false
     }
 }

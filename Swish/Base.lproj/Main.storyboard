@@ -116,7 +116,7 @@
                                 <rect key="frame" x="93" y="97" width="227" height="215"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swish" translatesAutoresizingMaskIntoConstraints="NO" id="XmC-xl-rl0">
-                                <rect key="frame" x="70.5" y="340" width="273" height="47"/>
+                                <rect key="frame" x="70.5" y="370" width="273" height="47"/>
                             </imageView>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="3zS-sQ-KrZ">
                                 <rect key="frame" x="0.0" y="426" width="414" height="150"/>
@@ -124,9 +124,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdL-ou-bKM">
                                         <rect key="frame" x="83" y="0.0" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <state key="normal" title="Host">
-                                            <color key="titleColor" red="0.69302542098445596" green="0.099762527250457977" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="HOST">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <segue destination="6vp-N7-mdh" kind="show" identifier="hostGame" id="aO1-0y-JY7"/>
@@ -135,8 +135,8 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tcg-Xn-Oh3">
                                         <rect key="frame" x="83" y="90" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <state key="normal" title="Join">
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="JOIN">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
@@ -213,22 +213,22 @@
                                     <constraint firstItem="FjY-Iw-HNV" firstAttribute="height" secondItem="ri1-kU-Bw1" secondAttribute="height" multiplier="0.4" id="cXm-WF-Obr"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bGx-eX-Sxv" userLabel="Handle View">
-                                <rect key="frame" x="70.5" y="117" width="273" height="30"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bGx-eX-Sxv" userLabel="Handle View">
+                                <rect key="frame" x="70.5" y="475" width="273" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koG-xk-lgX">
-                                        <rect key="frame" x="0.0" y="0.0" width="45" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="45" height="60"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TZs-lZ-mo5" userLabel="Handle Text Field">
-                                        <rect key="frame" x="45" y="0.0" width="228" height="30"/>
+                                        <rect key="frame" x="45" y="0.0" width="228" height="60"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                         <connections>
-                                            <action selector="doneTyping:" destination="RyS-Hz-JQJ" eventType="editingDidEnd" id="bpE-Yk-8Op"/>
+                                            <action selector="doneTyping:" destination="RyS-Hz-JQJ" eventType="primaryActionTriggered" id="bzL-DK-9eQ"/>
                                         </connections>
                                     </textField>
                                 </subviews>
@@ -250,14 +250,17 @@
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="89w-br-2gy"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="centerY" secondItem="ElQ-Im-ycT" secondAttribute="centerY" multiplier="1.2" id="Cr8-DP-Ez4"/>
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="height" secondItem="3zS-sQ-KrZ" secondAttribute="height" id="HW5-ls-tdU"/>
+                            <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="KFf-LO-Rh9"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="Kz3-bd-2Am"/>
                             <constraint firstItem="4Mh-ff-pgK" firstAttribute="centerY" secondItem="ElQ-Im-ycT" secondAttribute="centerY" multiplier="0.5" id="M7p-sI-k2t"/>
+                            <constraint firstItem="bGx-eX-Sxv" firstAttribute="height" secondItem="FjY-Iw-HNV" secondAttribute="height" id="TKf-fh-jZi"/>
                             <constraint firstItem="4Mh-ff-pgK" firstAttribute="centerX" secondItem="5WI-AK-LyB" secondAttribute="centerX" id="VBB-8N-Zw8"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="width" secondItem="cEk-cb-Flw" secondAttribute="width" id="WXl-Go-8vS"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="width" secondItem="bGx-eX-Sxv" secondAttribute="width" id="YFn-Se-qHb"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="centerX" secondItem="5WI-AK-LyB" secondAttribute="centerX" id="aWP-P3-aho"/>
-                            <constraint firstItem="XmC-xl-rl0" firstAttribute="centerY" secondItem="5WI-AK-LyB" secondAttribute="centerY" multiplier="0.8" id="ggV-XN-QTV"/>
+                            <constraint firstItem="XmC-xl-rl0" firstAttribute="centerY" secondItem="5WI-AK-LyB" secondAttribute="centerY" multiplier="0.8" constant="30" id="ggV-XN-QTV"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="height" secondItem="cEk-cb-Flw" secondAttribute="height" id="gro-el-ILZ"/>
+                            <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerY" secondItem="3zS-sQ-KrZ" secondAttribute="centerY" constant="-46.5" id="mTj-Mt-Jkf"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="height" secondItem="5WI-AK-LyB" secondAttribute="height" multiplier="0.165" id="re6-Vr-aXo"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="centerY" secondItem="3zS-sQ-KrZ" secondAttribute="centerY" id="txE-9H-EOA"/>
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerX" secondItem="5WI-AK-LyB" secondAttribute="centerX" id="w8h-GG-gM3"/>
@@ -269,6 +272,7 @@
                     <connections>
                         <outlet property="backButton" destination="r2w-ai-BkD" id="y6f-6z-mud"/>
                         <outlet property="gameTypeStackView" destination="cEk-cb-Flw" id="9Fb-NZ-OSQ"/>
+                        <outlet property="handleField" destination="TZs-lZ-mo5" id="Dze-io-IUh"/>
                         <outlet property="multiplayerStackView" destination="3zS-sQ-KrZ" id="pjd-mD-Kr3"/>
                         <outlet property="nameStackView" destination="bGx-eX-Sxv" id="21Q-T2-VYE"/>
                         <outlet property="welcomeStackView" destination="ri1-kU-Bw1" id="yB5-y8-tuc"/>

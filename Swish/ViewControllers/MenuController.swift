@@ -17,12 +17,23 @@ class MenuController : UIViewController {
     @IBOutlet weak var welcomeStackView: UIStackView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var nameStackView: UIStackView!
+    @IBOutlet weak var handleField: UITextField!
     
     override func viewDidLoad() {
         gameTypeStackView.isHidden = true
         multiplayerStackView.isHidden = true
         nameStackView.isHidden = true
         backButton.isHidden = true
+
+        let handle = Cache.shared.object(forKey: "handle" as AnyObject)
+        print(handle as? String ?? "NULL")
+        if handle != nil {
+            handleField.text = handle as? String
+        } else {
+            let randomHandle = "ReadyPlayer" + String(arc4random())
+            Cache.shared.setObject("randomHandle" as AnyObject, forKey: "handle" as AnyObject)
+            handleField.text = randomHandle
+        }
     }
     
     @IBAction func playClicked(_ sender: Any){
@@ -49,9 +60,10 @@ class MenuController : UIViewController {
     
     
     @IBAction func doneTyping(_ sender: UITextField) {
-        Cache.shared.setObject(sender.text as AnyObject, forKey: "handle" as AnyObject)
-        let handle = Cache.shared.object(forKey: "handle" as AnyObject)
-        print(handle as! String)
+        if !handleField.text!.contains("ReadyPlayer") {
+            Cache.shared.setObject(handleField.text as AnyObject, forKey: "handle" as AnyObject)
+        }
+        sender.resignFirstResponder()
     }
     
     @IBAction func backButtonClicked(_ sender: Any) {
@@ -81,7 +93,7 @@ class MenuController : UIViewController {
         if(segue.identifier == "hostGame"){
             Globals.instance.isHosting = true
         }
-        //TODO: write to cache
+
         let handle = Cache.shared.object(forKey: "handle" as AnyObject)
         Globals.instance.selfPeerID = MCPeerID(displayName: handle as! String)
     }

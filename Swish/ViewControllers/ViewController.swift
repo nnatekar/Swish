@@ -15,32 +15,37 @@ Basic notes:
  */
 
 import UIKit
+import QuartzCore
 import ARKit
 import Each
 import MultipeerConnectivity
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, ARSessionDelegate {
 
-    @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var timerLabel: UILabel!
-    var gameTime = Int()
-    var gameTimer = Timer()
-
+    @IBOutlet weak var scoreLabel: PaddingLabel!
+    @IBOutlet weak var timerLabel: PaddingLabel!
     @IBOutlet weak var planeDetected: UILabel!
     @IBOutlet weak var multiPlayerStatus: UILabel!
+    @IBOutlet weak var stopButton: UIButton!
+    @IBOutlet weak var sceneView: ARSCNView!
 
     var selfHandle: MCPeerID?
     var multipeerSession: MultipeerSession!
     var mapProvider: MCPeerID?
-
     var isMultiplayer: Bool = false
-
-    @IBOutlet weak var sceneView: ARSCNView!
+    
+    var gameTime = Double()
+    var gameTimeMin = Int()
+    var gameTimeSec = Int()
+    var gameTimeMs = Int()
+    var gameTimer = Timer()
+    
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
-    let timer = Each(0.05).seconds
+    let timer = Each(0.05).minutes
     var basketAdded: Bool = false
     var receivingForce: SCNVector3?
-    var score: Int = 0
+    var score: Int = 0 {didSet {scoreLabel.text = "\(score)"}} //ASK Justin
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -74,28 +79,53 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.addGestureRecognizer(panGestureRecognizer)
 
         // add timer
-        gameTime = 5 // CHANGE GAME TIME AS NEEDED
-        timerLabel.text = "Time: \(gameTime)"
-
-        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
+        gameTime = 360 // CHANGE GAME TIME AS NEEDED, currently at 3 mins
+        gameTimeMin = Int(gameTime) / 60
+        gameTimeSec = Int(gameTime) % 60
+        gameTimeMs = Int((gameTime * 1000).truncatingRemainder(dividingBy: 1000))
+        
+        initStyles();
+        
+        gameTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
         
         sceneView.scene.physicsWorld.contactDelegate = self
     }
+    
+    func initStyles(){
+        planeDetected.text = "Point your camera towards the floor."
+        planeDetected.isHidden = false
+        planeDetected.font = planeDetected.font.withSize(28)
+        planeDetected.textColor = UIColor.white
+        planeDetected.layer.cornerRadius = 2
+        planeDetected.textAlignment = .center
+        planeDetected.numberOfLines = 0
+        planeDetected.shadowColor = UIColor.black
+        
+        timerLabel.text = String(format: "%02d:%02d:%03d", gameTimeMin, gameTimeSec, gameTimeMs)
+        timerLabel.font = timerLabel.font.withSize(24)
+        timerLabel.textColor = UIColor.white
+        timerLabel?.layer.cornerRadius = 2
+        timerLabel.textAlignment = .center
+        
+        scoreLabel.text = "\(score)"
+        scoreLabel.font = scoreLabel.font.withSize(24)
+        scoreLabel.textColor = UIColor.white
+        scoreLabel?.layer.cornerRadius = 2
+        scoreLabel.textAlignment = .center
+        
+        stopButton?.layer.cornerRadius = 2
+    }
+    
+    @IBAction func endClick(_ sender: Any){
+        
+    }
 
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
-
+        //print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
-            //add2 = true
-            //if (contact.nodeA.name! == "detection" || contact.nodeB.name! == "detection") {
             if (contact.nodeB.name! == "detection") {
-                /*
-                 if (contact.nodeA.name! != "torusDetection" || contact.nodeB.name! != "torusDetection") {
-                 score+=1
-                */
-                score+=1
-                //add1 = true
+                self.score+=1
             }else{
               //  score+=1
             }
@@ -109,7 +139,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
              let distance = length(cameraToAnchor)
              //maybe do temp score-so from top of function add everything to a tempScore variable-feed this into the distance caluclation above and once you've got the final score for a given shot, add this to score?
             */
-            print(score)
             // added
             // if (add2 == true && add1 = false) {score-=5}
             DispatchQueue.main.async {
@@ -124,11 +153,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
 
     @objc func incrementTimer(){
-        gameTime -= 1
-        timerLabel.text = "Time: \(gameTime)"
-
-        if(gameTime <= 0){
-            gameTimer.invalidate()
+        if basketAdded == true {
+            gameTime -= 0.001
+            gameTimeMin = Int(gameTime) / 60
+            gameTimeSec = Int(gameTime) % 60
+            gameTimeMs = Int((gameTime * 1000).truncatingRemainder(dividingBy: 1000))
+            
+            timerLabel.text = String(format: "%02d:%02d:%03d", gameTimeMin, gameTimeSec, gameTimeMs)
+            
+            if(gameTime <= 0){
+                gameTimer.invalidate()
+            }
         }
     }
 
@@ -154,9 +189,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.name = "Basketball"
         body.restitution = 0.2
 
-        let xForce = translation.x > 0 ? min(1, Float(translation.x)/100) : max(-1, Float(translation.x)/100)
-        let yForce = min(10, Float(translation.y) / -100 * 8)
-        let zForce = max(-3, Float(velocity.y) / 300)
+        let xForce = translation.x > 0 ? min(1.5, Float(translation.x)/100) : max(-1.5, Float(translation.x)/100)
+        let yForce = min(10, Float(translation.y) / -300 * 8)
+        let zForce = max(-3, Float(velocity.y) / 900)
         ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
@@ -164,7 +199,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
 
         // collision detection
-        let detection = SCNNode(geometry: SCNCylinder(radius: 0.2, height: 0.2))
+        let detection = SCNNode(geometry: SCNCylinder(radius: 0.3, height: 0.2))
         let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
         detection.physicsBody = body2
         detection.opacity = 0.0
@@ -175,7 +210,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 //        let detectionY = Float(detectionPos?.y ?? 1.7)
 //        let detectionZ = Float(detectionPos?.z ?? -3)
 
-        detection.position = SCNVector3(0, 1.9, -3) // TODO: determine relative position of cylinder
+        detection.position = SCNVector3(-0.4, 0.35, -3.5) // TODO: determine relative position of cylinder
         detection.name = "detection"
        // detection.isHidden = true
         detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
@@ -310,6 +345,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         guard anchor is ARPlaneAnchor else {return}
         DispatchQueue.main.async {
             self.planeDetected.isHidden = false
+            self.planeDetected.text = "Detected floor! Now tap to place your hoop."
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.planeDetected.isHidden = true

@@ -5,7 +5,7 @@
 //  Created by Jugal Jain on 2/27/19.
 //  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
-
+import ARKit
 import MultipeerConnectivity
 
 protocol browserDelegate: class{
@@ -22,6 +22,7 @@ class MultipeerSession: NSObject{
     var browser: MCNearbyServiceBrowser!
     
     var dataHandler: ((Data, MCPeerID) -> Void)?
+    var basketSyncHandler: ((ARWorldMap, MCPeerID) -> Void)?
     weak var delegate: browserDelegate?
     
     init(selfPeerID: MCPeerID){
@@ -83,6 +84,13 @@ extension MultipeerSession: MCSessionDelegate{
     
     // received Data object from a peer
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+        do{
+            if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+                basketSyncHandler!(worldMap, peerID)
+            }
+        }
+        catch{
+        }
         dataHandler!(data, peerID)
     }
     

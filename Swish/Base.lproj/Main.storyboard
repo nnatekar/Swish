@@ -36,8 +36,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Points:" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoy-8h-SDy">
-                                        <rect key="frame" x="267" y="27" width="52" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Points:" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoy-8h-SDy">
+                                        <rect key="frame" x="354" y="30.5" width="52" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -54,7 +54,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yb-hv-CTP" userLabel="MultiplayerStatus">
-                                <rect key="frame" x="183" y="442" width="48" height="22"/>
+                                <rect key="frame" x="183" y="441" width="48" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -82,7 +82,6 @@
                             <constraint firstItem="Z53-fx-q1e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="nF5-k1-q9n"/>
                             <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" multiplier="1.75" id="wLT-wJ-fva"/>
                             <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="wXE-Q3-EAO"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="2Yb-hv-CTP" secondAttribute="bottom" constant="398" id="wnH-f8-WLs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

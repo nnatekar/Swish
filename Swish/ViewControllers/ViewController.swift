@@ -32,7 +32,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var multipeerSession: MultipeerSession!
     var mapProvider: MCPeerID?
     var isMultiplayer: Bool = false
-    
     var gameTime = Double()
     var gameTimeMin = Int()
     var gameTimeSec = Int()
@@ -40,6 +39,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var gameTimer = Timer()
     
     var basketScene: SCNScene?
+    var globalBasketNode: SCNNode?
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
     let timer = Each(0.05).minutes
@@ -56,9 +56,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.autoenablesDefaultLighting = true
         sceneView.session.run(configuration)
         
-//        if(Globals.instance.isHosting){
         // set up multipeer session's data handlers
         multipeerSession.dataHandler = dataHandler
+        multipeerSession.basketSyncHandler = basketSyncHandler
 
         // Set delegates for AR session and AR scene
         sceneView.delegate = self

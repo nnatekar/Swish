@@ -36,6 +36,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     @IBOutlet weak var sceneView: ARSCNView!
     var basketScene: SCNScene?
+    var globalBasketNode: SCNNode?
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
     let timer = Each(0.05).seconds
@@ -205,11 +206,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 let diffY = position.y - hostPosition!.dim2
                 let diffZ = position.z - hostPosition!.dim3
                 
-                self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
-                    if node.name == "ball" {
-                        node.position = SCNVector3(x: node.position.x - diffX, y: node.position.y - diffY, z: node.position.z - diffZ)
-                    }
-                }
+                globalBasketNode!.position = SCNVector3(x: globalBasketNode!.position.x + diffX, y: globalBasketNode!.position.y + diffY, z: globalBasketNode!.position.z + diffZ)
                 
             }
         }
@@ -341,6 +338,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
         else if(anchor.name == "basketAnchor"){
             print("We have anchored the basket")
+            globalBasketNode = node
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears
     
@@ -366,12 +364,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let message: String
 
         switch trackingState {
-        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers!.isEmpty:
+        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
             // No planes detected; provide instructions for this app's AR interactions.
             message = "Move around to map the environment, or wait to join a shared session."
 
-        case .normal where !multipeerSession.connectedPeers!.isEmpty && mapProvider == nil:
-            let peerNames = multipeerSession.connectedPeers!.map({ $0.displayName }).joined(separator: ", ")
+        case .normal where !multipeerSession.connectedPeers.isEmpty && mapProvider == nil:
+            let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
             message = "Connected with \(peerNames)."
 
         case .notAvailable:

@@ -26,6 +26,7 @@ class MultipeerSession: NSObject{
     weak var delegate: browserDelegate?
     
     init(selfPeerID: MCPeerID){
+        self.connectedPeers = []
         self.peerID = selfPeerID
         super.init()
         // creates a new session to run multiplayer on
@@ -37,6 +38,7 @@ class MultipeerSession: NSObject{
     }
     
     init(hostPeerID: MCPeerID){
+        self.connectedPeers = []
         self.peerID = hostPeerID
         super.init()
         session = MCSession(peer: self.peerID)
@@ -61,13 +63,14 @@ class MultipeerSession: NSObject{
     }
     
     // returns list of all connected peers when called
-    var connectedPeers: [MCPeerID]? {
-        return session?.connectedPeers
-    }
+//    var connectedPeers: [MCPeerID]? {
+//        return session?.connectedPeers
+//    }
+    var connectedPeers: [MCPeerID]
     
     func sendToAllPeers(_ data: Data){
         do{
-            try session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            try session.send(data, toPeers: connectedPeers, with: .reliable)
         } catch{
             print("Error: Could not send data to peers: \(error.localizedDescription)")
         }
@@ -116,6 +119,7 @@ extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
     // called when invitation to join session is received from peer
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         // AUTOMATICALLY SETTING TO ACCEPT INVITE FOR NOW
+        connectedPeers.append(peerID)
         invitationHandler(true, session)
     }
 }

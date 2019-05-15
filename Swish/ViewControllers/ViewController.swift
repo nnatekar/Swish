@@ -47,6 +47,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var receivingForce: SCNVector3?
     var score: Int = 0
     var hostPosition: CodablePosition?
+    var playerPosition: CodablePosition?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -192,7 +194,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
+        let codableBall = CodableBall(forceX: xForce, forceY: yForce, forceZ: zForce, playerPosition: playerPosition!)
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
+        do {
+            let data : Data = try JSONEncoder().encode(codableBall)
+            multipeerSession.sendToAllPeers(data)
+        } catch {
+            
+        }
 
         // collision detection
         let detection = SCNNode(geometry: SCNCylinder(radius: 0.3, height: 0.2))
@@ -364,7 +373,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         catch{
             
         }
+        
+        do{
+            // if the data is a position, we need to sync our game world's position with that position
+            let decodedData = try JSONDecoder().decode(CodableBall.self, from: data)
+            let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
+            ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
+            ball.position = SCNVector3(decodedData.playerPosition.dim1, decodedData.playerPosition.dim2, decodedData.playerPosition.dim3)
+            let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
+            ball.physicsBody = body
+            ball.name = "Basketball"
+            body.restitution = 0.2
+            
+            let xForce = decodedData.forceX
+            let yForce = decodedData.forceY
+            let zForce = decodedData.forceZ
+            ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
+            ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
+            ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
+        }
+        catch{
+            
+        }
     }
+    
 
     // called from ARSCNViewDelegate
     // SCNNode relating to a new anchor was added to the scene
@@ -399,6 +431,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         // Present an error message to the user.
         multiPlayerStatus.text = "Session failed: \(error.localizedDescription)"
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+    }
+    
+    func session(_ session: ARSession, didUpdate frame: ARFrame){
+        let position = frame.camera.transform.columns.3
+        playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: position.w)
     }
 
     private func updateMultiPlayerStatus(for frame: ARFrame, trackingState: ARCamera.TrackingState) {

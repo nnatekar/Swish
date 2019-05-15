@@ -7,6 +7,23 @@
 //
 
 import Foundation
+import ARKit
+
+class CodableBall: Codable{
+    var forceX: Float
+    var forceY: Float
+    var forceZ: Float
+    var playerPosition: CodablePosition
+
+    
+    // only working with 3d space
+    init(forceX: Float, forceY: Float, forceZ: Float, playerPosition: CodablePosition ){
+        self.forceX = forceX
+        self.forceY = forceY
+        self.forceZ = forceZ
+        self.playerPosition = playerPosition
+    }
+}
 
 class CodablePosition: Codable{
     var dim1: Float

@@ -151,10 +151,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             if(gameTime <= 0){
                 gameTimer.invalidate()
                 if Cache.shared.object(forKey: "SinglePlayerBoard") == nil {
-                    let leaderboardArr:[Int:String] =
-                        [self.score:Cache.shared.object(forKey: "handle") as! String,
-                         -1:"", -1:"", -1:"", -1:"", -1:"", -1:"", -1:""]
-                    Cache.shared.set(leaderboardArr, forKey: "SinglePlayerBoard")
+//                    let leaderboardArr:[Int:String] =
+//                        [self.score:Cache.shared.object(forKey: "handle") as! String,
+//                         -1:"", -1:"", -1:"", -1:"", -1:"", -1:"", -1:""]
+//                    Cache.shared.set(leaderboardArr, forKey: "SinglePlayerBoard")
                 } else {
                     //let leaderboardArr = Cache.shared.object(forKey: "SinglePlayerBoard")
                     //for (index, keyValue) in leaderboardArr.enumerated() {

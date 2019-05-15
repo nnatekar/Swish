@@ -71,8 +71,6 @@ class MenuController : UIViewController {
         else if multiplayerStackView.isHidden == false {
             self.gameTypeStackView.isHidden = false
             self.multiplayerStackView.isHidden = true
-            self.logo.isHidden = false
-            self.swish.isHidden = false
             Globals.instance.isMulti = false
         } // currently on multiplayer stack view, go back to game stack
         else if nameStackView.isHidden == false {

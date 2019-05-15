@@ -44,7 +44,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     let timer = Each(0.05).minutes
     var basketAdded: Bool = false
     var receivingForce: SCNVector3?
-    var score: Int = 0 {didSet {scoreLabel.text = "\(score)"}} //ASK Justin
+    var score: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,7 +79,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.addGestureRecognizer(panGestureRecognizer)
 
         // add timer
-        gameTime = 360 // CHANGE GAME TIME AS NEEDED, currently at 3 mins
+        gameTime = 180 // CHANGE GAME TIME AS NEEDED, currently at 3 mins
         gameTimeMin = Int(gameTime) / 60
         gameTimeSec = Int(gameTime) % 60
         gameTimeMs = Int((gameTime * 1000).truncatingRemainder(dividingBy: 1000))
@@ -121,32 +121,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
 
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        //print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             if (contact.nodeB.name! == "detection") {
                 self.score+=1
-            }else{
-              //  score+=1
+                DispatchQueue.main.async {
+                    self.scoreLabel.text = "\(self.score)"
+                }
             }
-            /*
-             let anchorPosition = anchor.transforms.columns.3
-             let cameraPosition = camera.transform.columns.3
-
-             // here’s a line connecting the two points, which might be useful for other things
-             let cameraToAnchor = cameraPosition - anchorPosition
-             // and here’s just the scalar distance
-             let distance = length(cameraToAnchor)
-             //maybe do temp score-so from top of function add everything to a tempScore variable-feed this into the distance caluclation above and once you've got the final score for a given shot, add this to score?
-            */
-            // added
-            // if (add2 == true && add1 = false) {score-=5}
             DispatchQueue.main.async {
                 contact.nodeA.removeFromParentNode()
-                //self.scoreLabel.text = String(self.score)
-                //contact.nodeB.removeFromParentNode()   // node B is the net
-                //self.addDetection()
-             //   self.scoreLabel.text = String(self.score)
             }
         }
     }
@@ -163,12 +147,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             if(gameTime <= 0){
                 gameTimer.invalidate()
+                if Cache.shared.object(forKey: "SinglePlayerBoard") == nil {
+                    let leaderboardArr:[Int:String] =
+                        [self.score:Cache.shared.object(forKey: "handle") as! String,
+                         -1:"", -1:"", -1:"", -1:"", -1:"", -1:"", -1:""]
+                    Cache.shared.set(leaderboardArr, forKey: "SinglePlayerBoard")
+                } else {
+                    //let leaderboardArr = Cache.shared.object(forKey: "SinglePlayerBoard")
+                    //for (index, keyValue) in leaderboardArr.enumerated() {
+                        
+                    //}
+                    
+                }
             }
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        // stop the AR session if leaving the view
         sceneView.session.pause()
     }
 
@@ -203,12 +198,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
         detection.physicsBody = body2
         detection.opacity = 0.0
-
-//        let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
-//        let detectionPos = basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.position
-//        let detectionX = Float(detectionPos?.x ?? 0)
-//        let detectionY = Float(detectionPos?.y ?? 1.7)
-//        let detectionZ = Float(detectionPos?.z ?? -3)
 
         detection.position = SCNVector3(-0.4, 0.35, -3.5) // TODO: determine relative position of cylinder
         detection.name = "detection"
@@ -246,6 +235,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
             // Set backboard texture
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
+            
+            basketScene?.rootNode.childNode(withName: "pole", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
 
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
 
@@ -254,20 +245,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let yPosition = positionOfPlane.y
             let zPosition = positionOfPlane.z
             basketNode?.position = SCNVector3(xPosition,yPosition,zPosition)
-            //changed
-            //detectionNode?.position = SCNVector3(xPosition,yPosition + 1.5,zPosition - 3)
-            //detectionNode?.position = SCNVector3(xPosition,yPosition + 1.4,zPosition - 3)
+            
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
-            //detectionNode?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
-            //detectionNode?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
-            //added
-            //let detectionNode2 = basketScene?.rootNode.childNode(withName: "detection", recursively: false)
-            //detectionNode2?.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
-            //detectionNode2?.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
-
-            //
+ 
             self.sceneView.scene.rootNode.addChildNode(basketNode!)
-            //self.sceneView.scene.rootNode.addChildNode(detectionNode!)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.basketAdded = true
             }

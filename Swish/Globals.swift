@@ -15,5 +15,6 @@ class Globals{
     var games: [NetworkGame] = []
     var selfPeerID: MCPeerID?
     var isHosting: Bool = false
+    var isMulti: Bool = false
     var session: MultipeerSession?
 }

@@ -236,7 +236,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             // Set backboard texture
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
             
-            basketScene?.rootNode.childNode(withName: "pole", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
+            basketScene?.rootNode.childNode(withName: "pole", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIColor.gray
 
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
 

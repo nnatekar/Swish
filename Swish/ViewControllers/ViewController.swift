@@ -195,6 +195,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
         let codableBall = CodableBall(forceX: xForce, forceY: yForce, forceZ: zForce, playerPosition: playerPosition!)
+
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
         do {
             let data : Data = try JSONEncoder().encode(codableBall)
@@ -221,7 +222,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @objc func handlePan(sender: UIPanGestureRecognizer){
         guard let sceneView = sender.view as? ARSCNView else {return}
 
-        if basketAdded == true
+        if (basketAdded == true && sender.state == .ended)
         {
             let velocity = sender.velocity(in: sceneView);
             let translation = sender.translation(in: sceneView)
@@ -391,6 +392,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
             ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
             ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
+            sceneView.scene.rootNode.addChildNode(ball)
         }
         catch{
             

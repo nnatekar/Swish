@@ -39,13 +39,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var gameTimeMs = Int()
     var gameTimer = Timer()
     
+    var basketScene: SCNScene?
     let configuration = ARWorldTrackingConfiguration()
     var power: Float = 1
     let timer = Each(0.05).minutes
     var basketAdded: Bool = false
     var receivingForce: SCNVector3?
     var score: Int = 0
-    
+    var hostPosition: CodablePosition?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -56,11 +57,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.session.run(configuration)
         
 //        if(Globals.instance.isHosting){
-//            multipeerSession = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
-//        }
-//        else{
-//            multipeerSession = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
-//        }
+        // set up multipeer session's data handlers
         multipeerSession.dataHandler = dataHandler
 
         // Set delegates for AR session and AR scene
@@ -89,6 +86,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         gameTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
         
         sceneView.scene.physicsWorld.contactDelegate = self
+        
+        basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
+        // Set backboard texture
+        basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
     }
     
     func initStyles(){
@@ -200,6 +201,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         detection.opacity = 0.0
 
         detection.position = SCNVector3(-0.4, 0.35, -3.5) // TODO: determine relative position of cylinder
+
         detection.name = "detection"
        // detection.isHidden = true
         detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
@@ -223,7 +225,37 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let touchLocation = sender.location(in: sceneView)
         let hitTestResult = sceneView.hitTest(touchLocation, types: [.existingPlaneUsingExtent])
         if !hitTestResult.isEmpty {
-            self.addBasket(hitTestResult: hitTestResult.first!)
+            if(!basketAdded && Globals.instance.isHosting){
+                self.addBasket(hitTestResult: hitTestResult.first!)
+            }
+            else if(basketAdded && Globals.instance.isHosting){
+                // only send worldcoordinates if we're the host
+                getAndSendWorldCoordinates(hitTestResult: hitTestResult.first!)
+            }
+            else if(basketAdded && !Globals.instance.isHosting){
+                // if basket has been added and we're not hosting, host has pressed position first
+                // need to sync game worlds
+                let position = hitTestResult.first!.worldTransform.columns.3
+                let diffX = position.x - hostPosition!.dim1
+                let diffY = position.y - hostPosition!.dim2
+                let diffZ = position.z - hostPosition!.dim3
+                
+                globalBasketNode!.position = SCNVector3(x: globalBasketNode!.position.x + diffX, y: globalBasketNode!.position.y + diffY, z: globalBasketNode!.position.z + diffZ)
+                
+            }
+        }
+    }
+    
+    func getAndSendWorldCoordinates(hitTestResult: ARHitTestResult){
+        do{
+            let tapPosition = hitTestResult.worldTransform.columns.3
+            print(tapPosition)
+            let encodablePosition = CodablePosition(dim1: tapPosition.x, dim2: tapPosition.y, dim3: tapPosition.z, dim4: tapPosition.w)
+            let data : Data = try JSONEncoder().encode(encodablePosition)
+            multipeerSession.sendToAllPeers(data)
+        }
+        catch{
+            print("Was not able to encode position to data")
         }
     }
 
@@ -231,7 +263,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     func addBasket(hitTestResult: ARHitTestResult) {
         if basketAdded == false {
-            let basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
 
             // Set backboard texture
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
@@ -245,15 +276,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let yPosition = positionOfPlane.y
             let zPosition = positionOfPlane.z
             basketNode?.position = SCNVector3(xPosition,yPosition,zPosition)
-            
+
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
- 
-            self.sceneView.scene.rootNode.addChildNode(basketNode!)
+            let anchor = ARAnchor(name: "basketAnchor", transform: hitTestResult.worldTransform)
+            sceneView.session.add(anchor: anchor)
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.basketAdded = true
             }
         }
     } // adds backboard and hoop to the scene view
+    
+    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        if(anchor.name == "basketAnchor"){
+            let basketNode = basketScene!.rootNode.childNode(withName: "ball", recursively: false)
+            let positionOfPlane = anchor.transform.columns.3
+            basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
+            basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
+            basketAdded = true
+            return basketNode
+        }
+        else{
+            return nil
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -261,6 +307,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
 
     @IBAction func shareSession(_ button: UIButton) {
+        guard Globals.instance.isHosting else{ return }
         sceneView.session.getCurrentWorldMap { worldMap, error in
             guard let map = worldMap
                 else { print("Error: \(error!.localizedDescription)"); return }
@@ -269,31 +316,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.multipeerSession.sendToAllPeers(data)
         }
     }
-
-    func dataHandler(_ data: Data, from peer: MCPeerID) {
-        do {
-            if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
-                // Run the session with the received world map.
-                let configuration = ARWorldTrackingConfiguration()
-                configuration.planeDetection = .horizontal
-                configuration.initialWorldMap = worldMap
-                sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-
-                // Remember who provided the map for showing UI feedback.
-                mapProvider = peer
-            }
-            else{
-                if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
-                    // Add anchor to the session, ARSCNView delegate adds visible content.
+    
+    func basketSyncHandler(worldMap: ARWorldMap, peerID: MCPeerID){
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
+        configuration.initialWorldMap = worldMap
+        
+        sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        for anchor in worldMap.anchors{
+            if (anchor.name == "basketAnchor"){
+                if(basketAdded == false){
                     sceneView.session.add(anchor: anchor)
                 }
-                else{
-                    print("unknown data recieved from \(peer)")
-                }
             }
-        } catch {
-            print("can't decode data recieved from \(peer)")
         }
+        
+        // Remember who provided the map for showing UI feedback.
+        mapProvider = peerID
+    }
+
+    func dataHandler(_ data: Data, from peer: MCPeerID) {
         do{
             // get the ball from other player and add it to scene
             if let ball = try NSKeyedUnarchiver.unarchivedObject(ofClass: SCNNode.self, from: data){
@@ -308,37 +350,44 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             print("Object isn't scenenode either")
         }
 
+        // get the ball from other player and add it to scene
+        if let force : Float = data.withUnsafeBytes({ $0.pointee }){
+            power = force
+            print("got the force")
+        }
+        
         do{
-            // get the ball from other player and add it to scene
-            if let force : Float = data.withUnsafeBytes({ $0.pointee }){
-                power = force
-                print("got the force")
-            }
+            // if the data is a position, we need to sync our game world's position with that position
+            let decodedData = try JSONDecoder().decode(CodablePosition.self, from: data)
+            self.hostPosition = decodedData
         }
         catch{
-            print("Object isn't scenenode either")
+            
         }
     }
 
     // called from ARSCNViewDelegate
     // SCNNode relating to a new anchor was added to the scene
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        guard anchor is ARPlaneAnchor else {return}
-        DispatchQueue.main.async {
-            self.planeDetected.isHidden = false
-            self.planeDetected.text = "Detected floor! Now tap to place your hoop."
+
+        if(anchor is ARPlaneAnchor){
+            DispatchQueue.main.async {
+                self.planeDetected.isHidden = false
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.planeDetected.isHidden = true
+            }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.planeDetected.isHidden = true
+        else if(anchor.name == "basketAnchor"){
+            print("We have anchored the basket")
+            globalBasketNode = node
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears
-
+    
     // called every frame
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
 
     }
-
-    // MARK: - ARSessionDelegate
 
     // called when the state of the camera is changed
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
@@ -349,28 +398,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user.
         multiPlayerStatus.text = "Session failed: \(error.localizedDescription)"
-        resetTracking()
-    }
-
-
-    //resets the AR session configuration in case of errors
-    func resetTracking() {
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
-
-    // MARK: - AR session management
 
     private func updateMultiPlayerStatus(for frame: ARFrame, trackingState: ARCamera.TrackingState) {
         // Update the UI to provide feedback on the state of the AR experience.
         let message: String
 
         switch trackingState {
-        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers!.isEmpty:
+        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
             // No planes detected; provide instructions for this app's AR interactions.
             message = "Move around to map the environment, or wait to join a shared session."
 
-        case .normal where !multipeerSession.connectedPeers!.isEmpty && mapProvider == nil:
-            let peerNames = multipeerSession.connectedPeers!.map({ $0.displayName }).joined(separator: ", ")
+        case .normal where !multipeerSession.connectedPeers.isEmpty && mapProvider == nil:
+            let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
             message = "Connected with \(peerNames)."
 
         case .notAvailable:
@@ -403,7 +444,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         multiPlayerStatus.isHidden = message.isEmpty
     }
 
-
+    
 
     func removeEveryOtherBall() {
         self.sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
@@ -416,7 +457,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     deinit {
         self.timer.stop()
     }
-
 }
 
 struct CollisionCategory: OptionSet {
@@ -426,6 +466,5 @@ struct CollisionCategory: OptionSet {
 }
 
 func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-
     return SCNVector3Make(left.x + right.x, left.y + right.y, left.z + right.z)
 } // useful operator to add 3D vectors

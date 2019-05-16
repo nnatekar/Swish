@@ -129,7 +129,6 @@ extension MultipeerSession: MCNearbyServiceBrowserDelegate{
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         let game = NetworkGame(host: peerID, session: session, locationId: 0)
         Globals.instance.games.append(game)
-        
         self.delegate?.gameBrowser(browser, session, sawGames: Globals.instance.games)
         //invite the found peer to the session
         //browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)

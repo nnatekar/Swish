@@ -12,6 +12,9 @@ protocol browserDelegate: class{
     func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame])
 }
 
+protocol advertiserDelegate: class{
+    func gameAdvertiser()
+}
 
 class MultipeerSession: NSObject{
     private let maxPeers: Int = kMCSessionMaximumNumberOfPeers - 1
@@ -24,6 +27,7 @@ class MultipeerSession: NSObject{
     
     var dataHandler: ((Data, MCPeerID) -> Void)?
     weak var delegate: browserDelegate?
+    weak var advertDelegate: advertiserDelegate?
     
     init(selfPeerID: MCPeerID){
         self.peerID = selfPeerID
@@ -110,6 +114,7 @@ extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         // AUTOMATICALLY SETTING TO ACCEPT INVITE FOR NOW
         invitationHandler(true, session)
+        self.advertDelegate?.gameAdvertiser()
     }
 }
 

@@ -25,11 +25,11 @@ class GamesTableController: UIViewController{
         gamesTableView.dataSource = self
         if(Globals.instance.isHosting){
             Globals.instance.session = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
+            gamesTableView.isHidden = true
+            playersTableView.isHidden = false
         }
         else{
             Globals.instance.session = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
-            gamesTableView.isHidden = true
-            playersTableView.isHidden = false
         }
         multSession = Globals.instance.session
         multSession?.delegate = self
@@ -42,8 +42,8 @@ class GamesTableController: UIViewController{
     @IBAction func backButtonClicked(_ sender: Any) {
         backButton.isHidden = true
         Globals.instance.session = MultipeerSession(selfPeerID: Globals.instance.selfPeerID!)
-        gamesTableView.isHidden = true
-        playersTableView.isHidden = false
+        gamesTableView.isHidden = false
+        playersTableView.isHidden = true
         multSession = Globals.instance.session
         multSession?.delegate = self
     }
@@ -86,6 +86,12 @@ extension GamesTableController: UITableViewDataSource{
             cell.textLabel?.text = player?.displayName
             return cell
         }
+    }
+}
+
+extension GamesTableController: advertiserDelegate{
+    func gameAdvertiser() {
+        playersTableView.reloadData()
     }
 }
 

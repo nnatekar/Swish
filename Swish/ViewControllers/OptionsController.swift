@@ -12,7 +12,6 @@ import MultipeerConnectivity
 
 class OptionsController: UIViewController {    
     @IBOutlet weak var GameStart: UIButton!
-    @IBOutlet weak var handleField: UITextField!
     @IBOutlet weak var gamesTableContainer: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()

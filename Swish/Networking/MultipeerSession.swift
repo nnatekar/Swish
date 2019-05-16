@@ -12,6 +12,7 @@ protocol browserDelegate: class{
     func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame])
 }
 
+
 class MultipeerSession: NSObject{
     private let maxPeers: Int = kMCSessionMaximumNumberOfPeers - 1
     static let serviceType = "ar-multi-swish"

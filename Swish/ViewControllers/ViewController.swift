@@ -50,6 +50,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var playerPosition: CodablePosition?
     var cameraTrackingState: ARCamera.TrackingState?
     
+    var globalTrackingState: ARCamera.TrackingState?
+    var globalCamera: ARCamera?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -239,9 +242,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
         if basketAdded == true && sender.state == .ended
         {
-            let velocity = sender.velocity(in: sceneView);
+            let velocity = sender.velocity(in: sceneView)
             let translation = sender.translation(in: sceneView)
-            shootBall(velocity: velocity, translation : translation);
+            shootBall(velocity: velocity, translation : translation)
         }
     }
 
@@ -250,7 +253,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let touchLocation = sender.location(in: sceneView)
         let hitTestResult = sceneView.hitTest(touchLocation, types: [.existingPlaneUsingExtent])
         if !hitTestResult.isEmpty {
-            if(!basketAdded && Globals.instance.isHosting){
+            if(!basketAdded && (Globals.instance.isHosting || !Globals.instance.isMulti)){
                 self.addBasket(hitTestResult: hitTestResult.first!)
             }
             else if(basketAdded && Globals.instance.isHosting){
@@ -316,6 +319,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if(anchor.name == "basketAnchor"){
             let basketNode = basketScene!.rootNode.childNode(withName: "ball", recursively: false)
             let positionOfPlane = anchor.transform.columns.3
+            print("BASKET POSITION \(positionOfPlane)")
             basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
             basketAdded = true
@@ -334,6 +338,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBAction func shareSession(_ button: UIButton) {
         guard Globals.instance.isHosting else{ return }
         
+        var isNormal = true
+        switch(globalTrackingState!){
+        case .normal:
+            isNormal = true
+        default:
+            isNormal = false
+        }
+        
+        while(isNormal == false) {
+            globalTrackingState = globalCamera!.trackingState
+            switch(globalTrackingState!){
+            case .normal:
+                isNormal = true
+            default:
+                isNormal = false
+            }
+        }
         sceneView.session.getCurrentWorldMap { worldMap, error in
             guard let map = worldMap
                 else { print("Error: \(error!.localizedDescription)"); return }
@@ -362,20 +383,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
 
     func dataHandler(_ data: Data, from peer: MCPeerID) {
-        do{
-            // get the ball from other player and add it to scene
-            if let ball = try NSKeyedUnarchiver.unarchivedObject(ofClass: SCNNode.self, from: data){
-                let transform = sceneView.pointOfView!.transform
-                let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
-                ball.physicsBody?.applyForce(SCNVector3(orientation.x*power, orientation.y*power, orientation.z*power), asImpulse: true)
-                sceneView.scene.rootNode.addChildNode(ball)
-                print("Adding a new ball!")
-            }
-        }
-        catch{
-            print("Object isn't scenenode either")
-        }
-
         // get the ball from other player and add it to scene
         if let force : Float = data.withUnsafeBytes({ $0.pointee }){
             power = force
@@ -412,6 +419,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
             self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
 
+            
+            var normalizedPosition: CodablePosition?
+            
+            sceneView.session.getCurrentWorldMap { worldMap, error in
+                guard let map = worldMap else { print("Error: \(error!.localizedDescription)"); return }
+                for anchor in map.anchors{
+                    if(anchor.name == "basketAnchor"){
+                        let anchorPosition = anchor.transform.columns.3
+                        normalizedPosition = CodablePosition(dim1: self.playerPosition!.dim1 - anchorPosition.x, dim2: self.playerPosition!.dim2 - anchorPosition.y, dim3: self.playerPosition!.dim3 - anchorPosition.z, dim4: self.playerPosition!.dim4 - anchorPosition.w)
+                        ball.position = SCNVector3(normalizedPosition!.dim1 - decodedData.playerPosition.dim1, normalizedPosition!.dim2 - decodedData.playerPosition.dim2, normalizedPosition!.dim3 - decodedData.playerPosition.dim3)
+                        let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
+                        ball.physicsBody = body
+                        ball.name = "Basketball"
+                        body.restitution = 0.2
+                        
+                        let xForce = decodedData.forceX
+                        let yForce = decodedData.forceY
+                        let zForce = decodedData.forceZ
+                        ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
+                        ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
+                        ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
+                        self.sceneView.scene.rootNode.addChildNode(ball) // add ball to scene
+                    }
+                }
+            }
+            
         }
         catch{
             
@@ -445,6 +478,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // called when the state of the camera is changed
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         //cameraTrackingState = camera.trackingState
+        globalTrackingState = camera.trackingState
+        globalCamera = camera
         updateMultiPlayerStatus(for: session.currentFrame!, trackingState: camera.trackingState)
     }
 

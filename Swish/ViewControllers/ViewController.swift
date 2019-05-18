@@ -240,7 +240,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @objc func handlePan(sender: UIPanGestureRecognizer){
         guard let sceneView = sender.view as? ARSCNView else {return}
 
-        if basketAdded == true && sender.state == .ended
+
+        if (basketAdded && sender.state == .ended)
         {
             let velocity = sender.velocity(in: sceneView)
             let translation = sender.translation(in: sceneView)
@@ -337,7 +338,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     @IBAction func shareSession(_ button: UIButton) {
         guard Globals.instance.isHosting else{ return }
-        
+
         var isNormal = true
         switch(globalTrackingState!){
         case .normal:
@@ -408,17 +409,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             ball.physicsBody = body
             ball.name = "Basketball"
             body.restitution = 0.2
-            print("Player position x: ", decodedData.playerPosition.dim1)
-            print("Player position y: ", decodedData.playerPosition.dim2)
-            print("Player position z: ", decodedData.playerPosition.dim3)
-            let xForce = decodedData.forceX
-            let yForce = decodedData.forceY
-            let zForce = decodedData.forceZ
-            ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
-            ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
-            ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
-            self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-
             
             var normalizedPosition: CodablePosition?
             
@@ -477,7 +467,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     // called when the state of the camera is changed
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        //cameraTrackingState = camera.trackingState
+
         globalTrackingState = camera.trackingState
         globalCamera = camera
         updateMultiPlayerStatus(for: session.currentFrame!, trackingState: camera.trackingState)

@@ -44,6 +44,7 @@ extension GamesTableController: UITableViewDelegate{
         for peer in game.session.connectedPeers{
             multSession?.connectedPeers.append(peer)
         }
+        multSession?.connectedPeers.append(game.host)
         self.browser!.invitePeer(game.host, to: game.session, withContext: nil, timeout: 10)
         // TODO: segue to viewcontroller, set the game session
     }

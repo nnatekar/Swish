@@ -15,6 +15,7 @@ class CodableBall: Codable{
     var forceZ: Float
     var playerPosition: CodablePosition
 
+
     
     // only working with 3d space
     init(forceX: Float, forceY: Float, forceZ: Float, playerPosition: CodablePosition ){

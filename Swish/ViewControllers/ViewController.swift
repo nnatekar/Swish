@@ -276,8 +276,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
             // Set backboard texture
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
-            
-            basketScene?.rootNode.childNode(withName: "pole", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIColor.gray
 
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
 
@@ -300,6 +298,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         if(anchor.name == "basketAnchor"){
             let basketNode = basketScene!.rootNode.childNode(withName: "ball", recursively: false)
+            basketScene?.rootNode.childNode(withName: "pole", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIColor.gray
             let positionOfPlane = anchor.transform.columns.3
             basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))

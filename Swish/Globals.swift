@@ -13,6 +13,7 @@ class Globals{
     static let instance = Globals()
     
     var games: [NetworkGame] = []
+    var scores: [MCPeerID: Int] = [:]
     var selfPeerID: MCPeerID?
     var isHosting: Bool = false
     var isMulti: Bool = false

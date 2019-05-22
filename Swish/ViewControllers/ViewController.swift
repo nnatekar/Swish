@@ -133,6 +133,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             if (contact.nodeB.name! == "detection") {
                 self.score+=1
+                let selfID = Globals.instance.selfPeerID
+                Globals.instance.scores[selfID!] = self.score
+                
+                print("current score: \(String(describing: Globals.instance.scores[selfID!]))")
+                
                 DispatchQueue.main.async {
                     self.scoreLabel.text = "\(self.score)"
                 }

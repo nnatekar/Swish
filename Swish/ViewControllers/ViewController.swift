@@ -404,7 +404,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
             //ball.position = SCNVector3(decodedData.playerPosition.dim1 + basketPosition.x, decodedData.playerPosition.dim2 + basketPosition.y, decodedData.playerPosition.dim3 + basketPosition.z)
-            ball.position = SCNVector3(position.x + diffX, position.y + diffY, position.z + diffZ)
+            ball.position = SCNVector3(decodedData.playerPosition.dim1 + diffX, decodedData.playerPosition.dim2 + diffY, decodedData.playerPosition.dim3 + diffZ)
             print(ball.position)
             //print(ball.position)
             let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))

@@ -55,7 +55,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var globalTrackingState: ARCamera.TrackingState?
     var globalCamera: ARCamera?
     var gameSetupState: gameInstructions!
-    var numTappedPoints: Int()
+    var numTappedPoints = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,6 +164,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         if(syncTime <= 0){
             guard Globals.instance.isHosting else{ return }
+            guard Globals.instance.isMulti else{ return }
             
             var isNormal = true
             switch(globalTrackingState!){
@@ -257,12 +258,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let codableBall = CodableBall(forceX: xForce, forceY: yForce, forceZ: zForce, playerPosition: playerPosition, basketPosition: codableBasketPosition)
         //print("PlayerPosition = \(self.playerPosition?.dim1), \(self.playerPosition?.dim2), \(self.playerPosition?.dim3)\nBasketPosition = \(globalBasketNode!.position)")
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-        print("Ballsarehuge: \(ball.position)")
-        do {
-            let data : Data = try JSONEncoder().encode(codableBall)
-            self.multipeerSession.sendToAllPeers(data)
-        } catch {
-            
+        if(Globals.instance.isMulti){
+            do {
+                let data : Data = try JSONEncoder().encode(codableBall)
+                self.multipeerSession.sendToAllPeers(data)
+            } catch {
+                
+            }
         }
         
 
@@ -302,15 +304,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 if(Globals.instance.isHosting){
                     getAndSendWorldCoordinates(hitTestResult: hitTestResult.first!)
                 }
-            }
-            else if(basketAdded && Globals.instance.isHosting){
-                // only send worldcoordinates if we're the host
-            }
-            else if(basketAdded && !Globals.instance.isHosting){
-                // if basket has been added and we're not hosting, host has pressed position first
-                // need to sync game worlds
-                addBasket(hitTestResult: hitTestResult.first!)
-                
             }
         }
     }
@@ -377,7 +370,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     @IBAction func shareSession(_ button: UIButton) {
         guard Globals.instance.isHosting else{ return }
-
+        guard Globals.instance.isMulti else{ return }
+        
         var isNormal = true
         switch(globalTrackingState!){
         case .normal:

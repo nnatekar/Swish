@@ -67,6 +67,8 @@ class MenuController : UIViewController {
             self.gameTypeStackView.isHidden = true
             self.welcomeStackView.isHidden = false
             self.backButton.isHidden = true
+            logo.isHidden = false
+            swish.isHidden = false
         } // currently on the game stack (single/multi) view, go back to welcome
         else if multiplayerStackView.isHidden == false {
             self.gameTypeStackView.isHidden = false

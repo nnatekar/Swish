@@ -27,6 +27,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBOutlet weak var multiPlayerStatus: UILabel!
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var sceneView: ARSCNView!
+    @IBOutlet weak var instructions: UILabel!
 
     var selfHandle: MCPeerID?
     var multipeerSession: MultipeerSession!
@@ -55,7 +56,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var globalTrackingState: ARCamera.TrackingState?
     var globalCamera: ARCamera?
     var gameSetupState: gameInstructions!
-    var numTappedPoints: Int()
+    var numTappedPoints: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,17 +114,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         // Set backboard texture
         basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
         print(multipeerSession.connectedPeers)
+        Globals.instance.scores.removeAll()
+        let selfID = Globals.instance.selfPeerID
+        Globals.instance.scores[selfID!] = 0
     }
     
     func initStyles(){
-        planeDetected.text = "Point your camera towards the floor."
-        planeDetected.isHidden = false
-        planeDetected.font = planeDetected.font.withSize(28)
-        planeDetected.textColor = UIColor.white
-        planeDetected.layer.cornerRadius = 2
-        planeDetected.textAlignment = .center
-        planeDetected.numberOfLines = 0
-        planeDetected.shadowColor = UIColor.black
+//        planeDetected.text = "Point your camera towards the floor."
+//        planeDetected.isHidden = false
+//        planeDetected.font = planeDetected.font.withSize(28)
+//        planeDetected.textColor = UIColor.white
+//        planeDetected.layer.cornerRadius = 2
+//        planeDetected.textAlignment = .center
+//        planeDetected.numberOfLines = 0
+//        planeDetected.shadowColor = UIColor.black
+        
+        instructions.numberOfLines = 0
         
         timerLabel.text = String(format: "%02d:%02d:%03d", gameTimeMin, gameTimeSec, gameTimeMs)
         timerLabel.font = timerLabel.font.withSize(24)

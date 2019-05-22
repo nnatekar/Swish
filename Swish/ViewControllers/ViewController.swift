@@ -200,11 +200,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
-        var normalizedPosition:CodablePosition?
-        
         let basketPosition = globalBasketNode!.position
-        normalizedPosition = CodablePosition(dim1: basketPosition.x - position.x, dim2: basketPosition.y - position.y, dim3: basketPosition.z - position.z, dim4: playerPosition!.dim4)
-        let codableBall = CodableBall(forceX: xForce, forceY: yForce, forceZ: zForce, playerPosition: normalizedPosition!)
+        let playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: 0)
+        let codableBasketPosition = CodablePosition(dim1: basketPosition.x, dim2: basketPosition.y, dim3: basketPosition.z, dim4: 0)
+        let codableBall = CodableBall(forceX: xForce, forceY: yForce, forceZ: zForce, playerPosition: playerPosition, basketPosition: codableBasketPosition)
         //print("PlayerPosition = \(self.playerPosition?.dim1), \(self.playerPosition?.dim2), \(self.playerPosition?.dim3)\nBasketPosition = \(globalBasketNode!.position)")
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
         print("Ballsarehuge: \(ball.position)")
@@ -390,7 +389,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         do{
             // if the data is a position, we need to sync our game world's position with that position
             let decodedData = try JSONDecoder().decode(CodableBall.self, from: data)
-            var normalizedPosition: CodablePosition?
             
             guard let pointOfView = self.sceneView.pointOfView else {return}
             let transform = pointOfView.transform
@@ -399,9 +397,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let position = location + orientation
             
             let basketPosition = globalBasketNode!.position
+            let diffX = basketPosition.x - decodedData.basketPosition.dim1
+            let diffY = basketPosition.y - decodedData.basketPosition.dim2
+            let diffZ = basketPosition.z - decodedData.basketPosition.dim3
+            
             let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
-            ball.position = SCNVector3(decodedData.playerPosition.dim1 + basketPosition.x, decodedData.playerPosition.dim2 + basketPosition.y, decodedData.playerPosition.dim3 + basketPosition.z)
+            //ball.position = SCNVector3(decodedData.playerPosition.dim1 + basketPosition.x, decodedData.playerPosition.dim2 + basketPosition.y, decodedData.playerPosition.dim3 + basketPosition.z)
+            ball.position = SCNVector3(position.x + diffX, position.y + diffY, position.z + diffZ)
             print(ball.position)
             //print(ball.position)
             let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))

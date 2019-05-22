@@ -120,6 +120,7 @@ extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         // AUTOMATICALLY SETTING TO ACCEPT INVITE FOR NOW
         connectedPeers.append(peerID)
+        Globals.instance.scores[peerID] = 0
         invitationHandler(true, session)
     }
 }
@@ -130,6 +131,7 @@ extension MultipeerSession: MCNearbyServiceBrowserDelegate{
         let game = NetworkGame(host: peerID, session: session, locationId: 0)
         Globals.instance.games.append(game)
         connectedPeers.append(peerID)
+        Globals.instance.scores[peerID] = 0
         self.delegate?.gameBrowser(browser, session, sawGames: Globals.instance.games)
         //invite the found peer to the session
         //browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)

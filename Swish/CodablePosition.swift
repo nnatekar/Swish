@@ -14,14 +14,16 @@ class CodableBall: Codable{
     var forceY: Float
     var forceZ: Float
     var playerPosition: CodablePosition
+    var basketPosition: CodablePosition
 
     
     // only working with 3d space
-    init(forceX: Float, forceY: Float, forceZ: Float, playerPosition: CodablePosition ){
+    init(forceX: Float, forceY: Float, forceZ: Float, playerPosition: CodablePosition, basketPosition: CodablePosition ){
         self.forceX = forceX
         self.forceY = forceY
         self.forceZ = forceZ
         self.playerPosition = playerPosition
+        self.basketPosition = basketPosition
     }
 }
 

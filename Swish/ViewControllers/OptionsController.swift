@@ -30,6 +30,8 @@ class OptionsController: UIViewController {
     }
     
     @IBAction func startButtonClicked(_ sender: Any) {
-        self.performSegue(withIdentifier: "toGame", sender: Any?.self)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "toGame", sender: Any?.self)
+        }
     }
 }

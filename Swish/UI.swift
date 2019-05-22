@@ -22,3 +22,23 @@ import UIKit
     }
     
 }
+
+enum gameInstructions{
+    // print "Move your camera around"
+    case hostScanning // host will look around ARWorld, after 5 seconds host will automatically send map
+    case peerScanning // peer will look around ARWorld
+    
+    // print "Sent world map/received world map from host" for 2 seconds
+    case hostSentMap
+    case peerReceivedMap
+    
+    // print "Everyone tap on the same yellow point to set up basket"
+    case everyoneTapPoint
+    
+    // print "Everyone has tapped a point!"
+    // popup UI "Are you ready? y/n"
+    case readyStatus
+    
+    // hide messages
+    case inGame
+}

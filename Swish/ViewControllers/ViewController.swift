@@ -33,10 +33,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var mapProvider: MCPeerID?
     var isMultiplayer: Bool = false
     var gameTime = Double()
+    var syncTime = Int()
     var gameTimeMin = Int()
     var gameTimeSec = Int()
     var gameTimeMs = Int()
     var gameTimer = Timer()
+    var syncingTimer = Timer()
     
     var basketScene: SCNScene?
     var globalBasketNode: SCNNode?
@@ -52,6 +54,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     var globalTrackingState: ARCamera.TrackingState?
     var globalCamera: ARCamera?
+    var gameSetupState: gameInstructions!
+    var numTappedPoints: Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,14 +86,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.addGestureRecognizer(panGestureRecognizer)
 
         // add timer
+        syncTime = 5
         gameTime = 180 // CHANGE GAME TIME AS NEEDED, currently at 3 mins
         gameTimeMin = Int(gameTime) / 60
         gameTimeSec = Int(gameTime) % 60
         gameTimeMs = Int((gameTime * 1000).truncatingRemainder(dividingBy: 1000))
         
+        // initialize game state
+        if(Globals.instance.isHosting){
+            gameSetupState = .hostScanning
+        }
+        else{
+            gameSetupState = .peerScanning
+        }
+        
+        numTappedPoints = 0
         initStyles();
         
+        // create the timer for the game and for sending world maps
         gameTimer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
+        syncingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(syncTimer), userInfo: nil, repeats: false)
         
         sceneView.scene.physicsWorld.contactDelegate = self
         
@@ -148,6 +164,41 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
 
+    @objc func syncTimer(){
+        syncTime -= 1
+        
+        if(syncTime <= 0){
+            guard Globals.instance.isHosting else{ return }
+            
+            var isNormal = true
+            switch(globalTrackingState!){
+            case .normal:
+                isNormal = true
+            default:
+                isNormal = false
+            }
+            
+            while(isNormal == false) {
+                globalTrackingState = globalCamera!.trackingState
+                switch(globalTrackingState!){
+                case .normal:
+                    isNormal = true
+                default:
+                    isNormal = false
+                }
+            }
+            sceneView.session.getCurrentWorldMap { worldMap, error in
+                guard let map = worldMap
+                    else { print("Error: \(error!.localizedDescription)"); return }
+                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                    else { fatalError("can't encode map") }
+                self.multipeerSession.sendToAllPeers(data)
+            }
+            
+            gameSetupState = .hostSentMap
+            syncingTimer.invalidate()
+        }
+    }
 
     @objc func incrementTimer(){
         if basketAdded == true {
@@ -355,13 +406,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         configuration.initialWorldMap = worldMap
         
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-//        for anchor in worldMap.anchors{
-//            if (anchor.name == "basketAnchor"){
-//                if(basketAdded == false){
-//                    sceneView.session.add(anchor: anchor)
-//                }
-//            }
-//        }
+
+        gameSetupState = .peerReceivedMap
         
         // Remember who provided the map for showing UI feedback.
         mapProvider = peerID
@@ -399,7 +445,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
-            //ball.position = SCNVector3(decodedData.playerPosition.dim1 + basketPosition.x, decodedData.playerPosition.dim2 + basketPosition.y, decodedData.playerPosition.dim3 + basketPosition.z)
             ball.position = SCNVector3(position.x + diffX, position.y + diffY, position.z + diffZ)
             print(ball.position)
             //print(ball.position)
@@ -415,6 +460,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
             ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
             sceneView.scene.rootNode.addChildNode(ball)
+        }
+        catch{
+        }
+        
+        do{
+            // acknowledgement that everyone tapped the yellow points
+            let decodedData = try JSONDecoder().decode(String.self, from: data)
+            if(decodedData == "Tapped point"){
+                numTappedPoints += 1
+            }
+            if(numTappedPoints == multipeerSession.connectedPeers.count){
+                gameSetupState = .readyStatus
+                // CALL A FUNCTION TO GET UI UP FOR READY STATUS
+            }
         }
         catch{
         }
@@ -446,7 +505,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         globalTrackingState = camera.trackingState
         globalCamera = camera
-        updateMultiPlayerStatus(for: session.currentFrame!, trackingState: camera.trackingState)
+        updateMultiPlayerStatus()
     }
 
     // called when AR session fails
@@ -462,45 +521,29 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: position.w)
     }
 
-    private func updateMultiPlayerStatus(for frame: ARFrame, trackingState: ARCamera.TrackingState) {
+    private func updateMultiPlayerStatus() {
         // Update the UI to provide feedback on the state of the AR experience.
         let message: String
 
-        switch trackingState {
-        case .normal where frame.anchors.isEmpty && multipeerSession.connectedPeers.isEmpty:
-            // No planes detected; provide instructions for this app's AR interactions.
-            message = "Move around to map the environment, or wait to join a shared session."
-
-        case .normal where !multipeerSession.connectedPeers.isEmpty && mapProvider == nil:
-            let peerNames = multipeerSession.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
-            message = "Connected with \(peerNames)."
-
-        case .notAvailable:
-            message = "Tracking unavailable."
-
-        case .limited(.excessiveMotion):
-            message = "Tracking limited - Move the device more slowly."
-
-        case .limited(.insufficientFeatures):
-            message = "Tracking limited - Point the device at an area with visible surface detail, or improve lighting conditions."
-
-        case .limited(.initializing) where mapProvider != nil,
-             .limited(.relocalizing) where mapProvider != nil:
-            message = "Received map from \(mapProvider!.displayName)."
-
-        case .limited(.relocalizing):
-            message = "Resuming session — move to where you were when the session was interrupted."
-
-        case .limited(.initializing):
-            message = "Initializing AR session."
-
+        switch gameSetupState!{
+        case .hostScanning:
+            message = "Look around so we can get a map of the world."
+        case .peerScanning:
+            message = "Look around so we can get a map of the world."
+        case .hostSentMap:
+            message = "Sent the world map to peers."
+        case .peerReceivedMap:
+            message = "Received world map from peers."
+        case .everyoneTapPoint:
+            message = "Everyone tap a yellow dot in the same location!"
+        case .readyStatus:
+            message = "Everyone has tapped a point."
+            // MAKE POPUP TO ASK PLAYERS IF THEY'RE READY AND START GAME
+            
         default:
-            // No feedback needed when tracking is normal and planes are visible.
-            // (Nor when in unreachable limited-tracking states.)
             message = ""
-
         }
-
+        
         multiPlayerStatus.text = message
         multiPlayerStatus.isHidden = message.isEmpty
     }

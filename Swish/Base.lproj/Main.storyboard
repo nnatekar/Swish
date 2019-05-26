@@ -45,7 +45,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="trd-Qp-ZEY">
-                                        <rect key="frame" x="359" y="15.5" width="47" height="51"/>
+                                        <rect key="frame" x="346.5" y="15.5" width="47" height="51"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="47" id="Neu-8w-VOx"/>
@@ -110,7 +110,7 @@
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="top" secondItem="17N-LB-BWE" secondAttribute="top" id="jlv-Og-xsL"/>
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="width" secondItem="17N-LB-BWE" secondAttribute="width" id="kbE-w7-D1q"/>
                             <constraint firstItem="2Yb-hv-CTP" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="nZP-bk-L4a"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="trd-Qp-ZEY" secondAttribute="trailing" constant="8" id="sgk-e2-4Ef"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="trd-Qp-ZEY" secondAttribute="trailing" multiplier="1.05" constant="1" id="sgk-e2-4Ef"/>
                             <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" multiplier="1.75" id="wLT-wJ-fva"/>
                             <constraint firstItem="RqI-ld-4Dt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="wXE-Q3-EAO"/>
                         </constraints>
@@ -186,7 +186,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <segue destination="6vp-N7-mdh" kind="show" id="uIe-NV-q2D"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" id="nNO-Re-9fg"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c0A-jR-fga">
@@ -540,5 +540,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="XiT-1E-XtU"/>
+        <segue reference="yfg-Sg-069"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -68,8 +68,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.session.run(configuration)
         
         // set up multipeer session's data handlers
-        multipeerSession.dataHandler = dataHandler
-        multipeerSession.basketSyncHandler = basketSyncHandler
+        if(Globals.instance.isMulti){
+            multipeerSession.dataHandler = dataHandler
+            multipeerSession.basketSyncHandler = basketSyncHandler
+        }
 
         // Set delegates for AR session and AR scene
         sceneView.delegate = self
@@ -113,10 +115,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
         // Set backboard texture
         basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
-        print(multipeerSession.connectedPeers)
-        Globals.instance.scores.removeAll()
-        let selfID = Globals.instance.selfPeerID
-        Globals.instance.scores[selfID!] = 0
+        if(Globals.instance.isMulti){
+            Globals.instance.scores.removeAll()
+            
+            let selfID = Globals.instance.selfPeerID
+            Globals.instance.scores[selfID!] = 0
+        }
     }
     
     func initStyles(){
@@ -251,7 +255,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
-
         let basketPosition = globalBasketNode!.position
         let playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: 0)
         let codableBasketPosition = CodablePosition(dim1: basketPosition.x, dim2: basketPosition.y, dim3: basketPosition.z, dim4: 0)
@@ -259,14 +262,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         //print("PlayerPosition = \(self.playerPosition?.dim1), \(self.playerPosition?.dim2), \(self.playerPosition?.dim3)\nBasketPosition = \(globalBasketNode!.position)")
 
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-        print("Ballsarehuge: \(ball.position)")
-        do {
-            let data : Data = try JSONEncoder().encode(codableBall)
-            self.multipeerSession.sendToAllPeers(data)
-        } catch {
-            
+        weak var ballObject = Ball(ballNode: ball)
+        if(Globals.instance.isMulti){
+            do {
+                let data : Data = try JSONEncoder().encode(codableBall)
+                self.multipeerSession.sendToAllPeers(data)
+            } catch {
+                }
         }
-        
 
         // collision detection
         let detection = SCNNode(geometry: SCNCylinder(radius: 0.3, height: 0.2))

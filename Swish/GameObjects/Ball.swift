@@ -25,7 +25,7 @@ class Ball{
     @objc func ballDestroy(){
         lifeTime += 1
         
-        if(lifeTime >= 10){
+        if(lifeTime >= 5){
             ballNode.removeFromParentNode()
             gameTimer.invalidate()
         }

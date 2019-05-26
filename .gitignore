@@ -1,4 +1,5 @@
 #ignore these files
+Swish.xcworkspace/xcuserdata/jugaljain.xcuserdatad/UserInterfaceState.xcuserstate
 .DS_Store
 *xcuserdata*
 *.xcodeproj/xcuserdata/*

@@ -35,10 +35,10 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="82"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zoy-8h-SDy">
-                                        <rect key="frame" x="14" y="15.5" width="135" height="51"/>
+                                        <rect key="frame" x="14" y="15.5" width="90" height="51"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="Zoy-8h-SDy" secondAttribute="height" multiplier="45:17" id="fu1-b6-LFZ"/>
+                                            <constraint firstAttribute="width" secondItem="Zoy-8h-SDy" secondAttribute="height" multiplier="30:17" id="fu1-b6-LFZ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>

@@ -23,8 +23,6 @@ class OptionsController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toGame"{
             let vc = segue.destination as! ViewController
-            vc.isMultiplayer = true
-            vc.selfHandle = Globals.instance.selfPeerID
             vc.multipeerSession = Globals.instance.session
         }
     }

@@ -19,6 +19,8 @@ import QuartzCore
 import ARKit
 import Each
 import MultipeerConnectivity
+import simd
+
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate, ARSessionDelegate {
 
     @IBOutlet weak var scoreLabel: PaddingLabel!
@@ -247,7 +249,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let xForce = translation.x > 0 ? min(1.5, Float(translation.x)/100) : max(-1.5, Float(translation.x)/100)
         let yForce = min(10, Float(translation.y) / -300 * 8)
         let zForce = max(-3, Float(velocity.y) / 900)
-        ball.physicsBody?.applyForce(SCNVector3(xForce, yForce, zForce), asImpulse: true)
+        let force = SCNVector4(xForce, yForce, zForce,0.0)
+        let rotatedForce = transform * force
+        let vectorForce = SCNVector3(x:rotatedForce.x, y:rotatedForce.y, z:rotatedForce.z)
+        
+        ball.physicsBody?.applyForce(vectorForce, asImpulse: true)
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
@@ -255,11 +261,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let basketPosition = globalBasketNode!.position
         let playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: 0)
         let codableBasketPosition = CodablePosition(dim1: basketPosition.x, dim2: basketPosition.y, dim3: basketPosition.z, dim4: 0)
-        let codableBall = CodableBall(forceX: xForce, forceY: yForce, forceZ: zForce, playerPosition: playerPosition, basketPosition: codableBasketPosition)
+        let codableBall = CodableBall(forceX: vectorForce.x, forceY: vectorForce.y, forceZ: vectorForce.z, playerPosition: playerPosition, basketPosition: codableBasketPosition)
         //print("PlayerPosition = \(self.playerPosition?.dim1), \(self.playerPosition?.dim2), \(self.playerPosition?.dim3)\nBasketPosition = \(globalBasketNode!.position)")
 
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-        print("Ballsarehuge: \(ball.position)")
+        //print("Ballsarehuge: \(ball.position)")
         do {
             let data : Data = try JSONEncoder().encode(codableBall)
             self.multipeerSession.sendToAllPeers(data)
@@ -533,9 +539,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
         switch gameSetupState!{
         case .hostScanning:
-            message = "Look around so we can get a map of the world."
+            message = "Look around so we can get a map of the world. Once you're ready, send your map to everyone by pressing the button below."
         case .peerScanning:
-            message = "Look around so we can get a map of the world."
+            message = "Look around so we can get a map of the world. Wait for the host to send the map."
         case .hostSentMap:
             message = "Sent the world map to peers."
         case .peerReceivedMap:
@@ -578,3 +584,14 @@ struct CollisionCategory: OptionSet {
 func +(left: SCNVector3, right: SCNVector3) -> SCNVector3 {
     return SCNVector3Make(left.x + right.x, left.y + right.y, left.z + right.z)
 } // useful operator to add 3D vectors
+
+extension SCNMatrix4 {
+    static public func *(left: SCNMatrix4, right: SCNVector4) -> SCNVector4 {
+        let x = left.m11*right.x + left.m21*right.y + left.m31*right.z + left.m41*right.w
+        let y = left.m12*right.x + left.m22*right.y + left.m32*right.z + left.m42*right.w
+        let z = left.m13*right.x + left.m23*right.y + left.m33*right.z + left.m43*right.w
+        let w = left.m14*right.x + left.m24*right.y + left.m43*right.z + left.m44*right.w
+        
+        return SCNVector4(x: x, y: y, z: z, w: w)
+    }
+}

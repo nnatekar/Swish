@@ -30,6 +30,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var instructions: UILabel!
+    @IBOutlet weak var worldStatus: UILabel!
+    
 
     var selfHandle: MCPeerID?
     var multipeerSession: MultipeerSession!
@@ -54,12 +56,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var hostPosition: CodablePosition?
     var playerPosition: CodablePosition?
     var cameraTrackingState: ARCamera.TrackingState?
-    
-    var globalTrackingState: ARCamera.TrackingState?
     var globalCamera: ARCamera?
     var gameSetupState: gameInstructions!
     var numTappedPoints: Int = 0
     var hoopMove: Bool = false
+    var mapAvailable: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -181,36 +182,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @objc func syncTimer(){
         syncTime -= 1
         
+        
         if(syncTime <= 0){
             guard Globals.instance.isHosting else{ return }
             
-            var isNormal = true
-            switch(globalTrackingState!){
-            case .normal:
-                isNormal = true
-            default:
-                isNormal = false
-            }
-            
-            while(isNormal == false) {
-                globalTrackingState = globalCamera!.trackingState
-                switch(globalTrackingState!){
-                case .normal:
-                    isNormal = true
-                default:
-                    isNormal = false
+            if mapAvailable {
+                sceneView.session.getCurrentWorldMap { worldMap, error in
+                    guard let map = worldMap
+                        else { print("Error: \(error!.localizedDescription)"); return }
+                    guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                        else { fatalError("can't encode map") }
+                    self.multipeerSession.sendToAllPeers(data)
                 }
+                
+                gameSetupState = .hostSentMap
+                syncingTimer.invalidate()
             }
-            sceneView.session.getCurrentWorldMap { worldMap, error in
-                guard let map = worldMap
-                    else { print("Error: \(error!.localizedDescription)"); return }
-                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
-                    else { fatalError("can't encode map") }
-                self.multipeerSession.sendToAllPeers(data)
-            }
-            
-            gameSetupState = .hostSentMap
-            syncingTimer.invalidate()
         }
     }
 
@@ -423,29 +410,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBAction func shareSession(_ button: UIButton) {
         guard Globals.instance.isHosting else{ return }
 
-        var isNormal = true
-        switch(globalTrackingState!){
-        case .normal:
-            isNormal = true
-        default:
-            isNormal = false
-        }
-        
-        while(isNormal == false) {
-            globalTrackingState = globalCamera!.trackingState
-            switch(globalTrackingState!){
-            case .normal:
-                isNormal = true
-            default:
-                isNormal = false
+        if mapAvailable {
+            sceneView.session.getCurrentWorldMap { worldMap, error in
+                guard let map = worldMap
+                    else { print("Error: \(error!.localizedDescription)"); return }
+                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                    else { fatalError("can't encode map") }
+                self.multipeerSession.sendToAllPeers(data)
             }
-        }
-        sceneView.session.getCurrentWorldMap { worldMap, error in
-            guard let map = worldMap
-                else { print("Error: \(error!.localizedDescription)"); return }
-            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
-                else { fatalError("can't encode map") }
-            self.multipeerSession.sendToAllPeers(data)
         }
     }
     
@@ -552,7 +524,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     // called when the state of the camera is changed
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        globalTrackingState = camera.trackingState
         globalCamera = camera
         updateMultiPlayerStatus()
     }
@@ -568,6 +539,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let position = frame.camera.transform.columns.3
         //print("PlayerPosition: \(position)")
         playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: position.w)
+        
+        switch frame.worldMappingStatus {
+            case .notAvailable:
+                worldStatus.text = "Not available"
+                mapAvailable = false
+            case .limited:
+                worldStatus.text = "Limited"
+                mapAvailable = false
+            case .extending:
+                worldStatus.text = "Extending"
+                mapAvailable = false
+            case .mapped:
+                worldStatus.text = "Mapped"
+                mapAvailable = true
+        }
     }
 
     private func updateMultiPlayerStatus() {

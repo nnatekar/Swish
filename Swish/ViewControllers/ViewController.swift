@@ -46,6 +46,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var basketAdded: Bool = false
     var receivingForce: SCNVector3?
     var score: Int = 0
+    var scorePeer: Int = 0
     var hostPosition: CodablePosition?
     var playerPosition: CodablePosition?
     var cameraTrackingState: ARCamera.TrackingState?
@@ -132,7 +133,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             if (contact.nodeA.name! == "detection") {
-                self.score+=1
+                if (Globals.instance.isHosting) {
+                  self.score+=1
+                }
+                else {
+                    self.scorePeer+=1   //TODO: assumes only 2 players
+                }
+                //self.score+=1
                 print(1234)
                 DispatchQueue.main.async {
                     self.scoreLabel.text = "\(self.score)"
@@ -140,7 +147,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
             DispatchQueue.main.async {
                 contact.nodeB.removeFromParentNode()
-                self.scoreLabel.text = "\(self.score)"
+                if (Globals.instance.isHosting) {
+                    self.scoreLabel.text = "\(self.score)"
+                }
+                else {
+                    self.scoreLabel.text = "\(self.scorePeer)"
+                }
+                //self.scoreLabel.text = "\(self.score)"
             }
         }
     }

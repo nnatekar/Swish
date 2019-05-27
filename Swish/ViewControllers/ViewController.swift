@@ -51,6 +51,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var basketAdded: Bool = false
     var receivingForce: SCNVector3?
     var score: Int = 0
+    var scorePeer: Int = 0
     var hostPosition: CodablePosition?
     var playerPosition: CodablePosition?
     var cameraTrackingState: ARCamera.TrackingState?
@@ -159,19 +160,28 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
-            if (contact.nodeB.name! == "detection") {
-                self.score+=1
-                let selfID = Globals.instance.selfPeerID
-                Globals.instance.scores[selfID!] = self.score
-                
-                print("current score: \(String(describing: Globals.instance.scores[selfID!]))")
-                
+            if (contact.nodeA.name! == "detection") {
+                if (Globals.instance.isHosting) {
+                  self.score+=1
+                }
+                else {
+                    self.scorePeer+=1   //TODO: assumes only 2 players
+                }
+                //self.score+=1
+                print(1234)
                 DispatchQueue.main.async {
                     self.scoreLabel.text = "\(self.score)"
                 }
             }
             DispatchQueue.main.async {
-                contact.nodeA.removeFromParentNode()
+                contact.nodeB.removeFromParentNode()
+                if (Globals.instance.isHosting) {
+                    self.scoreLabel.text = "\(self.score)"
+                }
+                else {
+                    self.scoreLabel.text = "\(self.scorePeer)"
+                }
+                //self.scoreLabel.text = "\(self.score)"
             }
         }
     }
@@ -235,6 +245,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     func shootBall(velocity: CGPoint, translation: CGPoint) {
         guard let pointOfView = self.sceneView.pointOfView else {return}
+        
+        globalBasketNode!.childNodes[3].position = globalBasketNode!.childNodes[3].presentation.position
         let transform = pointOfView.transform
         let location = SCNVector3(transform.m41, transform.m42, transform.m43)
         let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
@@ -279,6 +291,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
 
         // collision detection
+        
+        /*
         let detection = SCNNode(geometry: SCNCylinder(radius: 0.3, height: 0.2))
         let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
         detection.physicsBody = body2
@@ -291,6 +305,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
         detection.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
         self.sceneView.scene.rootNode.addChildNode(detection)
+        */
+        
+        
     } // create and shoot ball
 
     @objc func handlePan(sender: UIPanGestureRecognizer){
@@ -312,6 +329,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             if(!basketAdded){
                 self.addBasket(hitTestResult: hitTestResult.first!)
                 if(Globals.instance.isHosting){
+                    
                     getAndSendWorldCoordinates(hitTestResult: hitTestResult.first!)
                 }
             }
@@ -349,6 +367,24 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             basketNode?.position = SCNVector3(xPosition,yPosition,zPosition)
 
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
+/*
+            let detection = basketNode?.childNode(withName: "cylinder", recursively: false)
+            let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection!))
+            detection!.physicsBody = body2
+            detection!.name = "detection"
+            detection!.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+            detection!.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
+            detection?.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+            */
+            /*
+            let detection = basketNode?.childNode(withName: "cylinder", recursively: false)
+            let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection!))
+            detection!.physicsBody = body2
+            detection!.name = "detection"
+            detection!.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+            detection!.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
+            */
+            
             let anchor = ARAnchor(name: "basketAnchor", transform: hitTestResult.worldTransform)
             sceneView.session.add(anchor: anchor)
             
@@ -361,11 +397,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         if(anchor.name == "basketAnchor" && !basketAdded){
             let basketNode = basketScene!.rootNode.childNode(withName: "ball", recursively: false)
+            basketNode?.childNodes[3].physicsBody?.centerOfMassOffset = SCNVector3(0,0,0)
             let positionOfPlane = anchor.transform.columns.3
             print("BASKET POSITION \(positionOfPlane)")
             basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
-            basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
+            //basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
             basketAdded = true
+            
             return basketNode
         }
         else{
@@ -414,11 +452,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         configuration.initialWorldMap = worldMap
         
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-
         gameSetupState = .peerReceivedMap
         
-        // Remember who provided the map for showing UI feedback.
-        mapProvider = peerID
     }
 
     func dataHandler(_ data: Data, from peer: MCPeerID) {
@@ -502,6 +537,29 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
         else if(anchor.name == "basketAnchor"){
             globalBasketNode = node
+            /*
+            let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
+            let detection = basketNode?.childNode(withName: "cylinder", recursively: false)
+            let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection!))
+            detection!.physicsBody = body2
+            detection!.name = "detection"
+            detection!.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+            detection!.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
+            */
+            
+            /*
+            basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
+            let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
+            let detection = basketNode?.childNode(withName: "cylinder", recursively: false)
+            let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection!))
+            detection!.physicsBody = body2
+            detection!.name = "detection"
+            detection!.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
+            detection!.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
+            
+            print(1)
+            */
+            
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears
     

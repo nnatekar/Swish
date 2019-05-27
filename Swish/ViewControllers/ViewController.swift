@@ -59,6 +59,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var globalCamera: ARCamera?
     var gameSetupState: gameInstructions!
     var numTappedPoints: Int = 0
+    var hoopMove: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +78,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.delegate = self
         sceneView.session.delegate = self
 
-        // taps will set basketball
+        // taps will set basket
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
@@ -87,6 +88,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         panGestureRecognizer.maximumNumberOfTouches = 1
         panGestureRecognizer.minimumNumberOfTouches = 1
         self.sceneView.addGestureRecognizer(panGestureRecognizer)
+        
+        // longpress will edit the location of the basket
+        let pressGestureRecognizer = UILongPressGestureRecognizer(target:self, action:
+            #selector(handlePress(sender:)))
+        self.sceneView.addGestureRecognizer(pressGestureRecognizer)
 
         // add timer
         syncTime = 5
@@ -289,11 +295,41 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.scene.rootNode.addChildNode(detection)
     } // create and shoot ball
 
+    
+    @objc func handlePress(sender: UILongPressGestureRecognizer){
+        guard let recognizerView = sender.view as? ARSCNView else { return }
+        let touch = sender.location(in: recognizerView)
+        guard let pointOfView = self.sceneView.pointOfView else {return}
+        let transform = pointOfView.transform
+        hoopMove = true
+        
+        if sender.state == .changed {
+            // make sure a node has been selected from .began
+            guard let hitNode = self.globalBasketNode else { return }
+            
+            // perform a hitTest to obtain the plane
+            let hitTestPlane = self.sceneView.hitTest(touch, types: .existingPlane)
+            guard let hitPlane = hitTestPlane.first else { return }
+            let transformHitPlane = SCNVector4(hitPlane.worldTransform.columns.3.x, hitPlane.worldTransform.columns.3.y, hitPlane.worldTransform.columns.3.z, hitPlane.worldTransform.columns.3.w)
+            let transformBasket = transform * transformHitPlane
+
+            hitNode.position = SCNVector3(transformBasket.x,
+                                          transformBasket.y,
+                                          transformBasket.z)
+            //hitNode.rotate(by: SCNQuaternion, aroundTarget: <#T##SCNVector3#>)
+            
+            print("\(transform.m31) \(transform.m32) \(transform.m33)")
+        } else if sender.state == .ended || sender.state == .cancelled || sender.state == .failed {
+            hoopMove = false
+        }
+        
+    }
+    
+    
     @objc func handlePan(sender: UIPanGestureRecognizer){
         guard let sceneView = sender.view as? ARSCNView else {return}
-
-
-        if (basketAdded && sender.state == .ended){
+        
+        if (basketAdded && sender.state == .ended && hoopMove == false){
             let velocity = sender.velocity(in: sceneView)
             let translation = sender.translation(in: sceneView)
             shootBall(velocity: velocity, translation : translation)
@@ -303,7 +339,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @objc func handleTap(sender: UITapGestureRecognizer) {
         guard let sceneView = sender.view as? ARSCNView else {return}
         let touchLocation = sender.location(in: sceneView)
-        let hitTestResult = sceneView.hitTest(touchLocation, types: [.existingPlaneUsingExtent])
+        let hitTestResult = sceneView.hitTest(touchLocation, types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
+
         if !hitTestResult.isEmpty {
             if(!basketAdded){
                 self.addBasket(hitTestResult: hitTestResult.first!)
@@ -311,10 +348,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                     getAndSendWorldCoordinates(hitTestResult: hitTestResult.first!)
                 }
             }
-            else if(basketAdded && Globals.instance.isHosting){
+            else if(basketAdded && Globals.instance.isHosting && hoopMove == false){
                 // only send worldcoordinates if we're the host
             }
-            else if(basketAdded && !Globals.instance.isHosting){
+            else if(basketAdded && !Globals.instance.isHosting && hoopMove == false){
                 // if basket has been added and we're not hosting, host has pressed position first
                 // need to sync game worlds
                 addBasket(hitTestResult: hitTestResult.first!)
@@ -368,7 +405,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let basketNode = basketScene!.rootNode.childNode(withName: "ball", recursively: false)
             let positionOfPlane = anchor.transform.columns.3
             print("BASKET POSITION \(positionOfPlane)")
-            basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
+            //basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
             basketAdded = true
             return basketNode

@@ -9,6 +9,16 @@
 import Foundation
 import ARKit
 
+class ArbitraryCodable: Codable {
+    var receivedData: String // "score"
+    var score: Int
+    
+    init(receivedData: String, score: Int){
+        self.score = score
+        self.receivedData = receivedData
+    }
+}
+
 class CodableBall: Codable{
     var forceX: Float
     var forceY: Float

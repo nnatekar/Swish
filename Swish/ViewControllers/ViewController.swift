@@ -164,6 +164,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 if (contact.nodeB.name! == selfHandle?.displayName) {
                     self.score+=1
                     Globals.instance.scores[selfHandle!] = self.score
+                    let codableScore = ArbitraryCodable(receivedData: "score", score: self.score)
+                    guard let data = try? JSONEncoder().encode(codableScore)
+                        else { fatalError("can't encode score") }
+                    self.multipeerSession.sendToAllPeers(data)
                 }
                 
                 
@@ -509,6 +513,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
         }
         catch{
+        }
+        
+        do{
+            let decodedData = try JSONDecoder().decode(ArbitraryCodable.self, from: data)
+            Globals.instance.scores[peer] = decodedData.score
+        }
+        catch{
+            
         }
     }
     

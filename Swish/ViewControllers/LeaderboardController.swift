@@ -19,6 +19,8 @@ class LeaderboardController: UIViewController {
         leaderboardTable.dataSource = self
         sortedScores = Globals.instance.scores.sorted(by: {$0.value > $1.value}) // might want to do this when timer == 0
         leaderboardTable.reloadData()
+        
+        
     }
 }
 

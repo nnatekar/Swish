@@ -161,7 +161,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             if (contact.nodeA.name! == "detection") {
-                if (Globals.instance.isHosting) {
+                if (contact.nodeB.name! == selfHandle?.displayName) {
                   self.score+=1
                 }
                 else {
@@ -259,7 +259,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
         ball.physicsBody = body
-        ball.name = "Basketball"
+        ball.name = selfHandle?.displayName
         body.restitution = 0.2
 
         let xForce = translation.x > 0 ? min(1.5, Float(translation.x)/100) : max(-1.5, Float(translation.x)/100)
@@ -493,7 +493,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             //print(ball.position)
             let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
             ball.physicsBody = body
-            ball.name = "Basketball"
+            ball.name = selfHandle?.displayName
             body.restitution = 0.2
             
             let xForce = decodedData.forceX

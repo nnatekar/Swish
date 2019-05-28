@@ -1,5 +1,5 @@
 #ignore these files
 .DS_Store
-*xcuserdata*
+xcuserdata*
 *.xcodeproj/xcuserdata/*
 *.xcworkspace/*

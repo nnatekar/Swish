@@ -41,3 +41,25 @@ class CodablePosition: Codable{
         self.dim4 = dim4
     }
 }
+
+class CodableTransform: Codable{
+    var col1 : CodablePosition
+    var col2 : CodablePosition
+    var col3 : CodablePosition
+    var col4 : CodablePosition
+    var forceX: Float
+    var forceY: Float
+    var forceZ: Float
+    var playerID : String
+    
+    init(c1 : CodablePosition, c2 : CodablePosition, c3 : CodablePosition, c4 : CodablePosition, s : String, fX : Float, fY: Float, fZ : Float){
+        self.col1 = c1
+        self.col2 = c2
+        self.col3 = c3
+        self.col4 = c4
+        self.playerID = s
+        self.forceX = fX
+        self.forceY = fY
+        self.forceZ = fZ
+    }
+}

@@ -162,26 +162,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             if (contact.nodeA.name! == "detection") {
                 if (contact.nodeB.name! == selfHandle?.displayName) {
-                  self.score+=1
+                    self.score+=1
+                    Globals.instance.scores[selfHandle!] = self.score
                 }
-                else {
-                    self.scorePeer+=1   //TODO: assumes only 2 players
-                }
-                //self.score+=1
-                print(1234)
+                
+                
                 DispatchQueue.main.async {
                     self.scoreLabel.text = "\(self.score)"
                 }
             }
             DispatchQueue.main.async {
                 contact.nodeB.removeFromParentNode()
-                if (Globals.instance.isHosting) {
-                    self.scoreLabel.text = "\(self.score)"
-                }
-                else {
-                    self.scoreLabel.text = "\(self.scorePeer)"
-                }
-                //self.scoreLabel.text = "\(self.score)"
             }
         }
     }
@@ -490,10 +481,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
             ball.position = SCNVector3(position.x + diffX, position.y + diffY, position.z + diffZ)
             print(ball.position)
-            //print(ball.position)
             let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
             ball.physicsBody = body
-            ball.name = selfHandle?.displayName
+            ball.name = peer.displayName
             body.restitution = 0.2
             
             let xForce = decodedData.forceX

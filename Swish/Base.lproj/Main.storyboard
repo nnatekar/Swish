@@ -21,7 +21,7 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="17N-LB-BWE">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </arscnView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yb-hv-CTP" userLabel="MultiplayerStatus">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yb-hv-CTP" userLabel="MultiplayerStatus">
                                 <rect key="frame" x="63" y="129" width="308" height="139"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2Yb-hv-CTP" secondAttribute="height" multiplier="308:139" id="xzh-Sa-Bct"/>
@@ -93,6 +93,12 @@
                                     <action selector="shareSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="saa-pw-OT0"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Available" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uhj-3X-KKs">
+                                <rect key="frame" x="157.5" y="748" width="99.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -104,7 +110,9 @@
                             <constraint firstItem="17N-LB-BWE" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="C5G-01-kQb"/>
                             <constraint firstItem="Zoy-8h-SDy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="14" id="GwD-6a-Yhy"/>
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="centerX" secondItem="17N-LB-BWE" secondAttribute="centerX" id="JS1-0n-Bhh"/>
+                            <constraint firstItem="uhj-3X-KKs" firstAttribute="centerY" secondItem="RqI-ld-4Dt" secondAttribute="top" constant="-15" id="KId-mY-TBw"/>
                             <constraint firstItem="17N-LB-BWE" firstAttribute="width" secondItem="6Tk-OE-BBY" secondAttribute="width" id="RMj-yy-BJc"/>
+                            <constraint firstItem="uhj-3X-KKs" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Zu9-FN-Blf"/>
                             <constraint firstItem="17N-LB-BWE" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="aL9-xe-WFn"/>
                             <constraint firstItem="17N-LB-BWE" firstAttribute="height" secondItem="6Tk-OE-BBY" secondAttribute="height" id="gCq-kv-UsR"/>
                             <constraint firstItem="cMU-3z-cFN" firstAttribute="top" secondItem="17N-LB-BWE" secondAttribute="top" id="jlv-Og-xsL"/>
@@ -122,6 +130,7 @@
                         <outlet property="sceneView" destination="17N-LB-BWE" id="7Mg-3V-FhZ"/>
                         <outlet property="scoreLabel" destination="PSf-78-3bA" id="zdb-cj-mVn"/>
                         <outlet property="timerLabel" destination="Zoy-8h-SDy" id="Fah-UV-SQF"/>
+                        <outlet property="worldStatus" destination="uhj-3X-KKs" id="rt5-GF-cPZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

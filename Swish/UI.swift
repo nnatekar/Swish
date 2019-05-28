@@ -24,18 +24,22 @@ import UIKit
 }
 
 enum gameInstructions{
-    // print "Move your camera around"
-    case hostScanning // host will look around ARWorld, after 5 seconds host will automatically send map
-    case peerScanning // peer will look around ARWorld
+    // 1) Everyone scans ar world map
+    // 2) Host sets up basket and sends the world map. Everyone else waits
+    // 3) Peers set up basket. Host presses ready.
+    // 4) Peers press ready.
+    // 5) Everyone is ready -> game starts
     
-    // print "Sent world map/received world map from host" for 2 seconds
-    case hostSentMap
-    case peerReceivedMap
+    case scanning // host will look around ARWorld to scan
     
-    // print "Everyone tap on the same yellow point to set up basket"
-    case everyoneTapPoint
+    case hostSettingUpBasket // "Tap to place basket. To move basket, tap and hold. Send World Map when ready."
+    case peerWaiting // "Wait for the host to send the world map."
     
-    // print "Everyone has tapped a point!"
+    case peerSettingUpBasket // "Tap to place basket. To move basket, tap and hold. Place the basket in the same position as other players."
+    
+    case basketAdded // "Wait for all players to set up the basket."
+    
+    // print "Everyone has set up the basket."
     // popup UI "Are you ready? y/n"
     case readyStatus
     

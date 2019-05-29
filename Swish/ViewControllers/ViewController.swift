@@ -64,6 +64,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var hoopMove: Bool = false
     var mapAvailable: Bool = false
     
+    var latestTranslatePos: CGPoint?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -285,6 +287,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let transform = pointOfView.transform
         hoopMove = true
         
+        if sender.state == .began {
+            latestTranslatePos = touch
+        }
         if sender.state == .changed {
             // make sure a node has been selected from .began
             guard let hitNode = self.globalBasketNode else { return }
@@ -292,16 +297,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             // perform a hitTest to obtain the plane
             let hitTestPlane = self.sceneView.hitTest(touch, types: .existingPlane)
             guard let hitPlane = hitTestPlane.first else { return }
+            
+            
+            let deltaX = Float(touch.x - latestTranslatePos!.x)/5000
+            let deltaY = Float(touch.y - latestTranslatePos!.y)/5000
+            
             let transformHitPlane = SCNVector4(hitPlane.worldTransform.columns.3.x, hitPlane.worldTransform.columns.3.y, hitPlane.worldTransform.columns.3.z, hitPlane.worldTransform.columns.3.w)
             let transformBasket = transform * transformHitPlane
 
-            hitNode.position = SCNVector3(transformBasket.x,
-                                          transformBasket.y,
-                                          transformBasket.z)
-            //hitNode.rotate(by: SCNQuaternion, aroundTarget: <#T##SCNVector3#>)
-            
-            print("\(transform.m31) \(transform.m32) \(transform.m33)")
-        } else if sender.state == .ended || sender.state == .cancelled || sender.state == .failed {
+            hitNode.localTranslate(by: SCNVector3(deltaX,
+                                                  0.0,
+                                                  deltaY))
+            } else if sender.state == .ended || sender.state == .cancelled || sender.state == .failed {
             hoopMove = false
         }
         

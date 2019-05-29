@@ -29,7 +29,7 @@ class MenuController : UIViewController {
         if handle != nil {
             handleField.text = handle as? String
         } else {
-            let randomHandle = "ReadyPlayer" + String(arc4random())
+            let randomHandle = "ReadyPlayer" + String(arc4random()%500)
             Cache.shared.set(randomHandle, forKey: "handle")
             handleField.text = randomHandle
         }

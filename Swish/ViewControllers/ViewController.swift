@@ -101,7 +101,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
         // add timer
         syncTime = 5
-        gameTime = 180 // CHANGE GAME TIME AS NEEDED, currently at 3 mins
+        gameTime = 10 // CHANGE GAME TIME AS NEEDED, currently at 3 mins
         gameTimeMin = Int(gameTime) / 60
         gameTimeSec = Int(gameTime) % 60
         gameTimeMs = Int((gameTime * 1000).truncatingRemainder(dividingBy: 1000))
@@ -130,11 +130,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         let selfID = Globals.instance.selfPeerID
         selfHandle = selfID
-        
-        if(Globals.instance.isMulti){
-            Globals.instance.scores.removeAll()
-            Globals.instance.scores[selfID!] = 0
-        }
+        Globals.instance.scores.removeAll()
+        Globals.instance.scores[selfID!] = 0
     }
     
     func initStyles(){
@@ -187,8 +184,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     @objc func syncTimer(){
         syncTime -= 1
-        
-        
         if(syncTime <= 0){
             guard Globals.instance.isHosting else{ return }
             guard Globals.instance.isMulti else{ return }
@@ -220,6 +215,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             if(gameTime <= 0){
                 gameTimer.invalidate()
+                self.performSegue(withIdentifier: "viewToLeaderboard", sender: self)
 
             }
         }
@@ -355,6 +351,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
             
             basketScene?.rootNode.childNode(withName: "pole", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIColor.gray
+            
+            basketScene?.rootNode.childNode(withName: "detection", recursively: true)?.opacity = 0.0
 
             let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
             let positionOfPlane = hitTestResult.worldTransform.columns.3
@@ -388,6 +386,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.basketAdded = true
             }
+            
         }
     } // adds backboard and hoop to the scene view
     

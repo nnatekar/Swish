@@ -127,24 +127,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         basketScene = SCNScene(named: "Bball.scnassets/Basket.scn")
         // Set backboard texture
         basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
+        
+        let selfID = Globals.instance.selfPeerID
+        selfHandle = selfID
+        
         if(Globals.instance.isMulti){
             Globals.instance.scores.removeAll()
-            
-            let selfID = Globals.instance.selfPeerID
             Globals.instance.scores[selfID!] = 0
         }
     }
     
     func initStyles(){
-//        planeDetected.text = "Point your camera towards the floor."
-//        planeDetected.isHidden = false
-//        planeDetected.font = planeDetected.font.withSize(28)
-//        planeDetected.textColor = UIColor.white
-//        planeDetected.layer.cornerRadius = 2
-//        planeDetected.textAlignment = .center
-//        planeDetected.numberOfLines = 0
-//        planeDetected.shadowColor = UIColor.black
-        
         instructions.numberOfLines = 0
         
         timerLabel.text = String(format: "%02d:%02d:%03d", gameTimeMin, gameTimeSec, gameTimeMs)
@@ -170,13 +163,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             if (contact.nodeA.name! == "detection") {
-                if (contact.nodeB.name! == selfHandle?.displayName) {
+                if (contact.nodeB.name! == selfHandle!.displayName) {
                     self.score+=1
                     Globals.instance.scores[selfHandle!] = self.score
-                    let codableScore = ArbitraryCodable(receivedData: "score", score: self.score)
-                    guard let data = try? JSONEncoder().encode(codableScore)
-                        else { fatalError("can't encode score") }
-                    self.multipeerSession.sendToAllPeers(data)
+                    if Globals.instance.isMulti {
+                        let codableScore = ArbitraryCodable(receivedData: "score", score: self.score)
+                        guard let data = try? JSONEncoder().encode(codableScore)
+                            else { fatalError("can't encode score") }
+                        self.multipeerSession.sendToAllPeers(data)
+                    }
                 }
                 
                 
@@ -280,25 +275,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
             }
         }
-
-        // collision detection
-        
-        /*
-        let detection = SCNNode(geometry: SCNCylinder(radius: 0.3, height: 0.2))
-        let body2 = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: detection))
-        detection.physicsBody = body2
-        detection.opacity = 0.0
-
-        detection.position = SCNVector3(-0.4, 0.35, -3.5) // TODO: determine relative position of cylinder
-
-        detection.name = "detection"
-       // detection.isHidden = true
-        detection.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
-        detection.physicsBody?.contactTestBitMask = CollisionCategory.ballCategory.rawValue
-        self.sceneView.scene.rootNode.addChildNode(detection)
-        */
-        
-        
     } // create and shoot ball
 
     
@@ -351,7 +327,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             if(!basketAdded){
                 self.addBasket(hitTestResult: hitTestResult.first!)
                 if(Globals.instance.isHosting){
-                    
                     getAndSendWorldCoordinates(hitTestResult: hitTestResult.first!)
                 }
             }

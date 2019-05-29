@@ -195,7 +195,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="nNO-Re-9fg"/>
+                                            <segue destination="BYZ-38-t0r" kind="show" identifier="viewController" id="nNO-Re-9fg"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c0A-jR-fga">
@@ -444,7 +444,7 @@
                                     <color key="titleColor" red="0.88328748940000001" green="0.28674073979999998" blue="0.2145204936" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <connections>
-                                    <segue destination="RyS-Hz-JQJ" kind="show" id="6D4-lT-kdf"/>
+                                    <action selector="onTouchNext:" destination="gzF-z0-4Tf" eventType="touchDown" id="OG2-3M-2OT"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QCA-ct-uqz">
@@ -549,6 +549,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="XiT-1E-XtU"/>
-        <segue reference="yfg-Sg-069"/>
+        <segue reference="nNO-Re-9fg"/>
     </inferredMetricsTieBreakers>
 </document>

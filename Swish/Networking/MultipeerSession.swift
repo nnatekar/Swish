@@ -18,7 +18,7 @@ class MultipeerSession: NSObject{
     
     private let peerID : MCPeerID!
     var session: MCSession!
-    private var advert: MCNearbyServiceAdvertiser!
+    var advert: MCNearbyServiceAdvertiser!
     var browser: MCNearbyServiceBrowser!
     
     var dataHandler: ((Data, MCPeerID) -> Void)?
@@ -90,11 +90,23 @@ extension MultipeerSession: MCSessionDelegate{
         do{
             if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
                 basketSyncHandler!(worldMap, peerID)
+                return
             }
         }
         catch{
         }
-        dataHandler!(data, peerID)
+        
+        do{
+            if let peer = try NSKeyedUnarchiver.unarchivedObject(ofClass: MCPeerID.self, from: data) {
+                if(peer.displayName != Globals.instance.selfPeerID!.displayName){
+                    self.connectedPeers.append(peer)
+                }
+            }
+        }
+        catch{
+        }
+        
+        dataHandler?(data, peerID)
     }
     
     // nearby peer opens bytestream connection to the local peer(user)
@@ -130,7 +142,6 @@ extension MultipeerSession: MCNearbyServiceBrowserDelegate{
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         let game = NetworkGame(host: peerID, session: session, locationId: 0)
         Globals.instance.games.append(game)
-        connectedPeers.append(peerID)
         Globals.instance.scores[peerID] = 0
         self.delegate?.gameBrowser(browser, session, sawGames: Globals.instance.games)
         //invite the found peer to the session

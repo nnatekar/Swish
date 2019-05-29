@@ -14,11 +14,21 @@ class LeaderboardController: UIViewController {
     var sortedScores: [(key: MCPeerID, value: Int)] = []
     var playerRank: Int = 0
     
+    
     override func viewDidLoad() {
         leaderboardTable.delegate = self
         leaderboardTable.dataSource = self
         sortedScores = Globals.instance.scores.sorted(by: {$0.value > $1.value}) // might want to do this when timer == 0
         leaderboardTable.reloadData()
+        
+        
+    }
+    
+    @IBAction func onTouchNext(_ sender: Any) {
+        if Globals.instance.isMulti{ self.presentingViewController!.presentingViewController!.presentingViewController!.dismiss(animated: true, completion:nil)
+        } else{
+            self.presentingViewController!.presentingViewController!.dismiss(animated: true, completion:nil)
+        }
     }
 }
 

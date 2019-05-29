@@ -22,10 +22,7 @@ class MenuController : UIViewController {
     @IBOutlet weak var swish: UIView!
     
     override func viewDidLoad() {
-        gameTypeStackView.isHidden = true
-        multiplayerStackView.isHidden = true
-        nameStackView.isHidden = true
-        backButton.isHidden = true
+        initStyles()
 
         let handle = Cache.shared.object(forKey: "handle")
         print(handle as? String ?? "NULL")
@@ -33,7 +30,7 @@ class MenuController : UIViewController {
             handleField.text = handle as? String
         } else {
             let randomHandle = "ReadyPlayer" + String(arc4random())
-            Cache.shared.set("randomHandle", forKey: "handle")
+            Cache.shared.set(randomHandle, forKey: "handle")
             handleField.text = randomHandle
         }
     }
@@ -95,9 +92,22 @@ class MenuController : UIViewController {
         if(segue.identifier == "hostGame"){
             Globals.instance.isHosting = true
         }
-
+        
+        initStyles()
+        
         let handle = Cache.shared.object(forKey: "handle")
         Globals.instance.selfPeerID = MCPeerID(displayName: handle as! String)
+        
+    }
+    
+    func initStyles(){
+        gameTypeStackView.isHidden = true
+        multiplayerStackView.isHidden = true
+        nameStackView.isHidden = true
+        backButton.isHidden = true
+        welcomeStackView.isHidden = false
+        logo.isHidden = false
+        swish.isHidden = false
     }
 }
 

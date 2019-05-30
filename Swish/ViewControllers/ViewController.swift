@@ -27,11 +27,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     var multipeerSession: MultipeerSession!
     var gameTime = Double()
-    var syncTime = Int()
     var gameTimeMin = Int()
     var gameTimeSec = Int()
     var gameTimer = Timer()
-    var syncingTimer = Timer()
     
     var basketScene: SCNScene?
     var globalBasketNode: SCNNode?
@@ -90,7 +88,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         self.sceneView.addGestureRecognizer(pressGestureRecognizer)
 
         // add timer
-        syncTime = 5
         gameTime = 120 // CHANGE GAME TIME AS NEEDED, currently at 2 mins
         gameTimeMin = Int(gameTime) / 60
         gameTimeSec = Int(gameTime) % 60
@@ -126,16 +123,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             // send true to all peers
             readyPlayers += 1
             if self.multipeerSession.connectedPeers.count == 0 {
-                gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
-                syncingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(syncTimer), userInfo: nil, repeats: false)
+                DispatchQueue.main.async {
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                }
             }
             let codable = ArbitraryCodable(receivedData: "ready", score: self.score, isReady: true)
             guard let data = try? JSONEncoder().encode(codable)
                 else {fatalError("can't encode ready")}
             self.multipeerSession.sendToAllPeers(data)
         } else {
-            gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
-            syncingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(syncTimer), userInfo: nil, repeats: false)
+            DispatchQueue.main.async {
+                self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+            }
         }
        
     }
@@ -180,29 +179,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
             DispatchQueue.main.async {
                 contact.nodeB.removeFromParentNode()
-            }
-        }
-    }
-
-    @objc func syncTimer(){
-        syncTime -= 1
-        if(syncTime <= 0){
-            guard Globals.instance.isHosting else{ return }
-            guard Globals.instance.isMulti else{ return }
-            
-            if mapAvailable {
-                sceneView.session.getCurrentWorldMap { worldMap, error in
-                    guard let map = worldMap
-                        else { print("Error: \(error!.localizedDescription)"); return }
-                    guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
-                        else { fatalError("can't encode map") }
-                    self.multipeerSession.sendToAllPeers(data)
-                }
-                
-                gameSetupState = .hostSentMap
-                syncingTimer.invalidate()
-                self.performSegue(withIdentifier: "viewToLeaderboard", sender: self)
-                updateMultiPlayerStatus()
             }
         }
     }
@@ -469,8 +445,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             } else if decodedData.receivedData == "ready" {
                 readyPlayers += 1
                 if readyPlayers == self.multipeerSession.connectedPeers.count + 1{
-                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
-                    self.syncingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(syncTimer), userInfo: nil, repeats: false)
+                    DispatchQueue.main.async{
+                        self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                    }
                 }
             }
         }

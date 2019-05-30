@@ -101,6 +101,17 @@ extension MultipeerSession: MCSessionDelegate{
                 if(peer.displayName != Globals.instance.selfPeerID!.displayName){
                     self.connectedPeers.append(peer)
                 }
+                return
+            }
+        }
+        catch{
+        }
+        
+        do{
+            if let peer = try NSKeyedUnarchiver.unarchivedObject(ofClass: MCPeerID.self, from: data) {
+                if(peer.displayName != Globals.instance.selfPeerID!.displayName){
+                    self.connectedPeers.append(peer)
+                }
             }
         }
         catch{

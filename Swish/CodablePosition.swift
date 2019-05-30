@@ -12,10 +12,12 @@ import ARKit
 class ArbitraryCodable: Codable {
     var receivedData: String // "score"
     var score: Int
+    var isReady: Bool
     
-    init(receivedData: String, score: Int){
+    init(receivedData: String, score: Int, isReady: Bool){
         self.score = score
         self.receivedData = receivedData
+        self.isReady = isReady
     }
 }
 

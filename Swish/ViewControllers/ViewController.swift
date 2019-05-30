@@ -43,10 +43,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     var cameraTrackingState: ARCamera.TrackingState?
     var globalCamera: ARCamera?
     var gameSetupState: gameInstructions!
-    var selfHandle: MCPeerID?
+    var positionAnchor: ARAnchor?
+    var playerPositionAnchors: [String : ARAnchor] = [:]
+    
     var readyPlayers: Int = 0
 
-    var numTappedPoints: Int = 0
     var hoopMove: Bool = false
     var mapAvailable: Bool = false
     
@@ -101,7 +102,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
         updateMultiPlayerStatus()
         
-        numTappedPoints = 0
         initStyles();
         
         sceneView.scene.physicsWorld.contactDelegate = self
@@ -110,9 +110,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         // Set backboard texture
         basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
         
-        selfHandle = Globals.instance.selfPeerID
         Globals.instance.scores.removeAll()
-        Globals.instance.scores[selfHandle!] = 0
+        Globals.instance.scores[Globals.instance.selfPeerID!] = 0
     }
     
     
@@ -166,9 +165,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
             if (contact.nodeA.name! == "detection") {
-                if (contact.nodeB.name! == selfHandle!.displayName && gameTimer != nil) {
+                if (contact.nodeB.name! == Globals.instance.selfPeerID!.displayName && gameTimer != nil) {
                     self.score+=1
-                    Globals.instance.scores[selfHandle!] = self.score
+                    Globals.instance.scores[Globals.instance.selfPeerID!] = self.score
                     if Globals.instance.isMulti {
                         let codableScore = ArbitraryCodable(receivedData: "score", score: self.score, isReady: true)
                         guard let data = try? JSONEncoder().encode(codableScore)
@@ -225,7 +224,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
         ball.physicsBody = body
-        ball.name = selfHandle?.displayName
+        ball.name = Globals.instance.selfPeerID!.displayName
         body.restitution = 0.2
 
         let xForce = translation.x > 0 ? min(1.5, Float(translation.x)/100) : max(-1.5, Float(translation.x)/100)
@@ -239,19 +238,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
-        let basketPosition = globalBasketNode!.position
-        let playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: 0)
-        let codableBasketPosition = CodablePosition(dim1: basketPosition.x, dim2: basketPosition.y, dim3: basketPosition.z, dim4: 0)
-        let codableBall = CodableBall(forceX: vectorForce.x, forceY: vectorForce.y, forceZ: vectorForce.z, playerPosition: playerPosition, basketPosition: codableBasketPosition)
+        let positionTransform = pointOfView.simdTransform
+        guard Globals.instance.isMulti else {return}
+        
+        let anchorName = Globals.instance.selfPeerID!.displayName
+        if(positionAnchor != nil){
+            sceneView.session.remove(anchor: positionAnchor!)
+        }
+        positionAnchor = ARAnchor(name: anchorName, transform: positionTransform)
+        sceneView.session.add(anchor: positionAnchor!)
+        let codableCol1 = CodablePosition(dim1: positionTransform.columns.0.x, dim2: positionTransform.columns.0.y, dim3: positionTransform.columns.0.z, dim4: positionTransform.columns.0.w)
+        let codableCol2 = CodablePosition(dim1: positionTransform.columns.1.x, dim2: positionTransform.columns.1.y, dim3: positionTransform.columns.1.z, dim4: positionTransform.columns.1.w)
+        let codableCol3 = CodablePosition(dim1: positionTransform.columns.2.x, dim2: positionTransform.columns.2.y, dim3: positionTransform.columns.2.z, dim4: positionTransform.columns.2.w)
+        let codableCol4 = CodablePosition(dim1: positionTransform.columns.3.x, dim2: positionTransform.columns.3.y, dim3: positionTransform.columns.3.z, dim4: positionTransform.columns.3.w)
+        let basketPos = CodablePosition(dim1: globalBasketNode!.position.x, dim2: globalBasketNode!.position.y, dim3: globalBasketNode!.position.z, dim4: 0)
+        let encodableTransform = CodableTransform(c1: codableCol1, c2: codableCol2, c3: codableCol3, c4: codableCol4, basketPos: basketPos, s: anchorName, fX: xForce, fY: yForce, fZ: zForce)
+
 
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
         weak var ballObject = Ball(ballNode: ball)
         if(Globals.instance.isMulti){
-            do {
-                let data : Data = try JSONEncoder().encode(codableBall)
+            do{
+                let data : Data = try JSONEncoder().encode(encodableTransform)
                 self.multipeerSession.sendToAllPeers(data)
-            } catch {
-                
+            }
+            catch{
+                print("Was not able to encode transform to data")
             }
         }
     } // create and shoot ball
@@ -356,9 +368,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             return basketNode
         }
-        else{
-            return nil
-        }
+        
+//        // check if anchor is one of the player anchors
+//        for (key, value) in playerPositionAnchors{
+//            if(anchor.name == key){ // we added an anchor in the scene that matches a player's name
+//                // need to add a node to show us where the anchor is
+//                let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
+//                ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
+//                print(ball.position)
+//                let body = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: ball))
+//                ball.physicsBody = body
+//                ball.name = key
+//                body.restitution = 0.2
+//                return ball
+//            }
+//        }
+        
+        return nil
     }
 
     override func didReceiveMemoryWarning() {
@@ -368,7 +394,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     @IBAction func shareSession(_ button: UIButton) {
         guard Globals.instance.isHosting else{ return }
-
         if(mapAvailable){
             sceneView.session.getCurrentWorldMap { worldMap, error in
                 guard let map = worldMap
@@ -400,22 +425,35 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     func dataHandler(_ data: Data, from peer: MCPeerID) {
         do{
             // if the data is a position, we need to sync our game world's position with that position
-            let decodedData = try JSONDecoder().decode(CodableBall.self, from: data)
+            let decodedData = try JSONDecoder().decode(CodableTransform.self, from: data)
             
-            guard let pointOfView = self.sceneView.pointOfView else {return}
-            let transform = pointOfView.transform
-            let location = SCNVector3(transform.m41, transform.m42, transform.m43)
-            let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
-            let position = location + orientation
+            let col0 = simd_float4(decodedData.col1.dim1, decodedData.col1.dim2, decodedData.col1.dim3, decodedData.col1.dim4)
+            let col1 = simd_float4(decodedData.col2.dim1, decodedData.col2.dim2, decodedData.col2.dim3, decodedData.col2.dim4)
+            let col2 = simd_float4(decodedData.col3.dim1, decodedData.col3.dim2, decodedData.col3.dim3, decodedData.col3.dim4)
+            let col3 = simd_float4(decodedData.col4.dim1, decodedData.col4.dim2, decodedData.col4.dim3, decodedData.col4.dim4)
             
-            let basketPosition = globalBasketNode!.position
-            let diffX = basketPosition.x - decodedData.basketPosition.dim1
-            let diffY = basketPosition.y - decodedData.basketPosition.dim2
-            let diffZ = basketPosition.z - decodedData.basketPosition.dim3
+            let tform = simd_float4x4(col0, col1, col2, col3)
+            let anchor = ARAnchor(name: decodedData.playerID, transform: tform)
+            let anchorPos = SCNVector3(anchor.transform.columns.3.x, anchor.transform.columns.3.y, anchor.transform.columns.3.z)
+//            let ourBasketPos = globalBasketNode!.position
+//            let diffX = ourBasketPos.x - decodedData.basketPos.dim1
+//            let diffY = ourBasketPos.y - decodedData.basketPos.dim2
+//            let diffZ = ourBasketPos.z - decodedData.basketPos.dim3
             
+            if(!playerPositionAnchors.isEmpty){
+                if(playerPositionAnchors[decodedData.playerID] != nil){
+                    sceneView.session.remove(anchor: playerPositionAnchors[decodedData.playerID]!)  // remove existing anchor from sceneview
+                }
+            }
+            
+            playerPositionAnchors[decodedData.playerID] = anchor
+            sceneView.session.add(anchor: anchor)
+            
+//            let position = SCNVector3(anchorPos.x - diffX, anchorPos.y - diffY, anchorPos.z - diffZ)
+            let position = anchorPos
             let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
-            ball.position = SCNVector3(position.x + diffX, position.y + diffY, position.z + diffZ)
+            ball.position = SCNVector3(position.x, position.y, position.z)
             print(ball.position)
             let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
             ball.physicsBody = body
@@ -429,21 +467,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
             ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
             sceneView.scene.rootNode.addChildNode(ball)
-        }
-        catch{
-        }
-        
-        do{
-            // acknowledgement that everyone tapped the yellow points
-            let decodedData = try JSONDecoder().decode(String.self, from: data)
-            if(decodedData == "Tapped point"){
-                numTappedPoints += 1
-            }
-            if(numTappedPoints == multipeerSession.connectedPeers.count){
-                gameSetupState = .readyStatus
-                updateMultiPlayerStatus()
-                // CALL A FUNCTION TO GET UI UP FOR READY STATUS
-            }
         }
         catch{
         }
@@ -551,7 +574,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             self.multiPlayerStatus.text = message
             self.multiPlayerStatus.isHidden = message.isEmpty
         }
-        
     }
 }
 

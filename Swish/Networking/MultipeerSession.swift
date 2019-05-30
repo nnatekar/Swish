@@ -106,7 +106,18 @@ extension MultipeerSession: MCSessionDelegate{
         }
         catch{
         }
-        dataHandler!(data, peerID)
+        
+        do{
+            if let peer = try NSKeyedUnarchiver.unarchivedObject(ofClass: MCPeerID.self, from: data) {
+                if(peer.displayName != Globals.instance.selfPeerID!.displayName){
+                    self.connectedPeers.append(peer)
+                }
+            }
+        }
+        catch{
+        }
+        
+        dataHandler?(data, peerID)
     }
     
     // nearby peer opens bytestream connection to the local peer(user)

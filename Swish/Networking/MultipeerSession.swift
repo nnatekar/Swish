@@ -90,6 +90,7 @@ extension MultipeerSession: MCSessionDelegate{
         do{
             if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
                 basketSyncHandler!(worldMap, peerID)
+                return
             }
         }
         catch{
@@ -130,7 +131,6 @@ extension MultipeerSession: MCNearbyServiceBrowserDelegate{
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         let game = NetworkGame(host: peerID, session: session, locationId: 0)
         Globals.instance.games.append(game)
-        connectedPeers.append(peerID)
         Globals.instance.scores[peerID] = 0
         self.delegate?.gameBrowser(browser, session, sawGames: Globals.instance.games)
         //invite the found peer to the session

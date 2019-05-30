@@ -124,6 +124,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
        
         if Globals.instance.isMulti {
             // send true to all peers
+            readyPlayers += 1
             if self.multipeerSession.connectedPeers.count == 0 {
                 gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
                 syncingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(syncTimer), userInfo: nil, repeats: false)
@@ -212,8 +213,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             gameTimeMin = Int(gameTime) / 60
             gameTimeSec = Int(gameTime) % 60
             
-            timerLabel.text = String(format: "%02d:%02d", gameTimeMin, gameTimeSec)
-            
+            DispatchQueue.main.async{
+                self.timerLabel.text = String(format: "%02d:%02d", self.gameTimeMin, self.gameTimeSec)
+            }
+                
             if(gameTime <= 0){
                 gameTimer.invalidate()
                 self.performSegue(withIdentifier: "viewToLeaderboard", sender: self)
@@ -464,13 +467,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             if decodedData.receivedData == "score" {
                 Globals.instance.scores[peer] = decodedData.score
             } else if decodedData.receivedData == "ready" {
-                let decodedData = try JSONDecoder().decode(Bool.self, from: data)
-                if decodedData == true {
-                    if readyPlayers == self.multipeerSession.connectedPeers.count {
-                        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
-                        syncingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(syncTimer), userInfo: nil, repeats: false)
-                    }
-                    readyPlayers += 1
+                readyPlayers += 1
+                if readyPlayers == self.multipeerSession.connectedPeers.count + 1{
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(incrementTimer), userInfo: nil, repeats: true)
+                    self.syncingTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(syncTimer), userInfo: nil, repeats: false)
                 }
             }
         }
@@ -559,9 +559,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         default:
             message = ""
         }
+        DispatchQueue.main.async {
+            self.multiPlayerStatus.text = message
+            self.multiPlayerStatus.isHidden = message.isEmpty
+        }
         
-        multiPlayerStatus.text = message
-        multiPlayerStatus.isHidden = message.isEmpty
     }
 }
 

@@ -127,6 +127,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                     self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
                 }
             }
+            if(self.multipeerSession.connectedPeers.count + 1 == readyPlayers){
+                DispatchQueue.main.async {
+                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                }
+            }
             let codable = ArbitraryCodable(receivedData: "ready", score: self.score, isReady: true)
             guard let data = try? JSONEncoder().encode(codable)
                 else {fatalError("can't encode ready")}
@@ -175,11 +180,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
                 DispatchQueue.main.async {
                     self.scoreLabel.text = "\(self.score)"
+                    contact.nodeB.removeFromParentNode()
                 }
             }
-            DispatchQueue.main.async {
-                contact.nodeB.removeFromParentNode()
-            }
+            
         }
     }
 
@@ -365,13 +369,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBAction func shareSession(_ button: UIButton) {
         guard Globals.instance.isHosting else{ return }
 
-        if mapAvailable {
+        if(mapAvailable){
             sceneView.session.getCurrentWorldMap { worldMap, error in
                 guard let map = worldMap
                     else { print("Error: \(error!.localizedDescription)"); return }
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                     else { fatalError("can't encode map") }
                 self.multipeerSession.sendToAllPeers(data)
+                self.multipeerSession.advert.stopAdvertisingPeer()
+                
+                for peer in self.multipeerSession.connectedPeers{
+                    guard let peerData = try? NSKeyedArchiver.archivedData(withRootObject: peer, requiringSecureCoding: true)
+                        else { fatalError("can't encode peer list") }
+                    self.multipeerSession.sendToAllPeers(peerData)
+                }
             }
         }
     }

@@ -18,7 +18,7 @@ class MultipeerSession: NSObject{
     
     private let peerID : MCPeerID!
     var session: MCSession!
-    private var advert: MCNearbyServiceAdvertiser!
+    var advert: MCNearbyServiceAdvertiser!
     var browser: MCNearbyServiceBrowser!
     
     var dataHandler: ((Data, MCPeerID) -> Void)?
@@ -90,6 +90,17 @@ extension MultipeerSession: MCSessionDelegate{
         do{
             if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
                 basketSyncHandler!(worldMap, peerID)
+                return
+            }
+        }
+        catch{
+        }
+        
+        do{
+            if let peer = try NSKeyedUnarchiver.unarchivedObject(ofClass: MCPeerID.self, from: data) {
+                if(peer.displayName != Globals.instance.selfPeerID!.displayName){
+                    self.connectedPeers.append(peer)
+                }
                 return
             }
         }

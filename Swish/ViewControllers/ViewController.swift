@@ -17,12 +17,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
     @IBOutlet weak var scoreLabel: PaddingLabel!
     @IBOutlet weak var timerLabel: PaddingLabel!
-    @IBOutlet weak var planeDetected: UILabel!
     @IBOutlet weak var multiPlayerStatus: UILabel!
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var instructions: UILabel!
     @IBOutlet weak var worldStatus: UILabel!
+    @IBOutlet weak var readyButton: UIButton!
+    @IBOutlet weak var sendWorldMapButton: UIButton!
     
 
     var multipeerSession: MultipeerSession!
@@ -120,21 +121,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
        
         if Globals.instance.isMulti {
             // send true to all peers
-            readyPlayers += 1
-            if self.multipeerSession.connectedPeers.count == 0 {
-                DispatchQueue.main.async {
-                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
-                }
-            }
-            if(self.multipeerSession.connectedPeers.count + 1 == readyPlayers){
-                DispatchQueue.main.async {
-                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
-                }
-            }
             let codable = ArbitraryCodable(receivedData: "ready", score: self.score, isReady: true)
             guard let data = try? JSONEncoder().encode(codable)
                 else {fatalError("can't encode ready")}
-            self.multipeerSession.sendToAllPeers(data)
+            self.multipeerSession.sendToAllPeers(data){
+                self.readyButton.isHidden = true
+                readyPlayers += 1
+                if self.multipeerSession.connectedPeers.count == 0 {
+                    DispatchQueue.main.async {
+                        self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                    }
+                }
+                if(self.multipeerSession.connectedPeers.count + 1 == readyPlayers){
+                    DispatchQueue.main.async {
+                        self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                    }
+                }
+            }
         } else {
             DispatchQueue.main.async {
                 self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
@@ -172,7 +175,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                         let codableScore = ArbitraryCodable(receivedData: "score", score: self.score, isReady: true)
                         guard let data = try? JSONEncoder().encode(codableScore)
                             else { fatalError("can't encode score") }
-                        self.multipeerSession.sendToAllPeers(data)
+                        self.multipeerSession.sendToAllPeers(data){}
                     }
                 }
                 
@@ -198,6 +201,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
             if(gameTime <= 0){
                 gameTimer.invalidate()
+                multipeerSession.session.disconnect()
                 self.performSegue(withIdentifier: "viewToLeaderboard", sender: self)
 
             }
@@ -260,7 +264,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         if(Globals.instance.isMulti){
             do{
                 let data : Data = try JSONEncoder().encode(encodableTransform)
-                self.multipeerSession.sendToAllPeers(data)
+                self.multipeerSession.sendToAllPeers(data){}
             }
             catch{
                 print("Was not able to encode transform to data")
@@ -400,13 +404,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                     else { print("Error: \(error!.localizedDescription)"); return }
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                     else { fatalError("can't encode map") }
-                self.multipeerSession.sendToAllPeers(data)
+                self.multipeerSession.sendToAllPeers(data){
+                    self.sendWorldMapButton.isHidden = true
+                }
                 self.multipeerSession.advert.stopAdvertisingPeer()
                 
                 for peer in self.multipeerSession.connectedPeers{
                     guard let peerData = try? NSKeyedArchiver.archivedData(withRootObject: peer, requiringSecureCoding: true)
                         else { fatalError("can't encode peer list") }
-                    self.multipeerSession.sendToAllPeers(peerData)
+                    self.multipeerSession.sendToAllPeers(peerData){}
                 }
             }
         }
@@ -493,15 +499,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     // called from ARSCNViewDelegate
     // SCNNode relating to a new anchor was added to the scene
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        if(anchor is ARPlaneAnchor){
-            DispatchQueue.main.async {
-                self.planeDetected.isHidden = false
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.planeDetected.isHidden = true
-            }
-        }
-        else if(anchor.name == "basketAnchor"){
+        if(anchor.name == "basketAnchor"){
             globalBasketNode = node
         }
     } // just to deal with planeDetected button on top. +2 to indicate button is there for 2 seconds and then disappears

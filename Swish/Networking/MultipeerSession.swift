@@ -68,9 +68,10 @@ class MultipeerSession: NSObject{
 //    }
     var connectedPeers: [MCPeerID]
     
-    func sendToAllPeers(_ data: Data){
+    func sendToAllPeers(_ data: Data, completion: () -> Void){
         do{
             try session.send(data, toPeers: connectedPeers, with: .reliable)
+            completion()
         } catch{
             print("Error: Could not send data to peers: \(error.localizedDescription)")
         }
@@ -83,6 +84,14 @@ extension MultipeerSession: MCSessionDelegate{
     // MCSessionState.connected = user accepted invite and is connected to session
     // MCSessionState.notConnected = user declined invite/connection failed/disconnected
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        // someone disconnected, remove them from the list
+        if(state == .notConnected){
+            for i in 0...connectedPeers.count{
+                if connectedPeers[i] == peerID{
+                    connectedPeers.remove(at: i)
+                }
+            }
+        }
     }
     
     // received Data object from a peer

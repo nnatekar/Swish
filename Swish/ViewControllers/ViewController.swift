@@ -198,6 +198,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
             if(gameTime <= 0){
                 gameTimer.invalidate()
+                multipeerSession.session.disconnect()
                 self.performSegue(withIdentifier: "viewToLeaderboard", sender: self)
 
             }

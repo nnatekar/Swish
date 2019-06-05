@@ -12,11 +12,11 @@ import MultipeerConnectivity
 
 class OptionsController: UIViewController {    
     @IBOutlet weak var GameStart: UIButton!
-    @IBOutlet weak var handleField: UITextField!
     @IBOutlet weak var gamesTableContainer: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         gamesTableContainer.isHidden = (!(Globals.instance.isMulti) || (Globals.instance.isHosting))
+        GameStart.isHidden = (!Globals.instance.isHosting && Globals.instance.isMulti) // if multiplayer and player is joiner, hide start button
         // temporary until we finish this view controller
     }
     

@@ -44,6 +44,8 @@ extension GamesTableController: UITableViewDelegate{
         // join the selected game
         browser?.stopBrowsingForPeers()
         self.browser!.invitePeer(game.host, to: game.session, withContext: nil, timeout: 10)
+        
+        self.parent!.performSegue(withIdentifier: "toGame", sender: Any?.self)
         // TODO: segue to viewcontroller, set the game session
     }
 }

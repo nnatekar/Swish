@@ -16,7 +16,7 @@ class OptionsController: UIViewController {
     @IBOutlet weak var gamesTableContainer: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        gamesTableContainer.isHidden = !(Globals.instance.isMulti)
+        gamesTableContainer.isHidden = (!(Globals.instance.isMulti) || (Globals.instance.isHosting))
         // temporary until we finish this view controller
     }
     

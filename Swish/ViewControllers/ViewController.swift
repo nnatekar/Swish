@@ -171,6 +171,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 if (contact.nodeB.name! == Globals.instance.selfPeerID!.displayName && gameTimer != nil) {
                     self.score+=1
                     Globals.instance.scores[Globals.instance.selfPeerID!] = self.score
+                    contact.nodeB.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
+                    contact.nodeB.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
                     if Globals.instance.isMulti {
                         let codableScore = ArbitraryCodable(receivedData: "score", score: self.score, isReady: true)
                         guard let data = try? JSONEncoder().encode(codableScore)
@@ -182,6 +184,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
                 DispatchQueue.main.async {
                     self.scoreLabel.text = "\(self.score)"
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
                     contact.nodeB.removeFromParentNode()
                 }
             }
@@ -243,6 +247,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
         let positionTransform = pointOfView.simdTransform
+        
+        self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
+        weak var ballObject = Ball(ballNode: ball)
+        
         guard Globals.instance.isMulti else {return}
         
         let anchorName = Globals.instance.selfPeerID!.displayName
@@ -258,17 +266,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let basketPos = CodablePosition(dim1: globalBasketNode!.position.x, dim2: globalBasketNode!.position.y, dim3: globalBasketNode!.position.z, dim4: 0)
         let encodableTransform = CodableTransform(c1: codableCol1, c2: codableCol2, c3: codableCol3, c4: codableCol4, basketPos: basketPos, s: anchorName, fX: xForce, fY: yForce, fZ: zForce)
 
-
-        self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
-        weak var ballObject = Ball(ballNode: ball)
-        if(Globals.instance.isMulti){
-            do{
-                let data : Data = try JSONEncoder().encode(encodableTransform)
-                self.multipeerSession.sendToAllPeers(data){}
-            }
-            catch{
-                print("Was not able to encode transform to data")
-            }
+        do{
+            let data : Data = try JSONEncoder().encode(encodableTransform)
+            self.multipeerSession.sendToAllPeers(data){}
+        }
+        catch{
+            print("Was not able to encode transform to data")
         }
     } // create and shoot ball
 

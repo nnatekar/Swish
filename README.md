@@ -29,4 +29,4 @@ Neil Natekar,
 
 ## License
 
-This project is completely open source. Feel free to build off of our code
+This project is completely open source. Feel free to build off of our code and add more feautures!

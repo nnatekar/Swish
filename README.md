@@ -18,14 +18,14 @@ To clone the project onto your local machine:
 git clone https://github.com/nnatekar/Swish.git
 ```
 
-Once the repo has been successfully clonde, open the 'Swish.xcodeproj' file in Xcode. Build the project and run it on a mobile device.
+Once the repo has been successfully cloned, open the 'Swish.xcodeproj' file in Xcode. Build the project and run it on a mobile device.
 
 ## Contributors
 
-Neil Natekar
-Cazamere Comrie
-Jugal Jain
-Tran Nguyen
+Neil Natekar,
+ Cazamere Comrie,
+ Jugal Jain,
+ Tran Nguyen.
 
 ## License
 

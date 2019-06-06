@@ -101,6 +101,9 @@ class MenuController : UIViewController {
         else if(segue.identifier == "joinGame"){
             Globals.instance.isHosting = false
         }
+        else if(segue.identifier == "viewController"){
+            Globals.instance.isMulti = false
+        }
         initStyles()
         
         let handle = Cache.shared.object(forKey: "handle")

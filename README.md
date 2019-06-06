@@ -47,10 +47,10 @@ If you are submitting a bug fix, describe the bug and what you did to fix it
 ## Contributors
 
 Neil Natekar,
-Cazamere Comrie,
-Jugal Jain,
-Tran Nguyen
-Serena Tieu (UI and Graphics Designer). 
+ Cazamere Comrie,
+ Jugal Jain,
+ Tran Nguyen,
+ Serena Tieu (UI and Graphics Designer). 
 
 ## License
 

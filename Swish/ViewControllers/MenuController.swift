@@ -17,8 +17,13 @@ class MenuController : UIViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var nameStackView: UIStackView!
     @IBOutlet weak var handleField: UITextField!
+    @IBOutlet weak var tutorialView: UIView!
     @IBOutlet weak var logo: UIView!
     @IBOutlet weak var swish: UIView!
+    @IBOutlet weak var gifView: UIImageView!
+    @IBOutlet weak var instructionsLabel: UILabel!
+    @IBOutlet weak var instructionsLabel2: UILabel!
+    @IBOutlet weak var tutButton: UIButton!
     
     override func viewDidLoad() {
         initStyles()
@@ -34,6 +39,16 @@ class MenuController : UIViewController {
             Cache.shared.set(randomHandle, forKey: "handle")
             handleField.text = randomHandle
         }
+        tutorialView.isHidden = true
+        tutButton.isHidden = false
+        gifView.loadGif(asset: "arworldscancropped")
+        instructionsLabel.numberOfLines = 0
+        instructionsLabel.lineBreakMode = .byWordWrapping
+        instructionsLabel.text = "\nInstructions for Multiplayer Setup \n\n1) You can choose between Hosting and Joining a game when you click Play > Multiplayer. There can be multiple Joiners but only ONE host \n\n2) If hosting, scan the \"World Map\" by slowly moving your device across your surroundings as shown below. This shows up on screen as tiny yellow spots displayed on flat horizontal surfaces \n"
+        
+        instructionsLabel2.numberOfLines = 0
+        instructionsLabel2.lineBreakMode = .byWordWrapping
+        instructionsLabel2.text = "\n3) The message on the screen will change from Not Available > Limited > Extending > Mapped. When the message becomes \"Mapped\" the World is sufficiently scanned, and the basket can be placed \n\n4) Place the basket by tapping on any yellow dot that you see on your screen. You may have to look around to find where the basket has been placed. REMEMBER the location where you tapped! \n\n5) Once the basket is placed, the host can now click the \"Send World Map\" button at the bottom of the screen \n\n6) If playing as a Joiner, the first step is the same as for hosts, which is to scan your surroundings \n\n7) Once the host sends the World Map, a message saying \"Received World Map From Peers\" will show up on the Joiner's screen.\n\n8) Keep scanning the world until the message on screen says \"Mapped\" \n\n9) Wait for some time for the basket to show up on the screen. If it does not show up, stand where the Host is and tap the exact location where the Host did \n\n10) Once all players have a basket on screen, they can all click the \"Ready\" button at the bottom. Once all the players in the session have clicked \"Ready\" the game will start.\n"
     }
     
     // The play button was clicked.
@@ -43,8 +58,13 @@ class MenuController : UIViewController {
         backButton.isHidden = false
         logo.isHidden = true
         swish.isHidden = true
+        tutButton.isHidden = true
     }
     
+    @IBAction func onTutorialClick(_ sender: Any) {
+        tutorialView.isHidden = false
+        
+    }
     // The profile button was clicked.
     @IBAction func profileClicked(_ sender: Any) {
         self.welcomeStackView.isHidden = true
@@ -52,6 +72,7 @@ class MenuController : UIViewController {
         backButton.isHidden = false
         logo.isHidden = true
         swish.isHidden = true
+        tutButton.isHidden = true
     }
     
     // User finished typing in their handle, store it in the cache.
@@ -62,6 +83,9 @@ class MenuController : UIViewController {
         sender.resignFirstResponder()
     }
     
+    @IBAction func backInstructionClicked(_ sender: Any) {
+        tutorialView.isHidden = true
+    }
     // User pressed back after pressing play or profile.
     @IBAction func backButtonClicked(_ sender: Any) {
         if gameTypeStackView.isHidden == false {
@@ -70,6 +94,7 @@ class MenuController : UIViewController {
             self.backButton.isHidden = true
             logo.isHidden = false
             swish.isHidden = false
+            tutButton.isHidden = false
         } // currently on the game stack (single/multi) view, go back to welcome
         else if multiplayerStackView.isHidden == false {
             self.gameTypeStackView.isHidden = false
@@ -82,6 +107,7 @@ class MenuController : UIViewController {
             self.backButton.isHidden = true
             self.logo.isHidden = false
             self.swish.isHidden = false
+            tutButton.isHidden = false
         } // currently on name stack view, go back to welcome
     }
     

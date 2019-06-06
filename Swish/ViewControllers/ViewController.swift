@@ -118,6 +118,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         Globals.instance.scores.removeAll()
         Globals.instance.scores[Globals.instance.selfPeerID!] = 0
         colorNum = 0
+        if(!Globals.instance.isMulti){
+            sendWorldMapButton.isHidden = true
+        }
     }
     
     // If segueing out of the game, disconnect from the multiplayer session.
@@ -155,6 +158,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
         } else {
             DispatchQueue.main.async {
+                self.worldStatus.isHidden = true
                 self.countdownLabel.isHidden = false
                 self.countdownToGame()
             }

@@ -226,6 +226,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         scoreLabel.textAlignment = .center
         
         countdownLabel.isHidden = true
+        
+        if(!Globals.instance.isMulti || !Globals.instance.isHosting){
+            sendWorldMapButton.isHidden = true
+        }
     }
 
     // Physics world handles collisions between basket's collision node and balls.

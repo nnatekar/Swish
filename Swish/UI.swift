@@ -3,7 +3,6 @@
 //  Swish
 //
 //  Created by Tran Nguyen on 4/29/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import Foundation

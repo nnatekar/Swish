@@ -3,7 +3,6 @@
 //  Swish
 //
 //  Created by Neil Natekar on 4/3/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import UIKit
@@ -20,6 +19,8 @@ class GamesTableController: UIViewController{
     override func viewDidLoad() {
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // If we are hosting,
         if(Globals.instance.isHosting){
             Globals.instance.session = MultipeerSession(hostPeerID: Globals.instance.selfPeerID!)
         }
@@ -30,7 +31,6 @@ class GamesTableController: UIViewController{
         multSession?.delegate = self
     }
     
-    // TEMPORARY, REMOVE LATER
     func dataHandler(_ data: Data, from peer: MCPeerID) {
     }
 }

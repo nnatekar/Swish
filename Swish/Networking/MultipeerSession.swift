@@ -3,7 +3,6 @@
 //  Swish
 //
 //  Created by Jugal Jain on 2/27/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 import ARKit
 import MultipeerConnectivity
@@ -14,37 +13,55 @@ protocol browserDelegate: class{
     func removeGame(peerID: MCPeerID)
 }
 
+/**
+  Custom multipeer class that handles peer-to-peer advertising and browsing.
+ */
 class MultipeerSession: NSObject{
     private let maxPeers: Int = kMCSessionMaximumNumberOfPeers - 1
     static let serviceType = "ar-multi-swish"
-    
     private let peerID : MCPeerID!
-    var session: MCSession!
-    var advert: MCNearbyServiceAdvertiser!
-    var browser: MCNearbyServiceBrowser!
     
+    /// Currently active multipeer session.
+    var session: MCSession!
+    /// Current player's advertiser (used by hosts).
+    var advert: MCNearbyServiceAdvertiser!
+    /// Current player's browser (used by peers).
+    var browser: MCNearbyServiceBrowser!
+    /// A list of peers connected to this session.
+    var connectedPeers: [MCPeerID]
+    /// Function to handle some received data.
     var dataHandler: ((Data, MCPeerID) -> Void)?
+    /// Function to handle world map and create a hoop.
     var basketSyncHandler: ((ARWorldMap, MCPeerID) -> Void)?
     weak var delegate: browserDelegate?
     
+    /**
+      Initializes a multipeer connection with a browser (used for peers).
+    */
     init(selfPeerID: MCPeerID){
         self.connectedPeers = []
         self.peerID = selfPeerID
         super.init()
+        
         // creates a new session to run multiplayer on
         session = MCSession(peer: self.peerID)
         session.delegate = self
+        
+        // start browsing for peers who are hosting
         startBrowsing(peerID: self.peerID)
-        // TODO: Assign game's view conroller as browserview's delegate
-        //browserView.delegate = ViewController
     }
     
+    /**
+     Initializes a multipeer connection with a advertiser (used for hosts).
+     */
     init(hostPeerID: MCPeerID){
         self.connectedPeers = []
         self.peerID = hostPeerID
         super.init()
         session = MCSession(peer: self.peerID)
         session.delegate = self
+        
+        // start advertising to peers who want to join games
         startAdvertising(peerID: self.peerID)
     }
     
@@ -64,12 +81,13 @@ class MultipeerSession: NSObject{
         browser.startBrowsingForPeers()
     }
     
-    // returns list of all connected peers when called
-//    var connectedPeers: [MCPeerID]? {
-//        return session?.connectedPeers
-//    }
-    var connectedPeers: [MCPeerID]
-    
+    /**
+      Sends data to all peers in connectedPeers.
+     
+     - parameters:
+        - data: Data to send to all peers.
+        - completion: Function to call after successfully sending data to all peers. Can be nil.
+    */
     func sendToAllPeers(_ data: Data, completion: () -> Void){
         do{
             try session.send(data, toPeers: connectedPeers, with: .reliable)
@@ -99,6 +117,7 @@ extension MultipeerSession: MCSessionDelegate{
     // received Data object from a peer
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         do{
+            // If the data received was a world map, call the basketsynchandler to sync the maps and create a basket.
             if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
                 basketSyncHandler!(worldMap, peerID)
                 return
@@ -108,6 +127,7 @@ extension MultipeerSession: MCSessionDelegate{
         }
         
         do{
+            // If the data received was an MCPeerID, need to append it to the list of connected peers.
             if let peer = try NSKeyedUnarchiver.unarchivedObject(ofClass: MCPeerID.self, from: data) {
                 if(peer.displayName != Globals.instance.selfPeerID!.displayName){
                     self.connectedPeers.append(peer)
@@ -121,18 +141,17 @@ extension MultipeerSession: MCSessionDelegate{
         dataHandler?(data, peerID)
     }
     
-    // nearby peer opens bytestream connection to the local peer(user)
-    // stream = local endpoint for bytestream
+    // Nearby peer opens bytestream connection to the local peer(user).
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
         
     }
     
-    // local peer(user) began receiving resource from nearby peer
+    // Local peer(user) began receiving resource from nearby peer.
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
         
     }
     
-    // local peer(user) finished receiving resource from nearby peer
+    // Local peer(user) finished receiving resource from nearby peer.
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
         fatalError("This service does not send/receive resources.")
     }
@@ -140,9 +159,10 @@ extension MultipeerSession: MCSessionDelegate{
 }
 
 extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
-    // called when invitation to join session is received from peer
+    // Called when invitation to join session is received from peer.
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        // AUTOMATICALLY SETTING TO ACCEPT INVITE FOR NOW
+        
+        // Add the peer who asked to join the session to list of connected peers.
         connectedPeers.append(peerID)
         Globals.instance.scores[peerID] = 0
         invitationHandler(true, session)
@@ -150,20 +170,21 @@ extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
 }
 
 extension MultipeerSession: MCNearbyServiceBrowserDelegate{
-    // nearby peer was found
+    // Nearby peer was found.
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         let game = NetworkGame(host: peerID, session: session, locationId: 0)
+        
+        // Found a game host, append the game to the global list.
         Globals.instance.games.append(game)
         Globals.instance.scores[peerID] = 0
+        
+        // Call the delegate browser to modify the table.
         self.delegate?.gameBrowser(browser, session, sawGames: Globals.instance.games)
-        //invite the found peer to the session
-        //browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
         
     }
     
-    // nearby peer was lost
+    // Nearby peer was lost.
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        // TODO: make UI to display that user disconnected
         print("User \(peerID) disconnected.")
         self.delegate?.removeGame(peerID: peerID)
     }

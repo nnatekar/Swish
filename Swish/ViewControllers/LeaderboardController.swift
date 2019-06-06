@@ -3,7 +3,6 @@
 //  Swish
 //
 //  Created by Tran Nguyen on 5/14/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import UIKit
@@ -20,8 +19,6 @@ class LeaderboardController: UIViewController {
         leaderboardTable.dataSource = self
         sortedScores = Globals.instance.scores.sorted(by: {$0.value > $1.value}) // might want to do this when timer == 0
         leaderboardTable.reloadData()
-        
-        
     }
     
     @IBAction func onTouchNext(_ sender: Any) {
@@ -43,6 +40,7 @@ extension LeaderboardController: UITableViewDataSource{
         return Globals.instance.scores.count
     }
     
+    // update each cell in the table
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var count = 0
         

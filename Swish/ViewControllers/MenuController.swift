@@ -3,7 +3,6 @@
 //  Swish
 //
 //  Created by Jugal Jain on 2/27/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import Foundation
@@ -24,6 +23,7 @@ class MenuController : UIViewController {
     override func viewDidLoad() {
         initStyles()
 
+        // Create a cached username for player which can then be changed.
         let handle = Cache.shared.object(forKey: "handle")
         print(handle as? String ?? "NULL")
         Globals.instance.isMulti = false;
@@ -36,6 +36,7 @@ class MenuController : UIViewController {
         }
     }
     
+    // The play button was clicked.
     @IBAction func playClicked(_ sender: Any){
         self.welcomeStackView.isHidden = true
         self.gameTypeStackView.isHidden = false
@@ -44,6 +45,7 @@ class MenuController : UIViewController {
         swish.isHidden = true
     }
     
+    // The profile button was clicked.
     @IBAction func profileClicked(_ sender: Any) {
         self.welcomeStackView.isHidden = true
         self.nameStackView.isHidden = false
@@ -52,7 +54,7 @@ class MenuController : UIViewController {
         swish.isHidden = true
     }
     
-    
+    // User finished typing in their handle, store it in the cache.
     @IBAction func doneTyping(_ sender: UITextField) {
         if !handleField.text!.contains("ReadyPlayer") {
             Cache.shared.set(handleField.text, forKey: "handle")
@@ -60,6 +62,7 @@ class MenuController : UIViewController {
         sender.resignFirstResponder()
     }
     
+    // User pressed back after pressing play or profile.
     @IBAction func backButtonClicked(_ sender: Any) {
         if gameTypeStackView.isHidden == false {
             self.gameTypeStackView.isHidden = true
@@ -82,6 +85,7 @@ class MenuController : UIViewController {
         } // currently on name stack view, go back to welcome
     }
     
+    // User pressed multiplayer button.
     @IBAction func multiplayerClicked(_ sender: Any) {
         self.backButton.isHidden = false
         self.gameTypeStackView.isHidden = true
@@ -89,6 +93,7 @@ class MenuController : UIViewController {
         Globals.instance.isMulti = true
     }
     
+    // Change globals according to what segue is being taken.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "hostGame"){
             Globals.instance.isHosting = true
@@ -96,14 +101,13 @@ class MenuController : UIViewController {
         else if(segue.identifier == "joinGame"){
             Globals.instance.isHosting = false
         }
-        
         initStyles()
         
         let handle = Cache.shared.object(forKey: "handle")
         Globals.instance.selfPeerID = MCPeerID(displayName: handle as! String)
-        
     }
     
+    // Initialize all UI on this view.
     func initStyles(){
         gameTypeStackView.isHidden = true
         multiplayerStackView.isHidden = true

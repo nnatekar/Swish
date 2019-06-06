@@ -3,7 +3,6 @@
 //  Swish
 //
 //  Created by Jugal Jain on 2/27/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import Foundation
@@ -17,9 +16,7 @@ class OptionsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         gamesTableContainer.isHidden = Globals.instance.isHosting
-        GameStart.isHidden = (!Globals.instance.isHosting && Globals.instance.isMulti) // if
-        // multiplayer and player is joiner, hide start button
-        // temporary until we finish this view controller
+        GameStart.isHidden = (!Globals.instance.isHosting && Globals.instance.isMulti)
         gameRoomsLabel.isHidden = Globals.instance.isHosting
     }
     
@@ -29,6 +26,7 @@ class OptionsController: UIViewController {
             vc.multipeerSession = Globals.instance.session
         }
     }
+    
     @IBAction func backButtonClicked(_ sender: Any) {
         self.dismiss(animated: true){
             if(Globals.instance.isHosting){

@@ -3,7 +3,6 @@
 //  Swish
 //
 //  Created by Neil Natekar on 4/3/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import Foundation

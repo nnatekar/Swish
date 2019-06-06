@@ -3,7 +3,6 @@
 //  Hoops
 //
 //  Created by Cazamere Comrie on 1/13/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import UIKit
@@ -25,28 +24,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBOutlet weak var readyButton: UIButton!
     @IBOutlet weak var sendWorldMapButton: UIButton!
     
-
+    /// Multipeer session being run.
     var multipeerSession: MultipeerSession!
     var gameTime = Double()
     var gameTimeMin = Int()
     var gameTimeSec = Int()
+    /// Timer to get how long the game has been running.
     var gameTimer = Timer()
     
     var basketScene: SCNScene?
+    /// Reference to the basket node in the scene.
     var globalBasketNode: SCNNode?
+    /// Configuration of the AR World.
     let configuration = ARWorldTrackingConfiguration()
+    /// Check if the basked has been added.
     var basketAdded: Bool = false
     var score: Int = 0
+    /// Keeps track of the ARCamera's tracking state.
     var globalTrackingState: ARCamera.TrackingState?
-    var scorePeer: Int = 0
-    var hostPosition: CodablePosition?
-    var playerPosition: CodablePosition?
-    var cameraTrackingState: ARCamera.TrackingState?
+    /// Reference to the current player's ARCamera.
     var globalCamera: ARCamera?
+    /// Keeps track of where the player is in terms of setting up the game.
     var gameSetupState: gameInstructions!
     var positionAnchor: ARAnchor?
     var playerPositionAnchors: [String : ARAnchor] = [:]
     
+    /// Keep track of how many players are ready to play.
     var readyPlayers: Int = 0
 
     var hoopMove: Bool = false
@@ -57,13 +60,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // start view's AR session
+        // Start AR session
         sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showFeaturePoints]
         configuration.planeDetection = .horizontal
         sceneView.autoenablesDefaultLighting = true
         sceneView.session.run(configuration)
         
-        // set up multipeer session's data handlers
+        // Set up multipeer session's data handlers
         if(Globals.instance.isMulti){
             multipeerSession.dataHandler = dataHandler
             multipeerSession.basketSyncHandler = basketSyncHandler
@@ -73,7 +76,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.delegate = self
         sceneView.session.delegate = self
 
-        // taps will set basket
+        // Tapping on the yellow dots will set basket
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.cancelsTouchesInView = false
@@ -115,18 +118,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         Globals.instance.scores[Globals.instance.selfPeerID!] = 0
     }
     
+    // If segueing out of the game, disconnect from the multiplayer session.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "viewToLeaderboard"){
-            if(Globals.instance.isHosting){
-                multipeerSession.advert.stopAdvertisingPeer()
-            }
             multipeerSession.session.disconnect()
         }
     }
     
+    // When the user presses ready, start the game if singleplayer.
+    // If multiplayer, send an acknowledgement of ready status to all peers.
     @IBAction func onReadyClick(_ sender: Any) {
-        // create the timer for the game and for sending world maps
-       
         if Globals.instance.isMulti {
             // send true to all peers
             let codable = ArbitraryCodable(receivedData: "ready", score: self.score, isReady: true)
@@ -154,6 +155,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
        
     }
     
+    /**
+        Initialize all UI for the game.
+    */
     func initStyles(){
         instructions.numberOfLines = 0
         
@@ -172,6 +176,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         stopButton?.layer.cornerRadius = 2
     }
 
+    // Physics world handles collisions between basket's collision node and balls.
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue
             || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.detectionCategory.rawValue {
@@ -189,7 +194,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                     }
                 }
                 
-                
                 DispatchQueue.main.async {
                     self.scoreLabel.text = "\(self.score)"
                 }
@@ -201,6 +205,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
 
+    /**
+      Increments game timer to count down how much game time is left.
+    */
     @objc func incrementTimer(){
         if basketAdded == true {
             gameTime -= 1
@@ -224,43 +231,60 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.session.pause()
     }
 
+    /**
+      Shoot the ball. Called when swiping.
+     
+     - parameters:
+        - velocity: velocity of the user's swipe
+        - translation: translation of the user's swipe
+    */
     func shootBall(velocity: CGPoint, translation: CGPoint) {
+        // Get user's point of view in the scene.
         guard let pointOfView = self.sceneView.pointOfView else {return}
         
+        // Force the detection node to be exactly at it's presentation node's position.
         globalBasketNode!.childNodes[3].position = globalBasketNode!.childNodes[3].presentation.position
+        
+        // Get the position of the user.
         let transform = pointOfView.transform
         let location = SCNVector3(transform.m41, transform.m42, transform.m43)
         let orientation = SCNVector3(-transform.m31, -transform.m32, -transform.m33)
         let position = location + orientation
 
-        // add the ball
+        // Add the ball.
         let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
         ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
         ball.position = position
         
+        // Set the ball's physics properties.
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
         ball.physicsBody = body
         ball.name = Globals.instance.selfPeerID!.displayName
         body.restitution = 0.2
 
+        // Set the force at which the ball will shoot.
         let xForce = translation.x > 0 ? min(1.5, Float(translation.x)/100) : max(-1.5, Float(translation.x)/100)
         let yForce = min(10, Float(translation.y) / -300 * 8)
         let zForce = max(-3, Float(velocity.y) / 900)
         let force = SCNVector4(xForce, yForce, zForce,0.0)
         let rotatedForce = transform * force
         let vectorForce = SCNVector3(x:rotatedForce.x, y:rotatedForce.y, z:rotatedForce.z)
-        
         ball.physicsBody?.applyForce(vectorForce, asImpulse: true)
+        
+        // Set ball's collision properties
         ball.physicsBody?.categoryBitMask = CollisionCategory.ballCategory.rawValue
         ball.physicsBody?.collisionBitMask = CollisionCategory.detectionCategory.rawValue
 
         let positionTransform = pointOfView.simdTransform
         
+        // Add the ball to the scene and attach a timer to it.
         self.sceneView.scene.rootNode.addChildNode(ball) // create another ball after you shoot
         weak var ballObject = Ball(ballNode: ball)
         
+        // Make sure all multiplayer code is only run if the current player is in multiplayer.
         guard Globals.instance.isMulti else {return}
         
+        // Set up an anchor at the player's position. If one already exists, remove it.
         let anchorName = Globals.instance.selfPeerID!.displayName
         if(positionAnchor != nil){
             sceneView.session.remove(anchor: positionAnchor!)
@@ -275,6 +299,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let encodableTransform = CodableTransform(c1: codableCol1, c2: codableCol2, c3: codableCol3, c4: codableCol4, basketPos: basketPos, s: anchorName, fX: xForce, fY: yForce, fZ: zForce)
 
         do{
+            // Send the anchor to the other players so they can see your balls.
             let data : Data = try JSONEncoder().encode(encodableTransform)
             self.multipeerSession.sendToAllPeers(data){}
         }
@@ -283,7 +308,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     } // create and shoot ball
 
-    
+    /**
+      Called whenever the user holds their press.
+    */
     @objc func handlePress(sender: UILongPressGestureRecognizer){
         guard let recognizerView = sender.view as? ARSCNView else { return }
         let touch = sender.location(in: recognizerView)
@@ -291,9 +318,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let transform = pointOfView.transform
         hoopMove = true
         
+        // User just started pressing.
         if sender.state == .began {
             latestTranslatePos = touch
         }
+        
+        // User's press moved
         if sender.state == .changed {
             // make sure a node has been selected from .began
             guard let hitNode = self.globalBasketNode else { return }
@@ -301,7 +331,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             // perform a hitTest to obtain the plane
             let hitTestPlane = self.sceneView.hitTest(touch, types: .existingPlane)
             guard let hitPlane = hitTestPlane.first else { return }
-            
             
             let deltaX = Float(touch.x - latestTranslatePos!.x)/5000
             let deltaY = Float(touch.y - latestTranslatePos!.y)/5000
@@ -318,23 +347,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
     }
     
-    
+    /**
+      Called when user swipes.
+    */
     @objc func handlePan(sender: UIPanGestureRecognizer){
         guard let sceneView = sender.view as? ARSCNView else {return}
         
+        // Basket has been added and user just finished swiping
         if (basketAdded && sender.state == .ended && hoopMove == false){
+            // Get the velocity and translation and shoot the ball.
             let velocity = sender.velocity(in: sceneView)
             let translation = sender.translation(in: sceneView)
             shootBall(velocity: velocity, translation : translation)
         }
     }
 
+    /**
+      Called when user taps screen.
+    */
     @objc func handleTap(sender: UITapGestureRecognizer) {
         guard let sceneView = sender.view as? ARSCNView else {return}
         let touchLocation = sender.location(in: sceneView)
 
+        // Perform a hit test to get the location where the user tapped.
         let hitTestResult = sceneView.hitTest(touchLocation, types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
 
+        // If the hit test was successful, spawn a basket where the player tapped.
         if !hitTestResult.isEmpty {
             if(!basketAdded){
                 self.addBasket(hitTestResult: hitTestResult.first!)
@@ -344,24 +382,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
 
+    /**
+      Add a basket to the scene.
+     
+     - parameters:
+        - hitTestResult: results of the scenekit hit test
+    */
     func addBasket(hitTestResult: ARHitTestResult) {
+        // Make sure basket has not been added already
         if basketAdded == false {
 
-            // Set backboard texture
+            // Set basket textures
             basketScene?.rootNode.childNode(withName: "backboard", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "backboard.jpg")
-            
             basketScene?.rootNode.childNode(withName: "pole", recursively: true)?.geometry?.firstMaterial?.diffuse.contents = UIColor.gray
-            
             basketScene?.rootNode.childNode(withName: "detection", recursively: true)?.opacity = 0.0
 
-            let basketNode = basketScene?.rootNode.childNode(withName: "ball", recursively: false)
-            let positionOfPlane = hitTestResult.worldTransform.columns.3
-            let xPosition = positionOfPlane.x
-            let yPosition = positionOfPlane.y
-            let zPosition = positionOfPlane.z
-            basketNode?.position = SCNVector3(xPosition,yPosition,zPosition)
-
-            basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
+            // Create and add an AR Anchor to the scene, which will then render to create the basket.
             let anchor = ARAnchor(name: "basketAnchor", transform: hitTestResult.worldTransform)
             sceneView.session.add(anchor: anchor)
             
@@ -370,34 +406,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
             
         }
-    } // adds backboard and hoop to the scene view
+    }
     
+    /**
+      Render the basket after an anchor has been added to the session.
+    */
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        // Basket has not been added yet and we just added a basket anchor.
         if(anchor.name == "basketAnchor" && !basketAdded){
+            // Create a basket. It will be at the position of the anchor.
             let basketNode = basketScene!.rootNode.childNode(withName: "ball", recursively: false)
             basketNode?.childNodes[3].physicsBody?.centerOfMassOffset = SCNVector3(0,0,0)
-            let positionOfPlane = anchor.transform.columns.3
-            basketNode!.position = SCNVector3(positionOfPlane.x, positionOfPlane.y, positionOfPlane.z)
             basketNode?.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: basketNode!, options: [SCNPhysicsShape.Option.keepAsCompound: true, SCNPhysicsShape.Option.type: SCNPhysicsShape.ShapeType.concavePolyhedron]))
             basketAdded = true
             
             return basketNode
         }
-        
-//        // check if anchor is one of the player anchors
-//        for (key, value) in playerPositionAnchors{
-//            if(anchor.name == key){ // we added an anchor in the scene that matches a player's name
-//                // need to add a node to show us where the anchor is
-//                let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
-//                ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
-//                print(ball.position)
-//                let body = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: ball))
-//                ball.physicsBody = body
-//                ball.name = key
-//                body.restitution = 0.2
-//                return ball
-//            }
-//        }
         
         return nil
     }
@@ -406,20 +430,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    /**
+     Share the AR World Map.
+    */
     @IBAction func shareSession(_ button: UIButton) {
+        // Check if the user is hosting.
         guard Globals.instance.isHosting else{ return }
+        
+        // Make sure the AR world has been mapped completely before sending world map.
         if(mapAvailable){
             sceneView.session.getCurrentWorldMap { worldMap, error in
                 guard let map = worldMap
                     else { print("Error: \(error!.localizedDescription)"); return }
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                     else { fatalError("can't encode map") }
+                
+                // Send the world map to all players, and then hide the sendworldmap button.
                 self.multipeerSession.sendToAllPeers(data){
                     self.sendWorldMapButton.isHidden = true
                 }
+                
+                // Stop advertising; nobody else should join a session after world has been sent.
                 self.multipeerSession.advert.stopAdvertisingPeer()
                 
+                // Send each peer the list of all peers.
                 for peer in self.multipeerSession.connectedPeers{
                     guard let peerData = try? NSKeyedArchiver.archivedData(withRootObject: peer, requiringSecureCoding: true)
                         else { fatalError("can't encode peer list") }
@@ -429,6 +464,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
     
+    /**
+      Handles world map syncing between players and the host.
+     
+     - parameters:
+        - worldMap: the world map sent by the host
+        - peerID: the peer ID of the host
+    */
     func basketSyncHandler(worldMap: ARWorldMap, peerID: MCPeerID){
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
@@ -439,9 +481,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         updateMultiPlayerStatus()
     }
 
+    /**
+      Handles data sent by a peer.
+     - parameters:
+        - data: data sent by peer
+        - peer: peer ID of the peer who sent data
+    */
     func dataHandler(_ data: Data, from peer: MCPeerID) {
         do{
-            // if the data is a position, we need to sync our game world's position with that position
+            // If the data is a transform, we need to add an anchor at the transform and create a ball there
             let decodedData = try JSONDecoder().decode(CodableTransform.self, from: data)
             
             let col0 = simd_float4(decodedData.col1.dim1, decodedData.col1.dim2, decodedData.col1.dim3, decodedData.col1.dim4)
@@ -452,11 +500,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let tform = simd_float4x4(col0, col1, col2, col3)
             let anchor = ARAnchor(name: decodedData.playerID, transform: tform)
             let anchorPos = SCNVector3(anchor.transform.columns.3.x, anchor.transform.columns.3.y, anchor.transform.columns.3.z)
-//            let ourBasketPos = globalBasketNode!.position
-//            let diffX = ourBasketPos.x - decodedData.basketPos.dim1
-//            let diffY = ourBasketPos.y - decodedData.basketPos.dim2
-//            let diffZ = ourBasketPos.z - decodedData.basketPos.dim3
             
+            // If there's already an anchor for that player, delete it first.
             if(!playerPositionAnchors.isEmpty){
                 if(playerPositionAnchors[decodedData.playerID] != nil){
                     sceneView.session.remove(anchor: playerPositionAnchors[decodedData.playerID]!)  // remove existing anchor from sceneview
@@ -466,7 +511,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             playerPositionAnchors[decodedData.playerID] = anchor
             sceneView.session.add(anchor: anchor)
             
-//            let position = SCNVector3(anchorPos.x - diffX, anchorPos.y - diffY, anchorPos.z - diffZ)
             let position = anchorPos
             let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
@@ -489,6 +533,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
         
         do{
+            // If the data was an arbitrary codable, check what type of data was sent by checking
+            // received data string.
             let decodedData = try JSONDecoder().decode(ArbitraryCodable.self, from: data)
             
             if decodedData.receivedData == "score" {
@@ -531,10 +577,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
     
+    // Whenever the camera frame updates, check the world mapping status
     func session(_ session: ARSession, didUpdate frame: ARFrame){
         let position = frame.camera.transform.columns.3
-        //print("PlayerPosition: \(position)")
-        playerPosition = CodablePosition(dim1: position.x, dim2: position.y, dim3: position.z, dim4: position.w)
         
         switch frame.worldMappingStatus {
             case .notAvailable:
@@ -552,6 +597,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         }
     }
 
+    /**
+      Change the message in the middle of the game screen based on how far along the game
+      setup the player is.
+    */
     private func updateMultiPlayerStatus() {
         // Update the UI to provide feedback on the state of the AR experience.
         let message: String

@@ -3,11 +3,13 @@
 //  Swish
 //
 //  Created by Neil Natekar on 5/26/19.
-//  Copyright © 2019 Cazamere Comrie. All rights reserved.
 //
 
 import SceneKit
 
+/*
+    The Ball class is used to attach a timer to each ball so it gets destroyed after a few seconds.
+ */
 class Ball{
     var ballNode = SCNNode()
     private var gameTimer = Timer()
@@ -22,6 +24,9 @@ class Ball{
     deinit{
     }
     
+    /**
+     Destroy the ball after a few seconds.
+    */
     @objc func ballDestroy(){
         lifeTime += 1
         

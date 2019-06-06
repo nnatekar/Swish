@@ -122,7 +122,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             if(Globals.instance.isHosting){
                 multipeerSession.advert.stopAdvertisingPeer()
             }
-            multipeerSession.session.disconnect()
         }
     }
     
@@ -215,7 +214,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
             if(gameTime <= 0){
                 gameTimer.invalidate()
-                multipeerSession.session.disconnect()
                 self.performSegue(withIdentifier: "viewToLeaderboard", sender: self)
 
             }

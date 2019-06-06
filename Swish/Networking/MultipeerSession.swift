@@ -95,13 +95,16 @@ extension MultipeerSession: MCSessionDelegate{
     // MCSessionState.notConnected = user declined invite/connection failed/disconnected
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         // someone disconnected, remove them from the list
+        /*
         if(state == .notConnected && connectedPeers.count > 0){
             for i in 0...connectedPeers.count{
+
                 if connectedPeers[i] == peerID{
                     connectedPeers.remove(at: i)
                 }
             }
         } // big problem
+         */
     }
     
     // received Data object from a peer

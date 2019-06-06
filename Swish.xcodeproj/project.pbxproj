@@ -19,6 +19,7 @@
 		7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C522272C0E00042F32 /* OptionsController.swift */; };
 		7C37A3C8222734CC00042F32 /* MultipeerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37A3C7222734CC00042F32 /* MultipeerSession.swift */; };
 		7C93D43A225486E9006F60B8 /* NetworkGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C93D439225486E9006F60B8 /* NetworkGame.swift */; };
+		7CD0D91A22A927BF00084CE5 /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD0D91922A927BF00084CE5 /* UIImage+Gif.swift */; };
 		CA273BAD21EC598B005BDE24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAC21EC598B005BDE24 /* AppDelegate.swift */; };
 		CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA273BAE21EC598B005BDE24 /* ViewController.swift */; };
 		CA273BB221EC598B005BDE24 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA273BB021EC598B005BDE24 /* Main.storyboard */; };
@@ -59,6 +60,7 @@
 		7C37A3C522272C0E00042F32 /* OptionsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsController.swift; sourceTree = "<group>"; };
 		7C37A3C7222734CC00042F32 /* MultipeerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSession.swift; sourceTree = "<group>"; };
 		7C93D439225486E9006F60B8 /* NetworkGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkGame.swift; sourceTree = "<group>"; };
+		7CD0D91922A927BF00084CE5 /* UIImage+Gif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
 		8306D5EA21388E31D6428686 /* Pods-Swish.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.debug.xcconfig"; sourceTree = "<group>"; };
 		A7CE148EB475BDDB44407694 /* Pods-Swish.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swish.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swish/Pods-Swish.release.xcconfig"; sourceTree = "<group>"; };
 		CA273BA921EC598B005BDE24 /* Swish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swish.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,6 +190,7 @@
 				5205609E22557A9B00D4E233 /* Globals.swift */,
 				0BFCBA3A2277F19A00B1980A /* UI.swift */,
 				0BFCBA3C22795C8A00B1980A /* Cache.swift */,
+				7CD0D91922A927BF00084CE5 /* UIImage+Gif.swift */,
 			);
 			path = Swish;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 			files = (
 				52AA7C41229B38C400F36670 /* Ball.swift in Sources */,
 				52873B91227102AA00A8DE9D /* MenuController.swift in Sources */,
+				7CD0D91A22A927BF00084CE5 /* UIImage+Gif.swift in Sources */,
 				7C93D43A225486E9006F60B8 /* NetworkGame.swift in Sources */,
 				CA273BAF21EC598B005BDE24 /* ViewController.swift in Sources */,
 				7C37A3C622272C0E00042F32 /* OptionsController.swift in Sources */,
@@ -581,7 +585,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BD8J83556U;
+				DEVELOPMENT_TEAM = 29U8JP42S5;
 				INFOPLIST_FILE = Swish/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -602,7 +606,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = BD8J83556U;
+				DEVELOPMENT_TEAM = 29U8JP42S5;
 				INFOPLIST_FILE = Swish/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -10,12 +10,21 @@ import Foundation
 import ARKit
 
 class ArbitraryCodable: Codable {
-    var receivedData: String // "score"
+    var receivedData: String // "score", "color"
     var score: Int
+    var color: Int
     var isReady: Bool
     
-    init(receivedData: String, score: Int, isReady: Bool){
-        self.score = score
+    init(receivedData: String, num: Int, isReady: Bool){
+        self.score = 0
+        self.color = 0
+        
+        if receivedData == "score" {
+            self.score = num
+        } else if receivedData == "color" {
+            self.color = num
+        }
+        
         self.receivedData = receivedData
         self.isReady = isReady
     }
@@ -30,7 +39,7 @@ class CodableBall: Codable{
 
     
     // only working with 3d space
-    init(forceX: Float, forceY: Float, forceZ: Float, playerPosition: CodablePosition, basketPosition: CodablePosition ){
+    init(colorNum: Int, forceX: Float, forceY: Float, forceZ: Float, playerPosition: CodablePosition, basketPosition: CodablePosition ){
         self.forceX = forceX
         self.forceY = forceY
         self.forceZ = forceZ
@@ -64,8 +73,9 @@ class CodableTransform: Codable{
     var forceY: Float
     var forceZ: Float
     var playerID : String
+    var colorNum: Int
     
-    init(c1 : CodablePosition, c2 : CodablePosition, c3 : CodablePosition, c4 : CodablePosition, basketPos: CodablePosition, s : String, fX : Float, fY: Float, fZ : Float){
+    init(c1 : CodablePosition, c2 : CodablePosition, c3 : CodablePosition, c4 : CodablePosition, basketPos: CodablePosition, s : String, fX : Float, fY: Float, fZ : Float, colorNum: Int){
         self.col1 = c1
         self.col2 = c2
         self.col3 = c3
@@ -75,5 +85,6 @@ class CodableTransform: Codable{
         self.forceX = fX
         self.forceY = fY
         self.forceZ = fZ
+        self.colorNum = colorNum
     }
 }

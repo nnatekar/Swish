@@ -158,6 +158,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             }
         } else {
             DispatchQueue.main.async {
+                self.readyButton.isHidden = true
                 self.worldStatus.isHidden = true
                 self.countdownLabel.isHidden = false
                 self.countdownToGame()

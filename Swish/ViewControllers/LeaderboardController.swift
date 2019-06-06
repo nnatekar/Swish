@@ -17,7 +17,7 @@ class LeaderboardController: UIViewController {
     override func viewDidLoad() {
         leaderboardTable.delegate = self
         leaderboardTable.dataSource = self
-        sortedScores = Globals.instance.scores.sorted(by: {$0.value > $1.value}) // might want to do this when timer == 0
+        sortedScores = Globals.instance.scores.sorted(by: {$0.value > $1.value})
         leaderboardTable.reloadData()
     }
     

@@ -177,13 +177,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swish" translatesAutoresizingMaskIntoConstraints="NO" id="XmC-xl-rl0">
-                                <rect key="frame" x="70.5" y="370" width="273" height="47"/>
+                                <rect key="frame" x="70.5" y="365" width="273" height="47"/>
                             </imageView>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="3zS-sQ-KrZ">
-                                <rect key="frame" x="0.0" y="384.5" width="414" height="150"/>
+                                <rect key="frame" x="0.0" y="379" width="414" height="148"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdL-ou-bKM">
-                                        <rect key="frame" x="83" y="0.0" width="248" height="60"/>
+                                        <rect key="frame" x="83" y="0.0" width="248" height="59"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="HOST">
@@ -194,7 +194,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tcg-Xn-Oh3">
-                                        <rect key="frame" x="83" y="90" width="248" height="60"/>
+                                        <rect key="frame" x="83" y="89" width="248" height="59"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="JOIN">
@@ -213,10 +213,10 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="cEk-cb-Flw">
-                                <rect key="frame" x="0.0" y="384.5" width="414" height="150"/>
+                                <rect key="frame" x="0.0" y="379" width="414" height="148"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mH4-Nx-hKM">
-                                        <rect key="frame" x="83" y="0.0" width="248" height="60"/>
+                                        <rect key="frame" x="83" y="0.0" width="248" height="59"/>
                                         <color key="backgroundColor" red="0.88328748941421509" green="0.43119519948959351" blue="0.21949660778045654" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="SINGLE PLAYER">
@@ -227,7 +227,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c0A-jR-fga">
-                                        <rect key="frame" x="83" y="90" width="248" height="60"/>
+                                        <rect key="frame" x="83" y="89" width="248" height="59"/>
                                         <color key="backgroundColor" red="0.88328748941421509" green="0.43119519948959351" blue="0.21949660778045654" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="MULTIPLAYER">
@@ -246,10 +246,10 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="ri1-kU-Bw1" userLabel="Welcome Stack View">
-                                <rect key="frame" x="0.0" y="476.5" width="414" height="150"/>
+                                <rect key="frame" x="0.0" y="469.5" width="414" height="148"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FjY-Iw-HNV" userLabel="PLAY">
-                                        <rect key="frame" x="83" y="0.0" width="248" height="60"/>
+                                        <rect key="frame" x="83" y="0.0" width="248" height="59"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="27"/>
                                         <state key="normal" title="PLAY">
@@ -260,7 +260,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5p-IU-OCJ" userLabel="PROFILE">
-                                        <rect key="frame" x="83" y="90" width="248" height="60"/>
+                                        <rect key="frame" x="83" y="89" width="248" height="59"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="PROFILE">
@@ -279,7 +279,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bGx-eX-Sxv" userLabel="Handle View">
-                                <rect key="frame" x="70.5" y="398" width="273" height="30"/>
+                                <rect key="frame" x="70.5" y="391.5" width="273" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koG-xk-lgX">
                                         <rect key="frame" x="0.0" y="0.0" width="43" height="30"/>
@@ -302,7 +302,7 @@
                                 </subviews>
                             </stackView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="4Mh-ff-pgK">
-                                <rect key="frame" x="114" y="106" width="186" height="227"/>
+                                <rect key="frame" x="114" y="104.5" width="186" height="224"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r2w-ai-BkD">
                                 <rect key="frame" x="20" y="58" width="88" height="48"/>
@@ -312,7 +312,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IYh-Tv-Ipg" userLabel="TUTORIAL">
-                                <rect key="frame" x="83" y="657.5" width="248" height="60"/>
+                                <rect key="frame" x="83" y="648.5" width="248" height="59"/>
                                 <color key="backgroundColor" red="0.95056253670000002" green="0.3944979012" blue="0.13661351799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                 <state key="normal" title="HOW TO PLAY">
@@ -323,7 +323,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lLo-Zi-mfW" userLabel="TutorialView">
-                                <rect key="frame" x="20" y="44" width="374" height="831"/>
+                                <rect key="frame" x="20" y="44" width="374" height="818"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5LC-w1-CAq">
                                         <rect key="frame" x="0.0" y="195" width="374" height="128"/>
@@ -338,7 +338,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Did-6n-3a4" userLabel="BackButton">
-                                        <rect key="frame" x="344" y="804" width="30" height="27"/>
+                                        <rect key="frame" x="344" y="791" width="30" height="27"/>
                                         <color key="backgroundColor" red="0.95056253670000002" green="0.3944979012" blue="0.13661351799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="15"/>
                                         <state key="normal" title="BACK">
@@ -582,7 +582,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7ce-FG-t2y">
-                                                    <rect key="frame" x="3" y="0.0" width="371" height="40"/>
+                                                    <rect key="frame" x="0.0" y="2" width="374" height="40"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KBz-vw-GiR" userLabel="Number">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="40"/>
@@ -596,7 +596,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OD7-aS-RcY" userLabel="Name">
-                                                            <rect key="frame" x="70.5" y="0.0" width="230" height="40"/>
+                                                            <rect key="frame" x="72" y="0.0" width="230" height="40"/>
                                                             <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="OQr-ky-vUZ"/>
@@ -607,7 +607,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9S-tZ-EVi" userLabel="Score">
-                                                            <rect key="frame" x="311" y="0.0" width="60" height="40"/>
+                                                            <rect key="frame" x="314" y="0.0" width="60" height="40"/>
                                                             <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="60" id="wh3-SM-ThR"/>
@@ -620,9 +620,10 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="7ce-FG-t2y" secondAttribute="trailing" id="Voc-MI-YwS"/>
-                                                <constraint firstItem="7ce-FG-t2y" firstAttribute="top" secondItem="I1t-0A-oxM" secondAttribute="top" id="tCS-Pn-HWF"/>
-                                                <constraint firstItem="7ce-FG-t2y" firstAttribute="leading" secondItem="I1t-0A-oxM" secondAttribute="leadingMargin" constant="-17" id="v8O-9w-RVd"/>
+                                                <constraint firstItem="7ce-FG-t2y" firstAttribute="height" secondItem="I1t-0A-oxM" secondAttribute="height" multiplier="40/43.5" id="EV9-f9-3jk"/>
+                                                <constraint firstItem="7ce-FG-t2y" firstAttribute="centerY" secondItem="I1t-0A-oxM" secondAttribute="centerY" id="bUl-Tw-XyU"/>
+                                                <constraint firstItem="7ce-FG-t2y" firstAttribute="width" secondItem="I1t-0A-oxM" secondAttribute="width" id="cIe-62-0li"/>
+                                                <constraint firstItem="7ce-FG-t2y" firstAttribute="centerX" secondItem="I1t-0A-oxM" secondAttribute="centerX" id="yuJ-bf-uZx"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

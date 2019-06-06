@@ -13,17 +13,32 @@ import MultipeerConnectivity
 class OptionsController: UIViewController {    
     @IBOutlet weak var GameStart: UIButton!
     @IBOutlet weak var gamesTableContainer: UIView!
+    @IBOutlet weak var gameRoomsLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        gamesTableContainer.isHidden = (!(Globals.instance.isMulti) || (Globals.instance.isHosting))
-        GameStart.isHidden = (!Globals.instance.isHosting && Globals.instance.isMulti) // if multiplayer and player is joiner, hide start button
+        gamesTableContainer.isHidden = Globals.instance.isHosting
+        GameStart.isHidden = (!Globals.instance.isHosting && Globals.instance.isMulti) // if
+        // multiplayer and player is joiner, hide start button
         // temporary until we finish this view controller
+        gameRoomsLabel.isHidden = Globals.instance.isHosting
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toGame"{
             let vc = segue.destination as! ViewController
             vc.multipeerSession = Globals.instance.session
+        }
+    }
+    @IBAction func backButtonClicked(_ sender: Any) {
+        self.dismiss(animated: true){
+            if(Globals.instance.isHosting){
+                Globals.instance.session?.advert.stopAdvertisingPeer()
+            }
+            else{
+                Globals.instance.session?.browser.stopBrowsingForPeers()
+                Globals.instance.games = []
+
+            }
         }
     }
     

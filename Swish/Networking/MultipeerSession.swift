@@ -10,6 +10,8 @@ import MultipeerConnectivity
 
 protocol browserDelegate: class{
     func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame])
+    
+    func removeGame(peerID: MCPeerID)
 }
 
 class MultipeerSession: NSObject{
@@ -116,16 +118,6 @@ extension MultipeerSession: MCSessionDelegate{
         catch{
         }
         
-        do{
-            if let peer = try NSKeyedUnarchiver.unarchivedObject(ofClass: MCPeerID.self, from: data) {
-                if(peer.displayName != Globals.instance.selfPeerID!.displayName){
-                    self.connectedPeers.append(peer)
-                }
-            }
-        }
-        catch{
-        }
-        
         dataHandler?(data, peerID)
     }
     
@@ -171,8 +163,8 @@ extension MultipeerSession: MCNearbyServiceBrowserDelegate{
     
     // nearby peer was lost
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
-        
         // TODO: make UI to display that user disconnected
         print("User \(peerID) disconnected.")
+        self.delegate?.removeGame(peerID: peerID)
     }
 }

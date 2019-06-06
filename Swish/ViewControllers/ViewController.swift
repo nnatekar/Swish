@@ -115,6 +115,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         Globals.instance.scores[Globals.instance.selfPeerID!] = 0
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "viewToLeaderboard"){
+            if(Globals.instance.isHosting){
+                multipeerSession.advert.stopAdvertisingPeer()
+            }
+            multipeerSession.session.disconnect()
+        }
+    }
     
     @IBAction func onReadyClick(_ sender: Any) {
         // create the timer for the game and for sending world maps

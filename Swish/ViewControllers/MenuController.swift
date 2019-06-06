@@ -26,6 +26,7 @@ class MenuController : UIViewController {
 
         let handle = Cache.shared.object(forKey: "handle")
         print(handle as? String ?? "NULL")
+        Globals.instance.isMulti = false;
         if handle != nil {
             handleField.text = handle as? String
         } else {
@@ -91,6 +92,9 @@ class MenuController : UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "hostGame"){
             Globals.instance.isHosting = true
+        }
+        else if(segue.identifier == "joinGame"){
+            Globals.instance.isHosting = false
         }
         
         initStyles()

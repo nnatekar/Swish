@@ -64,6 +64,19 @@ extension GamesTableController: UITableViewDataSource{
 }
 
 extension GamesTableController: browserDelegate{
+    func removeGame(peerID: MCPeerID) {
+        var index = -1
+        var i = 0
+        for g in Globals.instance.games{
+            if(peerID == g.host){
+                index = i
+            }
+            i += 1
+        }
+        Globals.instance.games.remove(at: index)
+        tableView.reloadData()
+    }
+    
     func gameBrowser(_ browser: MCNearbyServiceBrowser, _ session: MCSession, sawGames: [NetworkGame]) {
         self.browser = browser
         Globals.instance.games = sawGames

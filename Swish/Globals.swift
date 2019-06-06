@@ -17,4 +17,5 @@ class Globals{
     var isHosting: Bool = false
     var isMulti: Bool = false
     var session: MultipeerSession?
+    var connectionSuccessful: Bool = false
 }

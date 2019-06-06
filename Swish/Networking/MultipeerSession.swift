@@ -111,18 +111,11 @@ extension MultipeerSession: MCSessionDelegate{
     // state of a nearby peer changed; 2 states:
     // MCSessionState.connected = user accepted invite and is connected to session
     // MCSessionState.notConnected = user declined invite/connection failed/disconnected
-    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
-        // someone disconnected, remove them from the list
-        /*
-        if(state == .notConnected && connectedPeers.count > 0){
-            for i in 0...connectedPeers.count{
 
-                if connectedPeers[i] == peerID{
-                    connectedPeers.remove(at: i)
-                }
-            }
-        } // big problem
-         */
+    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState){
+        if state == .notConnected{
+            Globals.instance.connectionSuccessful = false
+        }
     }
     
     // received Data object from a peer
@@ -173,10 +166,18 @@ extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
     // Called when invitation to join session is received from peer.
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         
-        // Add the peer who asked to join the session to list of connected peers.
-        connectedPeers.append(peerID)
-        Globals.instance.scores[peerID] = 0
-        invitationHandler(true, session)
+        // AUTOMATICALLY SETTING TO ACCEPT INVITE FOR NOW
+        if(connectedPeers.count < maxPeers){
+            connectedPeers.append(peerID)
+            Globals.instance.scores[peerID] = 0
+            invitationHandler(true, session)
+            Globals.instance.connectionSuccessful = true
+        }
+        else{
+            advert.stopAdvertisingPeer()
+            invitationHandler(false, session)
+            Globals.instance.connectionSuccessful = false
+        }
     }
 }
 

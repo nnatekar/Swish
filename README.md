@@ -25,6 +25,7 @@ Once the repo has been successfully cloned, open the 'Swish.xcodeproj' file in X
 Neil Natekar,
  Cazamere Comrie,
  Jugal Jain,
+ Serena Tieu (UI Designer), 
  Tran Nguyen.
 
 ## License

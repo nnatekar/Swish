@@ -290,7 +290,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         // Force the detection node to be exactly at it's presentation node's position.
         globalBasketNode!.childNodes[3].position = globalBasketNode!.childNodes[3].presentation.position
+        globalBasketNode!.childNodes[4].position = globalBasketNode!.childNodes[4].presentation.position
         
+        let detectionPosition = globalBasketNode!.childNodes[3].position
         // Get the position of the user.
         let transform = pointOfView.transform
         let location = SCNVector3(transform.m41, transform.m42, transform.m43)
@@ -306,6 +308,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: string)
         }
         ball.position = position
+        
         
         // Set the ball's physics properties.
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))

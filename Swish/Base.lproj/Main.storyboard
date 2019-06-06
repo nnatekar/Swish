@@ -371,7 +371,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAMEROOMS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Xc-GP-0s0">
-                                <rect key="frame" x="117" y="44" width="180" height="68.5"/>
+                                <rect key="frame" x="117" y="53" width="180" height="59.5"/>
                                 <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="45"/>
                                 <color key="textColor" red="0.94258779290000005" green="0.52639160389999995" blue="0.16765785950000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
@@ -398,7 +398,7 @@
                             <constraint firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="Yyk-yy-5Ft"/>
                             <constraint firstItem="pSM-lz-3N1" firstAttribute="top" secondItem="NKJ-cs-EFF" secondAttribute="top" constant="14" id="a9d-6i-Hxc"/>
                             <constraint firstItem="aaF-t7-sKH" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="kmh-79-Lbo"/>
-                            <constraint firstItem="1Xc-GP-0s0" firstAttribute="top" secondItem="NKJ-cs-EFF" secondAttribute="top" id="mZD-fC-V7J"/>
+                            <constraint firstItem="1Xc-GP-0s0" firstAttribute="top" secondItem="NKJ-cs-EFF" secondAttribute="top" multiplier="1.2" id="mZD-fC-V7J"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NKJ-cs-EFF"/>
                     </view>
@@ -466,13 +466,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEADERBOARD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9VW-2M-JSd">
-                                <rect key="frame" x="100" y="53" width="214.5" height="48"/>
+                                <rect key="frame" x="100" y="53" width="214.5" height="61"/>
                                 <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="48"/>
                                 <color key="textColor" red="0.94258779290000005" green="0.52639160389999995" blue="0.16765785950000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l3S-WK-P81">
-                                <rect key="frame" x="191" y="804" width="32" height="30"/>
+                                <rect key="frame" x="190" y="801" width="34" height="36"/>
+                                <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="17"/>
                                 <state key="normal" title="Next">
                                     <color key="titleColor" red="0.88328748940000001" green="0.28674073979999998" blue="0.2145204936" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
@@ -481,7 +482,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QCA-ct-uqz">
-                                <rect key="frame" x="20" y="44" width="374" height="130"/>
+                                <rect key="frame" x="20" y="114" width="374" height="130"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="130" id="ddU-ap-fxE"/>
@@ -551,11 +552,11 @@
                             <constraint firstItem="9VW-2M-JSd" firstAttribute="centerX" secondItem="C57-pZ-MEm" secondAttribute="centerX" id="DMP-iY-gVO"/>
                             <constraint firstItem="l3S-WK-P81" firstAttribute="centerX" secondItem="C57-pZ-MEm" secondAttribute="centerX" id="DqJ-8G-KVY"/>
                             <constraint firstItem="QCA-ct-uqz" firstAttribute="leading" secondItem="rEo-JC-3i1" secondAttribute="leadingMargin" id="LBq-sZ-VpA"/>
-                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="9VW-2M-JSd" secondAttribute="bottom" multiplier="1.2" id="MnK-L7-z3B"/>
+                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="9VW-2M-JSd" secondAttribute="bottom" id="MnK-L7-z3B"/>
                             <constraint firstItem="9VW-2M-JSd" firstAttribute="top" secondItem="C57-pZ-MEm" secondAttribute="top" multiplier="1.2" id="XIy-uk-6D3"/>
                             <constraint firstItem="l3S-WK-P81" firstAttribute="centerY" secondItem="C57-pZ-MEm" secondAttribute="bottom" multiplier="0.95" id="cAW-Ln-pPD"/>
                             <constraint firstItem="QCA-ct-uqz" firstAttribute="centerX" secondItem="C57-pZ-MEm" secondAttribute="centerX" id="fTb-jf-lJp"/>
-                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="C57-pZ-MEm" secondAttribute="top" id="w2g-c5-zbc"/>
+                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="C57-pZ-MEm" secondAttribute="top" constant="70" id="w2g-c5-zbc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="C57-pZ-MEm"/>
                     </view>

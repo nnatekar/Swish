@@ -177,13 +177,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swish" translatesAutoresizingMaskIntoConstraints="NO" id="XmC-xl-rl0">
-                                <rect key="frame" x="70.5" y="365" width="273" height="47"/>
+                                <rect key="frame" x="70.5" y="370" width="273" height="47"/>
                             </imageView>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="3zS-sQ-KrZ">
-                                <rect key="frame" x="0.0" y="379" width="414" height="148"/>
+                                <rect key="frame" x="0.0" y="384.5" width="414" height="150"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdL-ou-bKM">
-                                        <rect key="frame" x="83" y="0.0" width="248" height="59"/>
+                                        <rect key="frame" x="83" y="0.0" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="HOST">
@@ -194,7 +194,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tcg-Xn-Oh3">
-                                        <rect key="frame" x="83" y="89" width="248" height="59"/>
+                                        <rect key="frame" x="83" y="90" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="JOIN">
@@ -213,10 +213,10 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="cEk-cb-Flw">
-                                <rect key="frame" x="0.0" y="379" width="414" height="148"/>
+                                <rect key="frame" x="0.0" y="384.5" width="414" height="150"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mH4-Nx-hKM">
-                                        <rect key="frame" x="83" y="0.0" width="248" height="59"/>
+                                        <rect key="frame" x="83" y="0.0" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748941421509" green="0.43119519948959351" blue="0.21949660778045654" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="SINGLE PLAYER">
@@ -227,7 +227,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c0A-jR-fga">
-                                        <rect key="frame" x="83" y="89" width="248" height="59"/>
+                                        <rect key="frame" x="83" y="90" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748941421509" green="0.43119519948959351" blue="0.21949660778045654" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="MULTIPLAYER">
@@ -246,10 +246,10 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="ri1-kU-Bw1" userLabel="Welcome Stack View">
-                                <rect key="frame" x="0.0" y="469.5" width="414" height="148"/>
+                                <rect key="frame" x="0.0" y="476.5" width="414" height="150"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FjY-Iw-HNV" userLabel="PLAY">
-                                        <rect key="frame" x="83" y="0.0" width="248" height="59"/>
+                                        <rect key="frame" x="83" y="0.0" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="27"/>
                                         <state key="normal" title="PLAY">
@@ -260,7 +260,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5p-IU-OCJ" userLabel="PROFILE">
-                                        <rect key="frame" x="83" y="89" width="248" height="59"/>
+                                        <rect key="frame" x="83" y="90" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="PROFILE">
@@ -279,7 +279,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bGx-eX-Sxv" userLabel="Handle View">
-                                <rect key="frame" x="70.5" y="391.5" width="273" height="30"/>
+                                <rect key="frame" x="70.5" y="398" width="273" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koG-xk-lgX">
                                         <rect key="frame" x="0.0" y="0.0" width="43" height="30"/>
@@ -301,6 +301,9 @@
                                     </textField>
                                 </subviews>
                             </stackView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="4Mh-ff-pgK">
+                                <rect key="frame" x="114" y="106" width="186" height="227"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r2w-ai-BkD">
                                 <rect key="frame" x="20" y="58" width="88" height="48"/>
                                 <state key="normal" title="Back" image="back"/>
@@ -308,9 +311,66 @@
                                     <action selector="backButtonClicked:" destination="RyS-Hz-JQJ" eventType="touchUpInside" id="Gcf-6L-Reh"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="4Mh-ff-pgK">
-                                <rect key="frame" x="114" y="104.5" width="186" height="224"/>
-                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IYh-Tv-Ipg" userLabel="TUTORIAL">
+                                <rect key="frame" x="83" y="657.5" width="248" height="60"/>
+                                <color key="backgroundColor" red="0.95056253670000002" green="0.3944979012" blue="0.13661351799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
+                                <state key="normal" title="HOW TO PLAY">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="onTutorialClick:" destination="RyS-Hz-JQJ" eventType="touchDown" id="riy-KH-qpS"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lLo-Zi-mfW" userLabel="TutorialView">
+                                <rect key="frame" x="20" y="44" width="374" height="831"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5LC-w1-CAq">
+                                        <rect key="frame" x="0.0" y="195" width="374" height="128"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="128" id="EmV-NA-mdG"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Placeholder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZI-yJ-s29" userLabel="Instructions">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="187"/>
+                                        <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="10"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Did-6n-3a4" userLabel="BackButton">
+                                        <rect key="frame" x="344" y="804" width="30" height="27"/>
+                                        <color key="backgroundColor" red="0.95056253670000002" green="0.3944979012" blue="0.13661351799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="15"/>
+                                        <state key="normal" title="BACK">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="backInstructionClicked:" destination="RyS-Hz-JQJ" eventType="touchDown" id="EJf-rM-P2y"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JdB-wr-xMk" userLabel="Instructions2">
+                                        <rect key="frame" x="0.0" y="331" width="374" height="14"/>
+                                        <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="10"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="LZI-yJ-s29" firstAttribute="top" secondItem="lLo-Zi-mfW" secondAttribute="top" id="7dc-n4-adR"/>
+                                    <constraint firstItem="5LC-w1-CAq" firstAttribute="width" secondItem="lLo-Zi-mfW" secondAttribute="width" id="Anf-yg-Y15"/>
+                                    <constraint firstItem="LZI-yJ-s29" firstAttribute="leading" secondItem="5LC-w1-CAq" secondAttribute="leading" id="Cbr-Dd-4nn"/>
+                                    <constraint firstItem="LZI-yJ-s29" firstAttribute="bottom" secondItem="5LC-w1-CAq" secondAttribute="top" id="HtL-ry-vam"/>
+                                    <constraint firstItem="5LC-w1-CAq" firstAttribute="centerY" secondItem="lLo-Zi-mfW" secondAttribute="centerY" multiplier="0.75" id="MMk-gj-aAl"/>
+                                    <constraint firstAttribute="trailing" secondItem="Did-6n-3a4" secondAttribute="trailing" id="TVY-33-7NI"/>
+                                    <constraint firstItem="JdB-wr-xMk" firstAttribute="top" secondItem="5LC-w1-CAq" secondAttribute="bottom" constant="20" id="aqj-Hq-fEZ"/>
+                                    <constraint firstItem="5LC-w1-CAq" firstAttribute="centerX" secondItem="lLo-Zi-mfW" secondAttribute="centerX" id="cGQ-T2-apn"/>
+                                    <constraint firstAttribute="bottom" secondItem="Did-6n-3a4" secondAttribute="bottom" id="dfs-cd-6tm"/>
+                                    <constraint firstItem="LZI-yJ-s29" firstAttribute="trailing" secondItem="5LC-w1-CAq" secondAttribute="trailing" id="nWf-V2-nrM"/>
+                                    <constraint firstItem="JdB-wr-xMk" firstAttribute="trailing" secondItem="5LC-w1-CAq" secondAttribute="trailing" id="zSB-q7-Puq"/>
+                                    <constraint firstItem="JdB-wr-xMk" firstAttribute="leading" secondItem="5LC-w1-CAq" secondAttribute="leading" id="zt2-7B-N39"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -319,20 +379,27 @@
                             <constraint firstItem="ElQ-Im-ycT" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="r2w-ai-BkD" secondAttribute="trailing" symbolic="YES" id="4nn-o7-db8"/>
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="89w-br-2gy"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="centerY" secondItem="ElQ-Im-ycT" secondAttribute="centerY" id="Cr8-DP-Ez4"/>
+                            <constraint firstItem="IYh-Tv-Ipg" firstAttribute="width" secondItem="z5p-IU-OCJ" secondAttribute="width" id="EIJ-hP-JDW"/>
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="height" secondItem="3zS-sQ-KrZ" secondAttribute="height" id="HW5-ls-tdU"/>
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="KFf-LO-Rh9"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="Kz3-bd-2Am"/>
                             <constraint firstItem="4Mh-ff-pgK" firstAttribute="bottom" secondItem="XmC-xl-rl0" secondAttribute="top" multiplier="0.9" id="M7p-sI-k2t"/>
-                            <constraint firstItem="cEk-cb-Flw" firstAttribute="height" secondItem="ri1-kU-Bw1" secondAttribute="height" id="R0z-XR-JEe"/>
+                            <constraint firstItem="lLo-Zi-mfW" firstAttribute="top" secondItem="ElQ-Im-ycT" secondAttribute="top" id="SXz-d5-hgm"/>
+                            <constraint firstItem="IYh-Tv-Ipg" firstAttribute="height" secondItem="z5p-IU-OCJ" secondAttribute="height" id="SaR-Nu-d8L"/>
                             <constraint firstItem="4Mh-ff-pgK" firstAttribute="width" secondItem="5WI-AK-LyB" secondAttribute="width" multiplier="0.45" id="TRy-KS-doc"/>
+                            <constraint firstItem="lLo-Zi-mfW" firstAttribute="leading" secondItem="r2w-ai-BkD" secondAttribute="leading" id="UlB-PD-wUq"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="width" secondItem="cEk-cb-Flw" secondAttribute="width" id="WXl-Go-8vS"/>
                             <constraint firstItem="4Mh-ff-pgK" firstAttribute="height" secondItem="5WI-AK-LyB" secondAttribute="height" multiplier="0.25" id="Wuu-bv-vgB"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="width" secondItem="bGx-eX-Sxv" secondAttribute="width" id="YFn-Se-qHb"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="centerX" secondItem="5WI-AK-LyB" secondAttribute="centerX" id="aWP-P3-aho"/>
+                            <constraint firstItem="lLo-Zi-mfW" firstAttribute="centerX" secondItem="cEk-cb-Flw" secondAttribute="centerX" id="fMA-yM-G0T"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="centerY" secondItem="5WI-AK-LyB" secondAttribute="centerY" multiplier="0.8" constant="30" id="ggV-XN-QTV"/>
                             <constraint firstItem="r2w-ai-BkD" firstAttribute="top" secondItem="ElQ-Im-ycT" secondAttribute="top" constant="14" id="hQe-xX-Xol"/>
                             <constraint firstItem="r2w-ai-BkD" firstAttribute="leading" secondItem="ElQ-Im-ycT" secondAttribute="leading" constant="20" id="jCT-XO-x4w"/>
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerY" secondItem="3zS-sQ-KrZ" secondAttribute="centerY" constant="-46.5" id="mTj-Mt-Jkf"/>
+                            <constraint firstItem="lLo-Zi-mfW" firstAttribute="height" secondItem="ElQ-Im-ycT" secondAttribute="height" id="nNb-2z-K2S"/>
+                            <constraint firstItem="IYh-Tv-Ipg" firstAttribute="top" secondItem="ri1-kU-Bw1" secondAttribute="bottom" multiplier="1.05" id="nVr-cT-xkr"/>
+                            <constraint firstItem="IYh-Tv-Ipg" firstAttribute="centerX" secondItem="ElQ-Im-ycT" secondAttribute="centerX" id="pwa-Xu-C00"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="height" secondItem="5WI-AK-LyB" secondAttribute="height" multiplier="0.165" id="re6-Vr-aXo"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="height" secondItem="ri1-kU-Bw1" secondAttribute="height" id="tXv-9P-KAH"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="centerY" secondItem="ElQ-Im-ycT" secondAttribute="centerY" multiplier="1.2" id="txE-9H-EOA"/>
@@ -346,11 +413,16 @@
                     <connections>
                         <outlet property="backButton" destination="r2w-ai-BkD" id="y6f-6z-mud"/>
                         <outlet property="gameTypeStackView" destination="cEk-cb-Flw" id="9Fb-NZ-OSQ"/>
+                        <outlet property="gifView" destination="5LC-w1-CAq" id="4sF-d0-G0f"/>
                         <outlet property="handleField" destination="TZs-lZ-mo5" id="Dze-io-IUh"/>
+                        <outlet property="instructionsLabel" destination="LZI-yJ-s29" id="6nC-1O-gPZ"/>
+                        <outlet property="instructionsLabel2" destination="JdB-wr-xMk" id="TtT-2I-KB6"/>
                         <outlet property="logo" destination="4Mh-ff-pgK" id="hze-4R-wtJ"/>
                         <outlet property="multiplayerStackView" destination="3zS-sQ-KrZ" id="pjd-mD-Kr3"/>
                         <outlet property="nameStackView" destination="bGx-eX-Sxv" id="21Q-T2-VYE"/>
                         <outlet property="swish" destination="XmC-xl-rl0" id="Hcr-CU-T90"/>
+                        <outlet property="tutButton" destination="IYh-Tv-Ipg" id="bJw-9r-qdF"/>
+                        <outlet property="tutorialView" destination="lLo-Zi-mfW" id="LbJ-lA-Ahk"/>
                         <outlet property="welcomeStackView" destination="ri1-kU-Bw1" id="yB5-y8-tuc"/>
                         <segue destination="6vp-N7-mdh" kind="showDetail" identifier="toOptions" id="8ow-iM-r3f"/>
                     </connections>

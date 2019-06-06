@@ -17,12 +17,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBOutlet weak var scoreLabel: PaddingLabel!
     @IBOutlet weak var timerLabel: PaddingLabel!
     @IBOutlet weak var multiPlayerStatus: UILabel!
-    @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var instructions: UILabel!
     @IBOutlet weak var worldStatus: UILabel!
     @IBOutlet weak var readyButton: UIButton!
     @IBOutlet weak var sendWorldMapButton: UIButton!
+    @IBOutlet weak var countdownLabel: UILabel!
     
     /// Multipeer session being run.
     var multipeerSession: MultipeerSession!
@@ -142,21 +142,64 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 readyPlayers += 1
                 if self.multipeerSession.connectedPeers.count == 0 {
                     DispatchQueue.main.async {
-                        self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                        self.countdownLabel.isHidden = false
+                        self.countdownToGame()
                     }
                 }
                 if(self.multipeerSession.connectedPeers.count + 1 == readyPlayers){
                     DispatchQueue.main.async {
-                        self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                        self.countdownLabel.isHidden = false
+                        self.countdownToGame()
                     }
                 }
             }
         } else {
             DispatchQueue.main.async {
-                self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                self.countdownLabel.isHidden = false
+                self.countdownToGame()
             }
         }
        
+    }
+    
+    /**
+      Animates the game start countdown.
+    */
+    func countdownToGame(){
+        // first fade out
+        UIView.animate(withDuration: 1, animations: {
+            self.countdownLabel.alpha = 0.0
+        }, completion: { (success) in
+            if(success){
+                // then change text, fade out again
+                self.countdownLabel.text = "2..."
+                self.countdownLabel.alpha = 1.0
+                UIView.animate(withDuration: 1, animations: {
+                    self.countdownLabel.alpha = 0.0
+                }, completion: { (success) in
+                    if(success){
+                        self.countdownLabel.text = "1..."
+                        self.countdownLabel.alpha = 1.0
+                    }
+                    UIView.animate(withDuration: 1, animations: {
+                        self.countdownLabel.alpha = 0.0
+                    }, completion: { (success) in
+                        if(success){
+                            self.countdownLabel.text = "GO!"
+                            self.countdownLabel.alpha = 1.0
+                            UIView.animate(withDuration: 1, animations: {
+                                self.countdownLabel.alpha = 0.0
+                            }, completion: { (success) in
+                                if(success){
+                                    self.countdownLabel.isHidden = true
+                                    self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                                }
+                            })
+                        }
+                    })
+                })
+            }
+        })
     }
     
     /**
@@ -177,7 +220,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         scoreLabel?.layer.cornerRadius = 2
         scoreLabel.textAlignment = .center
         
-        stopButton?.layer.cornerRadius = 2
+        countdownLabel.isHidden = true
     }
 
     // Physics world handles collisions between basket's collision node and balls.
@@ -563,7 +606,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 readyPlayers += 1
                 if readyPlayers == self.multipeerSession.connectedPeers.count + 1{
                     DispatchQueue.main.async{
-                        self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
+                        self.countdownLabel.isHidden = false
+                        self.countdownToGame()
                     }
                 }
             } else if decodedData.receivedData == "color" {

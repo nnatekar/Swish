@@ -225,7 +225,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
         ball.physicsBody = body
         ball.name = Globals.instance.selfPeerID!.displayName
-        body.restitution = 0.2
+        body.restitution = 1.1
 
         let xForce = translation.x > 0 ? min(1.5, Float(translation.x)/100) : max(-1.5, Float(translation.x)/100)
         let yForce = min(10, Float(translation.y) / -300 * 8)
@@ -458,7 +458,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
             ball.physicsBody = body
             ball.name = peer.displayName
-            body.restitution = 0.2
+            body.restitution = 1.1
             
             let xForce = decodedData.forceX
             let yForce = decodedData.forceY

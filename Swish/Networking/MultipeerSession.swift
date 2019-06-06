@@ -61,7 +61,6 @@ class MultipeerSession: NSObject{
         browser.delegate = self
         browser.startBrowsingForPeers()
     }
-    
     // returns list of all connected peers when called
 //    var connectedPeers: [MCPeerID]? {
 //        return session?.connectedPeers
@@ -82,7 +81,10 @@ extension MultipeerSession: MCSessionDelegate{
     // state of a nearby peer changed; 2 states:
     // MCSessionState.connected = user accepted invite and is connected to session
     // MCSessionState.notConnected = user declined invite/connection failed/disconnected
-    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+    func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState){
+        if state == .notConnected{
+            Globals.instance.connectionSuccessful = false
+        }
     }
     
     // received Data object from a peer
@@ -142,9 +144,17 @@ extension MultipeerSession: MCNearbyServiceAdvertiserDelegate{
     // called when invitation to join session is received from peer
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         // AUTOMATICALLY SETTING TO ACCEPT INVITE FOR NOW
-        connectedPeers.append(peerID)
-        Globals.instance.scores[peerID] = 0
-        invitationHandler(true, session)
+        if(connectedPeers.count < maxPeers){
+            connectedPeers.append(peerID)
+            Globals.instance.scores[peerID] = 0
+            invitationHandler(true, session)
+            Globals.instance.connectionSuccessful = true
+        }
+        else{
+            advert.stopAdvertisingPeer()
+            invitationHandler(false, session)
+            Globals.instance.connectionSuccessful = false
+        }
     }
 }
 

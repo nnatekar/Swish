@@ -45,14 +45,11 @@ extension GamesTableController: UITableViewDelegate{
         browser?.stopBrowsingForPeers()
         self.browser!.invitePeer(game.host, to: game.session, withContext: nil, timeout: 10)
         
-<<<<<<< HEAD
         self.parent!.performSegue(withIdentifier: "toGame", sender: Any?.self)
-=======
         if(!Globals.instance.connectionSuccessful){
             Globals.instance.games.remove(at: indexPath.row)
             tableView.reloadData()
         }
->>>>>>> origin/multiplayer2
         // TODO: segue to viewcontroller, set the game session
     }
 }

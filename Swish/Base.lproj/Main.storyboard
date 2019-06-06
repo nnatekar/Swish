@@ -300,7 +300,7 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="4Mh-ff-pgK">
-                                <rect key="frame" x="93" y="106" width="228" height="227"/>
+                                <rect key="frame" x="114" y="106" width="186" height="227"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -315,7 +315,7 @@
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="Kz3-bd-2Am"/>
                             <constraint firstItem="4Mh-ff-pgK" firstAttribute="bottom" secondItem="XmC-xl-rl0" secondAttribute="top" multiplier="0.9" id="M7p-sI-k2t"/>
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="height" secondItem="FjY-Iw-HNV" secondAttribute="height" id="TKf-fh-jZi"/>
-                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="width" secondItem="5WI-AK-LyB" secondAttribute="width" multiplier="0.55" id="TRy-KS-doc"/>
+                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="width" secondItem="5WI-AK-LyB" secondAttribute="width" multiplier="0.45" id="TRy-KS-doc"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="width" secondItem="cEk-cb-Flw" secondAttribute="width" id="WXl-Go-8vS"/>
                             <constraint firstItem="4Mh-ff-pgK" firstAttribute="height" secondItem="5WI-AK-LyB" secondAttribute="height" multiplier="0.25" id="Wuu-bv-vgB"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="width" secondItem="bGx-eX-Sxv" secondAttribute="width" id="YFn-Se-qHb"/>

@@ -67,9 +67,10 @@ class MultipeerSession: NSObject{
 //    }
     var connectedPeers: [MCPeerID]
     
-    func sendToAllPeers(_ data: Data){
+    func sendToAllPeers(_ data: Data, completion: () -> Void){
         do{
             try session.send(data, toPeers: connectedPeers, with: .reliable)
+            completion()
         } catch{
             print("Error: Could not send data to peers: \(error.localizedDescription)")
         }

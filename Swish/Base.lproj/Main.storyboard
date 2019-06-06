@@ -26,7 +26,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="2Yb-hv-CTP" secondAttribute="height" multiplier="308:139" id="xzh-Sa-Bct"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,7 +40,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Zoy-8h-SDy" secondAttribute="height" multiplier="30:17" id="fu1-b6-LFZ"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="25"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -51,6 +51,7 @@
                                             <constraint firstAttribute="width" constant="47" id="Neu-8w-VOx"/>
                                             <constraint firstAttribute="width" secondItem="trd-Qp-ZEY" secondAttribute="height" multiplier="47:51" id="WCQ-jl-FLD"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="20"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="1" maxY="0.0"/>
                                         <state key="normal" title="EXIT">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -65,7 +66,7 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="PSf-78-3bA" secondAttribute="height" multiplier="16:17" id="uT5-W9-DLy"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="25"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -86,7 +87,8 @@
                                     <constraint firstAttribute="height" constant="39" id="0CY-f1-kpb"/>
                                     <constraint firstAttribute="width" constant="125" id="YYz-co-r1N"/>
                                 </constraints>
-                                <state key="normal" title="Send World Map">
+                                <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="15"/>
+                                <state key="normal" title="SEND WORLD MAP">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -94,8 +96,8 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not Available" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uhj-3X-KKs">
-                                <rect key="frame" x="157.5" y="443" width="99.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="159" y="441.5" width="96.5" height="23.5"/>
+                                <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -106,8 +108,9 @@
                                     <constraint firstAttribute="width" constant="125" id="N1I-Sc-PZL"/>
                                     <constraint firstAttribute="height" constant="39" id="nqe-UD-bH9"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="15"/>
                                 <color key="tintColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
-                                <state key="normal" title="Ready">
+                                <state key="normal" title="READY">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
@@ -164,11 +167,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="4Mh-ff-pgK">
-                                <rect key="frame" x="117" y="139.5" width="180" height="180"/>
-                            </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="swish" translatesAutoresizingMaskIntoConstraints="NO" id="XmC-xl-rl0">
-                                <rect key="frame" x="69.5" y="370" width="275" height="47"/>
+                                <rect key="frame" x="70.5" y="370" width="273" height="47"/>
                             </imageView>
                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="3zS-sQ-KrZ">
                                 <rect key="frame" x="0.0" y="384.5" width="414" height="150"/>
@@ -176,7 +176,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdL-ou-bKM">
                                         <rect key="frame" x="83" y="0.0" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="HOST">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -187,7 +187,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tcg-Xn-Oh3">
                                         <rect key="frame" x="83" y="90" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="JOIN">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -209,7 +209,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mH4-Nx-hKM">
                                         <rect key="frame" x="83" y="0.0" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748941421509" green="0.43119519948959351" blue="0.21949660778045654" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="SINGLE PLAYER">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -220,7 +220,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c0A-jR-fga">
                                         <rect key="frame" x="83" y="90" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748941421509" green="0.43119519948959351" blue="0.21949660778045654" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="MULTIPLAYER">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -242,6 +242,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FjY-Iw-HNV" userLabel="PLAY">
                                         <rect key="frame" x="83" y="0.0" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="27"/>
                                         <state key="normal" title="PLAY">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -252,6 +253,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5p-IU-OCJ" userLabel="PROFILE">
                                         <rect key="frame" x="83" y="90" width="248" height="60"/>
                                         <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="28"/>
                                         <state key="normal" title="PROFILE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -268,16 +270,16 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bGx-eX-Sxv" userLabel="Handle View">
-                                <rect key="frame" x="69.5" y="383" width="275" height="60"/>
+                                <rect key="frame" x="70.5" y="383" width="273" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koG-xk-lgX">
-                                        <rect key="frame" x="0.0" y="0.0" width="45" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="43" height="60"/>
+                                        <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
                                         <color key="textColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TZs-lZ-mo5" userLabel="Handle Text Field">
-                                        <rect key="frame" x="45" y="0.0" width="230" height="60"/>
+                                        <rect key="frame" x="43" y="0.0" width="230" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="230" id="WoL-lS-sPI"/>
                                         </constraints>
@@ -290,27 +292,32 @@
                                     </textField>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r2w-ai-BkD">
-                                <rect key="frame" x="20" y="58" width="48" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r2w-ai-BkD">
+                                <rect key="frame" x="20" y="58" width="88" height="48"/>
                                 <state key="normal" title="Back" image="back"/>
                                 <connections>
                                     <action selector="backButtonClicked:" destination="RyS-Hz-JQJ" eventType="touchUpInside" id="Gcf-6L-Reh"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="4Mh-ff-pgK">
+                                <rect key="frame" x="93" y="106" width="228" height="227"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="centerY" secondItem="3zS-sQ-KrZ" secondAttribute="centerY" id="1BG-7y-PyL"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="centerX" secondItem="ElQ-Im-ycT" secondAttribute="centerX" id="38k-1W-vzD"/>
+                            <constraint firstItem="ElQ-Im-ycT" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="r2w-ai-BkD" secondAttribute="trailing" symbolic="YES" id="4nn-o7-db8"/>
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="89w-br-2gy"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="centerY" secondItem="ElQ-Im-ycT" secondAttribute="centerY" id="Cr8-DP-Ez4"/>
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="height" secondItem="3zS-sQ-KrZ" secondAttribute="height" id="HW5-ls-tdU"/>
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="KFf-LO-Rh9"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="centerX" secondItem="3zS-sQ-KrZ" secondAttribute="centerX" id="Kz3-bd-2Am"/>
-                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="centerY" secondItem="ElQ-Im-ycT" secondAttribute="centerY" multiplier="0.5" id="M7p-sI-k2t"/>
+                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="bottom" secondItem="XmC-xl-rl0" secondAttribute="top" multiplier="0.9" id="M7p-sI-k2t"/>
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="height" secondItem="FjY-Iw-HNV" secondAttribute="height" id="TKf-fh-jZi"/>
-                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="centerX" secondItem="5WI-AK-LyB" secondAttribute="centerX" id="VBB-8N-Zw8"/>
+                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="width" secondItem="5WI-AK-LyB" secondAttribute="width" multiplier="0.55" id="TRy-KS-doc"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="width" secondItem="cEk-cb-Flw" secondAttribute="width" id="WXl-Go-8vS"/>
+                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="height" secondItem="5WI-AK-LyB" secondAttribute="height" multiplier="0.25" id="Wuu-bv-vgB"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="width" secondItem="bGx-eX-Sxv" secondAttribute="width" id="YFn-Se-qHb"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="centerX" secondItem="5WI-AK-LyB" secondAttribute="centerX" id="aWP-P3-aho"/>
                             <constraint firstItem="XmC-xl-rl0" firstAttribute="centerY" secondItem="5WI-AK-LyB" secondAttribute="centerY" multiplier="0.8" constant="30" id="ggV-XN-QTV"/>
@@ -319,6 +326,7 @@
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerY" secondItem="3zS-sQ-KrZ" secondAttribute="centerY" constant="-46.5" id="mTj-Mt-Jkf"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="height" secondItem="5WI-AK-LyB" secondAttribute="height" multiplier="0.165" id="re6-Vr-aXo"/>
                             <constraint firstItem="ri1-kU-Bw1" firstAttribute="centerY" secondItem="ElQ-Im-ycT" secondAttribute="centerY" multiplier="1.2" id="txE-9H-EOA"/>
+                            <constraint firstItem="4Mh-ff-pgK" firstAttribute="centerX" secondItem="ElQ-Im-ycT" secondAttribute="centerX" id="vQD-QU-HdI"/>
                             <constraint firstItem="bGx-eX-Sxv" firstAttribute="centerX" secondItem="5WI-AK-LyB" secondAttribute="centerX" id="w8h-GG-gM3"/>
                             <constraint firstItem="cEk-cb-Flw" firstAttribute="width" secondItem="3zS-sQ-KrZ" secondAttribute="width" id="wtb-r2-kYI"/>
                             <constraint firstItem="3zS-sQ-KrZ" firstAttribute="width" secondItem="5WI-AK-LyB" secondAttribute="width" id="yDy-hv-hDz"/>
@@ -356,7 +364,8 @@
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aaF-t7-sKH">
-                                <rect key="frame" x="128" y="438" width="158" height="30"/>
+                                <rect key="frame" x="124.5" y="435" width="165" height="36"/>
+                                <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="17"/>
                                 <state key="normal" title="Press To Start Hosting!">
                                     <color key="titleColor" red="0.88328748940000001" green="0.28674073979999998" blue="0.2145204936" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
@@ -365,9 +374,9 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GAMEROOMS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Xc-GP-0s0">
-                                <rect key="frame" x="115.5" y="44" width="183.5" height="68.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="29"/>
-                                <color key="textColor" red="0.88328748940000001" green="0.28674073979999998" blue="0.2145204936" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
+                                <rect key="frame" x="117" y="58" width="180" height="54.5"/>
+                                <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="45"/>
+                                <color key="textColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pSM-lz-3N1">
@@ -385,14 +394,15 @@
                             <constraint firstItem="pSM-lz-3N1" firstAttribute="leading" secondItem="NKJ-cs-EFF" secondAttribute="leading" constant="14" id="9hF-hb-JuE"/>
                             <constraint firstItem="RFm-Jh-2sp" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="AbM-9w-q7w"/>
                             <constraint firstItem="RFm-Jh-2sp" firstAttribute="centerY" secondItem="NKJ-cs-EFF" secondAttribute="centerY" id="Arp-EQ-0dl"/>
+                            <constraint firstItem="1Xc-GP-0s0" firstAttribute="leading" secondItem="pSM-lz-3N1" secondAttribute="trailing" constant="15" id="Cva-2P-Qjb"/>
                             <constraint firstItem="NKJ-cs-EFF" firstAttribute="bottom" secondItem="RFm-Jh-2sp" secondAttribute="bottom" constant="88" id="K0T-Vw-wl3"/>
+                            <constraint firstItem="1Xc-GP-0s0" firstAttribute="top" secondItem="pSM-lz-3N1" secondAttribute="top" id="OVE-5F-QO3"/>
                             <constraint firstItem="aaF-t7-sKH" firstAttribute="centerY" secondItem="NKJ-cs-EFF" secondAttribute="centerY" id="QCB-wK-E3V"/>
                             <constraint firstItem="RFm-Jh-2sp" firstAttribute="top" secondItem="1Xc-GP-0s0" secondAttribute="bottom" multiplier="1.1" constant="8" symbolic="YES" id="RPo-YL-voZ"/>
                             <constraint firstItem="RFm-Jh-2sp" firstAttribute="leading" secondItem="NKJ-cs-EFF" secondAttribute="leading" constant="87" id="TuF-K5-aH2"/>
                             <constraint firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="Yyk-yy-5Ft"/>
                             <constraint firstItem="pSM-lz-3N1" firstAttribute="top" secondItem="NKJ-cs-EFF" secondAttribute="top" constant="14" id="a9d-6i-Hxc"/>
                             <constraint firstItem="aaF-t7-sKH" firstAttribute="centerX" secondItem="NKJ-cs-EFF" secondAttribute="centerX" id="kmh-79-Lbo"/>
-                            <constraint firstItem="1Xc-GP-0s0" firstAttribute="top" secondItem="NKJ-cs-EFF" secondAttribute="top" id="mZD-fC-V7J"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NKJ-cs-EFF"/>
                     </view>
@@ -460,13 +470,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEADERBOARD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9VW-2M-JSd">
-                                <rect key="frame" x="106.5" y="53" width="201" height="19.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="29"/>
-                                <color key="textColor" red="0.88328748940000001" green="0.28674073979999998" blue="0.2145204936" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
+                                <rect key="frame" x="100" y="53" width="214.5" height="61"/>
+                                <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="48"/>
+                                <color key="textColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l3S-WK-P81">
-                                <rect key="frame" x="191" y="804" width="32" height="30"/>
+                                <rect key="frame" x="190" y="801" width="34" height="36"/>
+                                <fontDescription key="fontDescription" name="DevanagariSangamMN" family="Devanagari Sangam MN" pointSize="17"/>
                                 <state key="normal" title="Next">
                                     <color key="titleColor" red="0.88328748940000001" green="0.28674073979999998" blue="0.2145204936" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
@@ -475,7 +486,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QCA-ct-uqz">
-                                <rect key="frame" x="20" y="87" width="374" height="130"/>
+                                <rect key="frame" x="20" y="114" width="374" height="130"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="130" id="ddU-ap-fxE"/>
@@ -498,20 +509,18 @@
                                                                 <constraint firstAttribute="height" constant="40" id="Jbu-7f-eEa"/>
                                                                 <constraint firstAttribute="width" constant="60" id="PbZ-76-yVl"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="opc-0G-USD" userLabel="Profile picture">
-                                                            <rect key="frame" x="68" y="0.0" width="67" height="40"/>
-                                                        </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OD7-aS-RcY" userLabel="Name">
-                                                            <rect key="frame" x="143" y="0.0" width="160" height="40"/>
+                                                            <rect key="frame" x="70.5" y="0.0" width="230" height="40"/>
                                                             <color key="backgroundColor" red="0.88328748940000001" green="0.43119519950000001" blue="0.21949660779999999" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="160" id="vG5-gT-DC9"/>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="OQr-ky-vUZ"/>
+                                                                <constraint firstAttribute="width" constant="230" id="vG5-gT-DC9"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -521,14 +530,11 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="60" id="wh3-SM-ThR"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="opc-0G-USD" firstAttribute="leading" secondItem="KBz-vw-GiR" secondAttribute="trailing" constant="8" symbolic="YES" id="mJP-eh-jfR"/>
-                                                    </constraints>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
@@ -539,7 +545,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="name" destination="OD7-aS-RcY" id="UD8-lc-b3D"/>
-                                            <outlet property="profilePic" destination="opc-0G-USD" id="e67-jO-mvb"/>
                                             <outlet property="rank" destination="KBz-vw-GiR" id="plG-GB-3dU"/>
                                             <outlet property="score" destination="w9S-tZ-EVi" id="Z46-sj-MVh"/>
                                         </connections>
@@ -552,11 +557,11 @@
                             <constraint firstItem="9VW-2M-JSd" firstAttribute="centerX" secondItem="C57-pZ-MEm" secondAttribute="centerX" id="DMP-iY-gVO"/>
                             <constraint firstItem="l3S-WK-P81" firstAttribute="centerX" secondItem="C57-pZ-MEm" secondAttribute="centerX" id="DqJ-8G-KVY"/>
                             <constraint firstItem="QCA-ct-uqz" firstAttribute="leading" secondItem="rEo-JC-3i1" secondAttribute="leadingMargin" id="LBq-sZ-VpA"/>
-                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="9VW-2M-JSd" secondAttribute="bottom" multiplier="1.2" id="MnK-L7-z3B"/>
+                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="9VW-2M-JSd" secondAttribute="bottom" id="MnK-L7-z3B"/>
                             <constraint firstItem="9VW-2M-JSd" firstAttribute="top" secondItem="C57-pZ-MEm" secondAttribute="top" multiplier="1.2" id="XIy-uk-6D3"/>
                             <constraint firstItem="l3S-WK-P81" firstAttribute="centerY" secondItem="C57-pZ-MEm" secondAttribute="bottom" multiplier="0.95" id="cAW-Ln-pPD"/>
                             <constraint firstItem="QCA-ct-uqz" firstAttribute="centerX" secondItem="C57-pZ-MEm" secondAttribute="centerX" id="fTb-jf-lJp"/>
-                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="C57-pZ-MEm" secondAttribute="top" constant="43" id="w2g-c5-zbc"/>
+                            <constraint firstItem="QCA-ct-uqz" firstAttribute="top" secondItem="C57-pZ-MEm" secondAttribute="top" constant="70" id="w2g-c5-zbc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="C57-pZ-MEm"/>
                     </view>
@@ -571,11 +576,11 @@
     </scenes>
     <resources>
         <image name="back" width="48" height="48"/>
-        <image name="logo" width="180" height="180"/>
+        <image name="logo" width="420" height="420"/>
         <image name="swish" width="273" height="47"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="XiT-1E-XtU"/>
-        <segue reference="yfg-Sg-069"/>
+        <segue reference="nNO-Re-9fg"/>
     </inferredMetricsTieBreakers>
 </document>

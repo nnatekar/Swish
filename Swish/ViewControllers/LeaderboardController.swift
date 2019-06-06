@@ -23,6 +23,7 @@ class LeaderboardController: UIViewController {
     
     @IBAction func onTouchNext(_ sender: Any) {
         if Globals.instance.isMulti{ self.presentingViewController!.presentingViewController!.presentingViewController!.dismiss(animated: true, completion:nil)
+            Globals.instance.session!.session.disconnect()
         } else{
             self.presentingViewController!.presentingViewController!.dismiss(animated: true, completion:nil)
         }

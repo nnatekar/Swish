@@ -51,7 +51,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     /// Keep track of how many players are ready to play.
     var readyPlayers: Int = 0
-
+    var colorNum: Int = 0
+    
     var hoopMove: Bool = false
     var mapAvailable: Bool = false
     
@@ -116,12 +117,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         Globals.instance.scores.removeAll()
         Globals.instance.scores[Globals.instance.selfPeerID!] = 0
+        colorNum = 0
     }
     
     // If segueing out of the game, disconnect from the multiplayer session.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier == "viewToLeaderboard"){
-            multipeerSession.session.disconnect()
+            if(Globals.instance.isHosting){
+                multipeerSession.advert.stopAdvertisingPeer()
+            }
         }
     }
     
@@ -130,7 +134,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBAction func onReadyClick(_ sender: Any) {
         if Globals.instance.isMulti {
             // send true to all peers
-            let codable = ArbitraryCodable(receivedData: "ready", score: self.score, isReady: true)
+            let codable = ArbitraryCodable(receivedData: "ready", num: self.score, isReady: true)
             guard let data = try? JSONEncoder().encode(codable)
                 else {fatalError("can't encode ready")}
             self.multipeerSession.sendToAllPeers(data){
@@ -187,7 +191,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                     contact.nodeB.physicsBody?.collisionBitMask = CollisionCategory.ballCategory.rawValue
                     contact.nodeB.physicsBody?.categoryBitMask = CollisionCategory.detectionCategory.rawValue
                     if Globals.instance.isMulti {
-                        let codableScore = ArbitraryCodable(receivedData: "score", score: self.score, isReady: true)
+                        let codableScore = ArbitraryCodable(receivedData: "score", num: self.score, isReady: true)
                         guard let data = try? JSONEncoder().encode(codableScore)
                             else { fatalError("can't encode score") }
                         self.multipeerSession.sendToAllPeers(data){}
@@ -220,7 +224,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
             if(gameTime <= 0){
                 gameTimer.invalidate()
-                multipeerSession.session.disconnect()
                 self.performSegue(withIdentifier: "viewToLeaderboard", sender: self)
 
             }
@@ -253,7 +256,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
         // Add the ball.
         let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
-        ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
+        if Globals.instance.isHosting || !Globals.instance.isMulti {
+            ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "0.png") // Set ball texture
+        } else {
+            var string = String(colorNum) + ".png"
+            ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: string)
+        }
         ball.position = position
         
         // Set the ball's physics properties.
@@ -296,7 +304,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let codableCol3 = CodablePosition(dim1: positionTransform.columns.2.x, dim2: positionTransform.columns.2.y, dim3: positionTransform.columns.2.z, dim4: positionTransform.columns.2.w)
         let codableCol4 = CodablePosition(dim1: positionTransform.columns.3.x, dim2: positionTransform.columns.3.y, dim3: positionTransform.columns.3.z, dim4: positionTransform.columns.3.w)
         let basketPos = CodablePosition(dim1: globalBasketNode!.position.x, dim2: globalBasketNode!.position.y, dim3: globalBasketNode!.position.z, dim4: 0)
-        let encodableTransform = CodableTransform(c1: codableCol1, c2: codableCol2, c3: codableCol3, c4: codableCol4, basketPos: basketPos, s: anchorName, fX: xForce, fY: yForce, fZ: zForce)
+        let encodableTransform = CodableTransform(c1: codableCol1, c2: codableCol2, c3: codableCol3, c4: codableCol4, basketPos: basketPos, s: anchorName, fX: xForce, fY: yForce, fZ: zForce, colorNum: self.colorNum)
 
         do{
             // Send the anchor to the other players so they can see your balls.
@@ -437,6 +445,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     @IBAction func shareSession(_ button: UIButton) {
         // Check if the user is hosting.
         guard Globals.instance.isHosting else{ return }
+
+        var count = 1
+        for peer in multipeerSession.connectedPeers{
+           let codable = ArbitraryCodable(receivedData: "color", num: count, isReady: false)
+            guard let data = try? JSONEncoder().encode(codable)
+                else {fatalError("can't encode ready")}
+            multipeerSession.sendToPeer(data, id: peer)
+            count += 1
+        }
         
         // Make sure the AR world has been mapped completely before sending world map.
         if(mapAvailable){
@@ -513,7 +530,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             let position = anchorPos
             let ball = SCNNode(geometry: SCNSphere(radius: 0.25))
-            ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "ballTexture.png") // Set ball texture
+            
+            let string = String(decodedData.colorNum) + ".png"
+            ball.geometry?.firstMaterial?.diffuse.contents = UIImage(named: string)
+            
             ball.position = SCNVector3(position.x, position.y, position.z)
             print(ball.position)
             let body = SCNPhysicsBody(type: .dynamic, shape: SCNPhysicsShape(node: ball))
@@ -546,6 +566,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                         self.gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.incrementTimer), userInfo: nil, repeats: true)
                     }
                 }
+            } else if decodedData.receivedData == "color" {
+                self.colorNum = decodedData.color
             }
         }
         catch{
